@@ -6,46 +6,46 @@
 
 [English](/README.md) | [ 简体中文](/README_zh-Hans.md) | [繁體中文](/README_zh-Hant.md)
 
-The  MCP9600 is a fully integrated thermocouple  Electromotive Force (EMF) to degree Celsius converter with integrated Cold-Junction compensation. The MCP9600 supports 8 thermocouple types (K, J, T, N, S, E, B and R). The MCP9600 provides user-programmable registers, adding design flexibility for various temperature sensing applications. The registers allow user-selectable settings, such as low-power modes for battery-powered applications, an adjustable digital filter for fast transient temperatures and four individually programmable temperature alert outputs, which can be used to detect multiple temperature zones.It can be used in petrochemical thermal management, hand-held measurement equipment, industrial equipment thermal management, commercial and industrial ovens, industrial engine thermal monitor, temperature detection racks and so on.
+MCP9600 是一款完全集成的热电偶电动势 (EMF) 到摄氏度转换器，具有集成的冷端补偿功能。MCP9600 支持 8 种热电偶类型（K、J、T、N、S、E、B 和 R）。MCP9600 提供用户可编程寄存器，为各种温度传感应用增加了设计灵活性。这些寄存器允许用户选择设置，例如电池供电应用的低功耗模式、用于快速瞬态温度的可调数字滤波器和四个可单独编程的温度警报输出，可用于检测多个温度区域。MCP9600可用于石油化工热管理、手持测量设备、工业设备热管理、商用和工业烘箱、工业发动机热监测器、温度检测架等。
 
-LibDriver MCP9600 is a full function driver of MCP9600 launched by LibDriver.It provides shot reading, continuous reading, interrupt reading mode and other functions.
+LibDriver MCP9600是LibDriver推出的MCP9600全功能驱动，该驱动提供单次读取、连续读取、中断模式等功能。
 
-### Table of Contents
+### 目录
 
-  - [Instruction](#Instruction)
-  - [Install](#Install)
-  - [Usage](#Usage)
+  - [说明](#说明)
+  - [安装](#安装)
+  - [使用](#使用)
     - [example basic](#example-basic)
     - [example shot](#example-shot)
     - [example interrupt](#example-interrupt)
-  - [Document](#Document)
-  - [Contributing](#Contributing)
-  - [License](#License)
-  - [Contact Us](#Contact-Us)
+  - [文档](#文档)
+  - [贡献](#贡献)
+  - [版权](#版权)
+  - [联系我们](#联系我们)
 
-### Instruction
+### 说明
 
-/src includes LibDriver MCP9600 source files.
+/src目录包含了LibDriver MCP9600的源文件。
 
-/interface includes LibDriver MCP9600 IIC platform independent template。
+/interface目录包含了LibDriver MCP9600与平台无关的IIC总线模板。
 
-/test includes LibDriver MCP9600 driver test code and this code can test the chip necessary function simply。
+/test目录包含了LibDriver MCP9600驱动测试程序，该程序可以简单的测试芯片必要功能。
 
-/example includes LibDriver MCP9600 sample code.
+/example目录包含了LibDriver MCP9600编程范例。
 
-/doc includes LibDriver MCP9600 offline document.
+/doc目录包含了LibDriver MCP9600离线文档。
 
-/datasheet includes MCP9600 datasheet。
+/datasheet目录包含了MCP9600数据手册。
 
-/project includes the common Linux and MCU development board sample code. All projects use the shell script to debug the driver and the detail instruction can be found in each project's README.md.
+/project目录包含了常用Linux与单片机开发板的工程样例。所有工程均采用shell脚本作为调试方法，详细内容可参考每个工程里面的README.md。
 
-### Install
+### 安装
 
-Reference /interface IIC platform independent template and finish your platform IIC driver.
+参考/interface目录下与平台无关的IIC总线模板，完成指定平台的IIC总线驱动。
 
-Add /src, /interface and /example to your project.
+将/src目录，/interface目录和/example目录加入工程。
 
-### Usage
+### 使用
 
 #### example basic
 
@@ -265,60 +265,28 @@ else
     return 0;
 }
 ```
-### Document
+### 文档
 
-Online documents: https://www.libdriver.com/docs/mcp9600/index.html
+在线文档: https://www.libdriver.com/docs/mcp9600/index.html
 
-Offline documents: /doc/html/index.html
+离线文档: /doc/html/index.html
 
-### Contributing
+### 贡献
 
-Please sent an e-mail to lishifenging@outlook.com
+请联系lishifenging@outlook.com
 
-### License
+### 版权
 
-Copyright (c) 2015 - present LibDriver All rights reserved
+版权 (c) 2015 - 现在 LibDriver 版权所有
 
+MIT 许可证（MIT）
 
+特此免费授予任何获得本软件副本和相关文档文件（下称“软件”）的人不受限制地处置该软件的权利，包括不受限制地使用、复制、修改、合并、发布、分发、转授许可和/或出售该软件副本，以及再授权被配发了本软件的人如上的权利，须在下列条件下：
 
-The MIT License (MIT) 
+上述版权声明和本许可声明应包含在该软件的所有副本或实质成分中。
 
+本软件是“如此”提供的，没有任何形式的明示或暗示的保证，包括但不限于对适销性、特定用途的适用性和不侵权的保证。在任何情况下，作者或版权持有人都不对任何索赔、损害或其他责任负责，无论这些追责来自合同、侵权或其它行为中，还是产生于、源于或有关于本软件以及本软件的使用或其它处置。
 
+### 联系我们
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-
-of this software and associated documentation files (the "Software"), to deal
-
-in the Software without restriction, including without limitation the rights
-
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-
-copies of the Software, and to permit persons to whom the Software is
-
-furnished to do so, subject to the following conditions: 
-
-
-
-The above copyright notice and this permission notice shall be included in all
-
-copies or substantial portions of the Software. 
-
-
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-
-SOFTWARE. 
-
-### Contact Us
-
-Please sent an e-mail to lishifenging@outlook.com
+请联系lishifenging@outlook.com
