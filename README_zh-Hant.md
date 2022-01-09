@@ -1,10 +1,12 @@
+[English](/README.md) | [ 简体中文](/README_zh-Hans.md) | [繁體中文](/README_zh-Hant.md)
+
 <div align=center>
 <img src="/doc/image/logo.png"/>
 </div>
 
 ## LibDriver MCP9600
 
-[English](/README.md) | [ 简体中文](/README_zh-Hans.md) | [繁體中文](/README_zh-Hant.md)
+[![API](https://img.shields.io/badge/api-reference-blue)](https://www.libdriver.com/docs/mcp9600/index.html) [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](/LICENSE)
 
 MCP9600 是一款完全集成的熱電偶電動勢 (EMF) 到攝氏度轉換器，具有集成的冷端補償功能。 MCP9600 支持 8 種熱電偶類型（K、J、T、N、S、E、B 和 R）。 MCP9600 提供用戶可編程寄存器，為各種溫度傳感應用增加了設計靈活性。這些寄存器允許用戶選擇設置，例如電池供電應用的低功耗模式、用於快速瞬態溫度的可調數字濾波器和四個可單獨編程的溫度警報輸出，可用於檢測多個溫度區域。 MCP9600可用於石油化工熱管理、手持測量設備、工業設備熱管理、商用和工業烘箱、工業發動機熱監測器、溫度檢測架等。
 
