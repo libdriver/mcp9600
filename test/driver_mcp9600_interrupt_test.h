@@ -34,8 +34,8 @@
  * </table>
  */
 
-#ifndef _DRIVER_MCP9600_INTERRUPT_TEST_H_
-#define _DRIVER_MCP9600_INTERRUPT_TEST_H_
+#ifndef DRIVER_MCP9600_INTERRUPT_TEST_H
+#define DRIVER_MCP9600_INTERRUPT_TEST_H
 
 #include "driver_mcp9600_interface.h"
 

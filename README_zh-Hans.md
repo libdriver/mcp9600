@@ -1,4 +1,4 @@
-[English](/README.md) | [ 简体中文](/README_zh-Hans.md) | [繁體中文](/README_zh-Hant.md)
+[English](/README.md) | [ 简体中文](/README_zh-Hans.md) | [繁體中文](/README_zh-Hant.md) | [日本語](/README_ja.md) | [Deutsch](/README_de.md) | [한국어](/README_ko.md)
 
 <div align=center>
 <img src="/doc/image/logo.png"/>
@@ -6,11 +6,11 @@
 
 ## LibDriver MCP9600
 
-[![API](https://img.shields.io/badge/api-reference-blue)](https://www.libdriver.com/docs/mcp9600/index.html) [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](/LICENSE)
+[![MISRA](https://img.shields.io/badge/misra-compliant-brightgreen.svg)](/misra/README.md) [![API](https://img.shields.io/badge/api-reference-blue.svg)](https://www.libdriver.com/docs/mcp9600/index.html) [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](/LICENSE)
 
 MCP9600 是一款完全集成的热电偶电动势 (EMF) 到摄氏度转换器，具有集成的冷端补偿功能。MCP9600 支持 8 种热电偶类型（K、J、T、N、S、E、B 和 R）。MCP9600 提供用户可编程寄存器，为各种温度传感应用增加了设计灵活性。这些寄存器允许用户选择设置，例如电池供电应用的低功耗模式、用于快速瞬态温度的可调数字滤波器和四个可单独编程的温度警报输出，可用于检测多个温度区域。MCP9600可用于石油化工热管理、手持测量设备、工业设备热管理、商用和工业烘箱、工业发动机热监测器、温度检测架等。
 
-LibDriver MCP9600是LibDriver推出的MCP9600全功能驱动，该驱动提供单次读取、连续读取、中断模式等功能。
+LibDriver MCP9600是LibDriver推出的MCP9600全功能驱动，该驱动提供单次读取、连续读取、中断模式等功能并且它符合MISRA标准。
 
 ### 目录
 
@@ -52,12 +52,12 @@ LibDriver MCP9600是LibDriver推出的MCP9600全功能驱动，该驱动提供�
 #### example basic
 
 ```C
-volatile uint8_t res;
-volatile uint16_t i, times;
+uint8_t res;
+uint16_t i, times;
 
 /* basic init */
 res = mcp9600_basic_init(MCP9600_ADDRESS_0, MCP9600_THERMOCOUPLE_TYPE_K);
-if (res)
+if (res != 0)
 {
     return 1;
 }
@@ -65,21 +65,21 @@ if (res)
 times = 3;
 for (i = 0; i < times; i++)
 {
-    volatile int16_t hot_raw;
-    volatile float hot_s;
-    volatile int16_t delta_raw;
-    volatile float delta_s;
-    volatile int16_t cold_raw;
-    volatile float cold_s;
+    int16_t hot_raw;
+    float hot_s;
+    int16_t delta_raw;
+    float delta_s;
+    int16_t cold_raw;
+    float cold_s;
 
     /* basic read */
     res = mcp9600_basic_read((int16_t *)&hot_raw, (float *)&hot_s,
                              (int16_t *)&delta_raw, (float *)&delta_s,
                              (int16_t *)&cold_raw, (float *)&cold_s);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: basic read failed.\n");
-        mcp9600_basic_deinit();
+        (void)mcp9600_basic_deinit();
 
         return 1;
     }
@@ -93,7 +93,7 @@ for (i = 0; i < times; i++)
 
 /* deinit */
 res = mcp9600_basic_deinit();
-if (res)
+if (res != 0)
 {
     return 1;
 }
@@ -106,12 +106,12 @@ else
 #### example shot
 
 ```C
-volatile uint8_t res;
-volatile uint16_t i, times;
+uint8_t res;
+uint16_t i, times;
 
 /* shot init */
 res = mcp9600_shot_init(MCP9600_ADDRESS_0, MCP9600_THERMOCOUPLE_TYPE_K);
-if (res)
+if (res != 0)
 {
     return 1;
 }
@@ -119,21 +119,21 @@ if (res)
 times = 3;
 for (i = 0; i < times; i++)
 {
-    volatile int16_t hot_raw;
-    volatile float hot_s;
-    volatile int16_t delta_raw;
-    volatile float delta_s;
-    volatile int16_t cold_raw;
-    volatile float cold_s;
+    int16_t hot_raw;
+    float hot_s;
+    int16_t delta_raw;
+    float delta_s;
+    int16_t cold_raw;
+    float cold_s;
 
     /* shot read */
     res = mcp9600_shot_read((int16_t *)&hot_raw, (float *)&hot_s,
                             (int16_t *)&delta_raw, (float *)&delta_s,
                             (int16_t *)&cold_raw, (float *)&cold_s);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: shot read failed.\n");
-        mcp9600_shot_deinit();
+        (void)mcp9600_shot_deinit();
 
         return 1;
     }
@@ -147,7 +147,7 @@ for (i = 0; i < times; i++)
 
 /* deinit */
 res = mcp9600_shot_deinit();
-if (res)
+if (res != 0)
 {
     return 1;
 }
@@ -159,8 +159,8 @@ else
 #### example interrupt
 
 ```C
-volatile uint8_t res;
-volatile uint16_t i, times;
+uint8_t res;
+uint16_t i, times;
 uint8_t g_flag;
 
 void gpio_callback(uint16_t pin)
@@ -171,69 +171,69 @@ void gpio_callback(uint16_t pin)
 /* gpio init */
 g_flag = 0;
 res = gpio_interrupt_init();
-if (res)
+if (res != 0)
 {
     return 1;
 }
 
 /* interrupt init */
 res = mcp9600_interrupt_init(MCP9600_ADDRESS_0, MCP9600_THERMOCOUPLE_TYPE_K);
-if (res)
+if (res != 0)
 {
-    gpio_interrupt_deinit();
+    (void)gpio_interrupt_deinit();
 
     return 1;
 }
 
 /* clear all */
 res = mcp9600_interrupt_clear(MCP9600_ALERT_1);
-if (res)
+if (res != 0)
 {
     mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
-    mcp9600_interrupt_deinit();
-    gpio_interrupt_deinit();
+    (void)mcp9600_interrupt_deinit();
+    (void)gpio_interrupt_deinit();
 }
 res = mcp9600_interrupt_clear(MCP9600_ALERT_2);
-if (res)
+if (res != 0)
 {
     mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
-    mcp9600_interrupt_deinit();
-    gpio_interrupt_deinit();
+    (void)mcp9600_interrupt_deinit();
+    (void)gpio_interrupt_deinit();
 }
 res = mcp9600_interrupt_clear(MCP9600_ALERT_3);
-if (res)
+if (res != 0)
 {
     mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
-    mcp9600_interrupt_deinit();
-    gpio_interrupt_deinit();
+    (void)mcp9600_interrupt_deinit();
+    (void)gpio_interrupt_deinit();
 }
 res = mcp9600_interrupt_clear(MCP9600_ALERT_4);
-if (res)
+if (res != 0)
 {
     mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
-    mcp9600_interrupt_deinit();
-    gpio_interrupt_deinit();
+    (void)mcp9600_interrupt_deinit();
+    (void)gpio_interrupt_deinit();
 }
 
 times = 3;
 for (i = 0; i < times; i++)
 {
-    volatile int16_t hot_raw;
-    volatile float hot_s;
-    volatile int16_t delta_raw;
-    volatile float delta_s;
-    volatile int16_t cold_raw;
-    volatile float cold_s;
+    int16_t hot_raw;
+    float hot_s;
+    int16_t delta_raw;
+    float delta_s;
+    int16_t cold_raw;
+    float cold_s;
 
     /* interrupt read */
     res = mcp9600_interrupt_read((int16_t *)&hot_raw, (float *)&hot_s,
                                  (int16_t *)&delta_raw, (float *)&delta_s,
                                  (int16_t *)&cold_raw, (float *)&cold_s);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: interrupt read failed.\n");
-        mcp9600_interrupt_deinit();
-        gpio_interrupt_deinit();
+        (void)mcp9600_interrupt_deinit();
+        (void)gpio_interrupt_deinit();
 
         return 1;
     }
@@ -244,7 +244,7 @@ for (i = 0; i < times; i++)
     /* print */
     mcp9600_interface_debug_print("mcp9600: %d / %d hot %0.2f delta %0.2f cold %0.2f.\n", times - i, times, hot_s, delta_s, cold_s);
 
-    if (g_flag)
+    if (g_flag != 0)
     {
         mcp9600_interface_debug_print("mcp9600: find interrupt.\n");
 
@@ -254,15 +254,15 @@ for (i = 0; i < times; i++)
 
 /* deinit */
 res = mcp9600_interrupt_deinit();
-if (res)
+if (res != 0)
 {
-    gpio_interrupt_deinit();
+    (void)gpio_interrupt_deinit();
 
     return 1;
 }
 else
 {
-    gpio_interrupt_deinit();
+    (void)gpio_interrupt_deinit();
 
     return 0;
 }

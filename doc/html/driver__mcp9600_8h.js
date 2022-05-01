@@ -120,7 +120,7 @@ var driver__mcp9600_8h =
     [ "mcp9600_get_junction_thermocouple_delta", "group__mcp9600__base__driver.html#ga45e20b068dcf7bd2b4972a5ef5ab17c9", null ],
     [ "mcp9600_get_mode", "group__mcp9600__base__driver.html#ga7b1b8d486a44484e3b65de9dda3d2dde", null ],
     [ "mcp9600_get_raw_adc", "group__mcp9600__base__driver.html#ga60fac3d0bddbe846175cfa29e4766d3b", null ],
-    [ "mcp9600_get_reg", "group__mcp9600__extern__driver.html#ga5a85bc91ca3229ee2136471944b9d003", null ],
+    [ "mcp9600_get_reg", "group__mcp9600__extern__driver.html#ga06c1b1fb9e7c6ddfbbfe1238574e24ef", null ],
     [ "mcp9600_get_status_burst_complete_flag", "group__mcp9600__base__driver.html#ga8e8623ea0fcf3a168700b66f0c8bf419", null ],
     [ "mcp9600_get_status_input_range", "group__mcp9600__base__driver.html#gad3b491ecf81795295b2793a3e0ae20f6", null ],
     [ "mcp9600_get_status_temperature_update_flag", "group__mcp9600__base__driver.html#ga4a2627714542df3655cc7c6a4fc46753", null ],

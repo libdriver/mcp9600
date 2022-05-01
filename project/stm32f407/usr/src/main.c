@@ -360,8 +360,8 @@ uint8_t mcp9600(uint8_t argc, char **argv)
                 {
                     if (strcmp("-type", argv[6]) == 0)
                     {
-                        volatile uint8_t res;
-                        volatile uint16_t i, times;
+                        uint8_t res;
+                        uint16_t i, times;
                         mcp9600_address_t addr_pin;
                         mcp9600_thermocouple_type_t type;
                         
@@ -414,32 +414,32 @@ uint8_t mcp9600(uint8_t argc, char **argv)
                             return 5;
                         }
                         
-                        times = atoi(argv[3]);
+                        times = (uint16_t)atoi(argv[3]);
                         
                         /* basic init */
                         res = mcp9600_basic_init(addr_pin, type);
-                        if (res)
+                        if (res != 0)
                         {
                             return 1;
                         }
                         
                         for (i = 0; i < times; i++)
                         {
-                            volatile int16_t hot_raw;
-                            volatile float hot_s;
-                            volatile int16_t delta_raw;
-                            volatile float delta_s;
-                            volatile int16_t cold_raw;
-                            volatile float cold_s;
+                            int16_t hot_raw;
+                            float hot_s;
+                            int16_t delta_raw;
+                            float delta_s;
+                            int16_t cold_raw;
+                            float cold_s;
                             
                             /* basic read */
                             res = mcp9600_basic_read((int16_t *)&hot_raw, (float *)&hot_s,
                                                      (int16_t *)&delta_raw, (float *)&delta_s,
                                                      (int16_t *)&cold_raw, (float *)&cold_s);
-                            if (res)
+                            if (res != 0)
                             {
                                 mcp9600_interface_debug_print("mcp9600: basic read failed.\n");
-                                mcp9600_basic_deinit();
+                                (void)mcp9600_basic_deinit();
                                 
                                 return 1;
                             }
@@ -453,7 +453,7 @@ uint8_t mcp9600(uint8_t argc, char **argv)
                         
                         /* deinit */
                         res = mcp9600_basic_deinit();
-                        if (res)
+                        if (res != 0)
                         {
                             return 1;
                         }
@@ -478,8 +478,8 @@ uint8_t mcp9600(uint8_t argc, char **argv)
                 {
                     if (strcmp("-type", argv[6]) == 0)
                     {
-                        volatile uint8_t res;
-                        volatile uint16_t i, times;
+                        uint8_t res;
+                        uint16_t i, times;
                         mcp9600_address_t addr_pin;
                         mcp9600_thermocouple_type_t type;
                         
@@ -532,32 +532,32 @@ uint8_t mcp9600(uint8_t argc, char **argv)
                             return 5;
                         }
                         
-                        times = atoi(argv[3]);
+                        times = (uint16_t)atoi(argv[3]);
                         
                         /* shot init */
                         res = mcp9600_shot_init(addr_pin, type);
-                        if (res)
+                        if (res != 0)
                         {
                             return 1;
                         }
                         
                         for (i = 0; i < times; i++)
                         {
-                            volatile int16_t hot_raw;
-                            volatile float hot_s;
-                            volatile int16_t delta_raw;
-                            volatile float delta_s;
-                            volatile int16_t cold_raw;
-                            volatile float cold_s;
+                            int16_t hot_raw;
+                            float hot_s;
+                            int16_t delta_raw;
+                            float delta_s;
+                            int16_t cold_raw;
+                            float cold_s;
                             
                             /* shot read */
                             res = mcp9600_shot_read((int16_t *)&hot_raw, (float *)&hot_s,
                                                     (int16_t *)&delta_raw, (float *)&delta_s,
                                                     (int16_t *)&cold_raw, (float *)&cold_s);
-                            if (res)
+                            if (res != 0)
                             {
                                 mcp9600_interface_debug_print("mcp9600: shot read failed.\n");
-                                mcp9600_shot_deinit();
+                                (void)mcp9600_shot_deinit();
                                 
                                 return 1;
                             }
@@ -571,7 +571,7 @@ uint8_t mcp9600(uint8_t argc, char **argv)
                         
                         /* deinit */
                         res = mcp9600_shot_deinit();
-                        if (res)
+                        if (res != 0)
                         {
                             return 1;
                         }
@@ -596,8 +596,8 @@ uint8_t mcp9600(uint8_t argc, char **argv)
                 {
                     if (strcmp("-type", argv[6]) == 0)
                     {
-                        volatile uint8_t res;
-                        volatile uint16_t i, times;
+                        uint8_t res;
+                        uint16_t i, times;
                         mcp9600_address_t addr_pin;
                         mcp9600_thermocouple_type_t type;
                         
@@ -650,73 +650,73 @@ uint8_t mcp9600(uint8_t argc, char **argv)
                             return 5;
                         }
                         
-                        times = atoi(argv[3]);
+                        times = (uint16_t)atoi(argv[3]);
                         
                         /* gpio init */
                         g_flag = 0;
                         res = gpio_interrupt_init();
-                        if (res)
+                        if (res != 0)
                         {
                             return 1;
                         }
                         
                         /* interrupt init */
                         res = mcp9600_interrupt_init(addr_pin, type);
-                        if (res)
+                        if (res != 0)
                         {
-                            gpio_interrupt_deinit();
+                            (void)gpio_interrupt_deinit();
                             
                             return 1;
                         }
                         
                         /* clear all */
                         res = mcp9600_interrupt_clear(MCP9600_ALERT_1);
-                        if (res)
+                        if (res != 0)
                         {
                             mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
-                            mcp9600_interrupt_deinit();
-                            gpio_interrupt_deinit();
+                            (void)mcp9600_interrupt_deinit();
+                            (void)gpio_interrupt_deinit();
                         }
                         res = mcp9600_interrupt_clear(MCP9600_ALERT_2);
-                        if (res)
+                        if (res != 0)
                         {
                             mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
-                            mcp9600_interrupt_deinit();
-                            gpio_interrupt_deinit();
+                            (void)mcp9600_interrupt_deinit();
+                            (void)gpio_interrupt_deinit();
                         }
                         res = mcp9600_interrupt_clear(MCP9600_ALERT_3);
-                        if (res)
+                        if (res != 0)
                         {
                             mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
-                            mcp9600_interrupt_deinit();
-                            gpio_interrupt_deinit();
+                            (void)mcp9600_interrupt_deinit();
+                            (void)gpio_interrupt_deinit();
                         }
                         res = mcp9600_interrupt_clear(MCP9600_ALERT_4);
-                        if (res)
+                        if (res != 0)
                         {
                             mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
-                            mcp9600_interrupt_deinit();
-                            gpio_interrupt_deinit();
+                            (void)mcp9600_interrupt_deinit();
+                            (void)gpio_interrupt_deinit();
                         }
                         
                         for (i = 0; i < times; i++)
                         {
-                            volatile int16_t hot_raw;
-                            volatile float hot_s;
-                            volatile int16_t delta_raw;
-                            volatile float delta_s;
-                            volatile int16_t cold_raw;
-                            volatile float cold_s;
+                            int16_t hot_raw;
+                            float hot_s;
+                            int16_t delta_raw;
+                            float delta_s;
+                            int16_t cold_raw;
+                            float cold_s;
                             
                             /* interrupt read */
                             res = mcp9600_interrupt_read((int16_t *)&hot_raw, (float *)&hot_s,
                                                     (int16_t *)&delta_raw, (float *)&delta_s,
                                                     (int16_t *)&cold_raw, (float *)&cold_s);
-                            if (res)
+                            if (res != 0)
                             {
                                 mcp9600_interface_debug_print("mcp9600: interrupt read failed.\n");
-                                mcp9600_interrupt_deinit();
-                                gpio_interrupt_deinit();
+                                (void)mcp9600_interrupt_deinit();
+                                (void)gpio_interrupt_deinit();
                                 
                                 return 1;
                             }
@@ -727,7 +727,7 @@ uint8_t mcp9600(uint8_t argc, char **argv)
                             /* print */
                             mcp9600_interface_debug_print("mcp9600: %d / %d hot %0.2f delta %0.2f cold %0.2f.\n", times - i, times, hot_s, delta_s, cold_s);
                             
-                            if (g_flag)
+                            if (g_flag != 0)
                             {
                                 mcp9600_interface_debug_print("mcp9600: find interrupt.\n");
                                 
@@ -737,15 +737,15 @@ uint8_t mcp9600(uint8_t argc, char **argv)
                         
                         /* deinit */
                         res = mcp9600_interrupt_deinit();
-                        if (res)
+                        if (res != 0)
                         {
-                            gpio_interrupt_deinit();
+                            (void)gpio_interrupt_deinit();
                             
                             return 1;
                         }
                         else
                         {
-                            gpio_interrupt_deinit();
+                            (void)gpio_interrupt_deinit();
                             
                             return 0;
                         }
@@ -783,7 +783,7 @@ uint8_t mcp9600(uint8_t argc, char **argv)
  */
 int main(void)
 {
-    volatile uint8_t res;
+    uint8_t res;
     
     /* stm32f407 clock init and hal init */
     clock_init();

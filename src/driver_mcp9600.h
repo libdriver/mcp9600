@@ -34,8 +34,8 @@
  * </table>
  */
 
-#ifndef _DRIVER_MCP9600_H_
-#define _DRIVER_MCP9600_H_
+#ifndef DRIVER_MCP9600_H
+#define DRIVER_MCP9600_H
 
 #include <stdio.h>
 #include <stdint.h>
@@ -224,7 +224,7 @@ typedef struct mcp9600_handle_s
     uint8_t (*iic_write_cmd)(uint8_t addr, uint8_t *buf, uint16_t len);        /**< point to a iic_write_cmd function address */
     uint8_t (*iic_read_cmd)(uint8_t addr, uint8_t *buf, uint16_t len);         /**< point to a iic_read_cmd function address */
     void (*delay_ms)(uint32_t ms);                                             /**< point to a delay_ms function address */
-    uint16_t (*debug_print)(char *fmt, ...);                                   /**< point to a debug_print function address */
+    void (*debug_print)(const char *const fmt, ...);                           /**< point to a debug_print function address */
     uint8_t inited;                                                            /**< inited flag */
     uint8_t iic_addr;                                                          /**< iic address */
 } mcp9600_handle_t;
@@ -1080,7 +1080,7 @@ uint8_t mcp9600_set_reg(mcp9600_handle_t *handle, uint8_t reg, uint8_t *buf, uin
  *             - 3 handle is not initialized
  * @note       none
  */
-uint8_t mcp9600_get_reg(mcp9600_handle_t *handle, uint16_t reg, uint8_t *buf, uint16_t len);
+uint8_t mcp9600_get_reg(mcp9600_handle_t *handle, uint8_t reg, uint8_t *buf, uint16_t len);
 
 /**
  * @}
