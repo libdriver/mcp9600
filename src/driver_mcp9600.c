@@ -83,17 +83,21 @@
  *             - 1 read failed
  * @note       none
  */
-static uint8_t _mcp9600_iic_read(mcp9600_handle_t *handle, uint8_t reg, uint8_t *data, uint16_t len)
+static uint8_t a_mcp9600_iic_read(mcp9600_handle_t *handle, uint8_t reg, uint8_t *data, uint16_t len)
 {
-    volatile uint8_t buf[1];
+    uint8_t buf[1];
     
-    buf[0] = reg;                                                          /* set reg */
-    if (handle->iic_write_cmd(handle->iic_addr, (uint8_t *)buf, 1))        /* write command */
+    buf[0] = reg;                                                               /* set reg */
+    if (handle->iic_write_cmd(handle->iic_addr, (uint8_t *)buf, 1) != 0)        /* write command */
     {   
-        return 1;                                                          /* return error */
+        return 1;                                                               /* return error */
+    }
+    if (handle->iic_read_cmd(handle->iic_addr, data, len) != 0)                 /* read data */
+    {   
+        return 1;                                                               /* return error */
     }
     
-    return handle->iic_read_cmd(handle->iic_addr, data, len);              /* read data */
+    return 0;                                                                   /* success return 0 */
 }
 
 /**
@@ -107,10 +111,10 @@ static uint8_t _mcp9600_iic_read(mcp9600_handle_t *handle, uint8_t reg, uint8_t 
  *            - 1 write failed
  * @note      none
  */
-static uint8_t _mcp9600_iic_write(mcp9600_handle_t *handle, uint8_t reg, uint8_t *data, uint16_t len)
+static uint8_t a_mcp9600_iic_write(mcp9600_handle_t *handle, uint8_t reg, uint8_t *data, uint16_t len)
 {
-    volatile uint8_t buf[16];
-    volatile uint16_t i;
+    uint8_t buf[16];
+    uint16_t i;
         
     if ((len + 1) > 16)                                                             /* check length */
     {
@@ -121,8 +125,12 @@ static uint8_t _mcp9600_iic_write(mcp9600_handle_t *handle, uint8_t reg, uint8_t
     {
         buf[1 + i] = data[i];                                                       /* copy write data */
     }
+    if (handle->iic_write_cmd(handle->iic_addr, (uint8_t *)buf, len + 1) != 0)      /* write iic command */
+    {   
+        return 1;                                                                   /* return error */
+    }
     
-    return handle->iic_write_cmd(handle->iic_addr, (uint8_t *)buf, len + 1);        /* write iic command */
+    return 0;                                                                       /* success return 0 */
 }
 
 /**
@@ -136,14 +144,14 @@ static uint8_t _mcp9600_iic_write(mcp9600_handle_t *handle, uint8_t reg, uint8_t
  */
 uint8_t mcp9600_set_addr_pin(mcp9600_handle_t *handle, mcp9600_address_t addr_pin)
 {
-    if (handle == NULL)                 /* check handle */
+    if (handle == NULL)                          /* check handle */
     {
-        return 2;                       /* return error */
+        return 2;                                /* return error */
     }
     
-    handle->iic_addr = addr_pin;        /* set pin */
+    handle->iic_addr = (uint8_t)addr_pin;        /* set pin */
     
-    return 0;                           /* success return 0 */
+    return 0;                                    /* success return 0 */
 }
 
 /**
@@ -180,8 +188,8 @@ uint8_t mcp9600_get_addr_pin(mcp9600_handle_t *handle, mcp9600_address_t *addr_p
  */
 uint8_t mcp9600_init(mcp9600_handle_t *handle)
 {
-    volatile uint8_t res;
-    volatile uint8_t buf[2];
+    uint8_t res;
+    uint8_t buf[2];
     
     if (handle == NULL)                                                             /* check handle */
     {
@@ -222,15 +230,16 @@ uint8_t mcp9600_init(mcp9600_handle_t *handle)
         return 3;                                                                   /* return error */
     }
     
-    if (handle->iic_init())                                                         /* iic init */
+    if (handle->iic_init() != 0)                                                    /* iic init */
     {
         handle->debug_print("mcp9600: iic init failed.\n");                         /* iic init failed */
        
         return 1;                                                                   /* return error */
     }
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_ID_REVISON,
-                           (uint8_t *)buf, 2);                                      /* read device id */
-    if (res)                                                                        /* check result */
+    memset(buf, 0, sizeof(uint8_t) * 2);                                            /* clear the buffer */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_ID_REVISON,
+                            (uint8_t *)buf, 2);                                     /* read device id */
+    if (res != 0)                                                                   /* check result */
     {
         handle->debug_print("mcp9600: read device id failed.\n");                   /* read device id failed */
        
@@ -260,8 +269,8 @@ uint8_t mcp9600_init(mcp9600_handle_t *handle)
  */
 uint8_t mcp9600_deinit(mcp9600_handle_t *handle)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                           /* check handle */
     {
@@ -272,8 +281,8 @@ uint8_t mcp9600_deinit(mcp9600_handle_t *handle)
         return 3;                                                                                 /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: power down failed.\n");                                     /* power down failed */
        
@@ -282,15 +291,15 @@ uint8_t mcp9600_deinit(mcp9600_handle_t *handle)
     
     reg &= ~(3 << 0);                                                                             /* clear configure */
     reg |= 0x1 << 0;                                                                              /* set configure */
-    res = _mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* write config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);      /* write config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: power down failed.\n");                                     /* power down failed */
        
         return 4;                                                                                 /* return error */
     }
     res = handle->iic_deinit();                                                                   /* iic deinit */
-    if (res)                                                                                      /* check result */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: iic deinit failed.\n");                                     /* iic deinit failed */
        
@@ -313,8 +322,8 @@ uint8_t mcp9600_deinit(mcp9600_handle_t *handle)
  */
 uint8_t mcp9600_start_continuous_read(mcp9600_handle_t *handle)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                           /* check handle */
     {
@@ -325,8 +334,8 @@ uint8_t mcp9600_start_continuous_read(mcp9600_handle_t *handle)
         return 3;                                                                                 /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                      /* read device configuration failed */
        
@@ -335,8 +344,8 @@ uint8_t mcp9600_start_continuous_read(mcp9600_handle_t *handle)
     
     reg &= ~(3 << 0);                                                                             /* clear configure */
     reg |= 0x0 << 0;                                                                              /* set configure */
-    res = _mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* write config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);      /* write config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: write device configuration failed.\n");                     /* write device configuration failed */
        
@@ -358,8 +367,8 @@ uint8_t mcp9600_start_continuous_read(mcp9600_handle_t *handle)
  */
 uint8_t mcp9600_stop_continuous_read(mcp9600_handle_t *handle)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                           /* check handle */
     {
@@ -370,8 +379,8 @@ uint8_t mcp9600_stop_continuous_read(mcp9600_handle_t *handle)
         return 3;                                                                                 /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                      /* read device configuration failed */
        
@@ -380,8 +389,8 @@ uint8_t mcp9600_stop_continuous_read(mcp9600_handle_t *handle)
     
     reg &= ~(3 << 0);                                                                             /* clear configure */
     reg |= 0x02 << 0;                                                                             /* set configure */
-    res = _mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* write config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);      /* write config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: write device configuration failed.\n");                     /* write device configuration failed */
        
@@ -411,9 +420,9 @@ uint8_t mcp9600_stop_continuous_read(mcp9600_handle_t *handle)
 uint8_t mcp9600_continuous_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *hot_s,
                                 int16_t *delta_raw, float *delta_s, int16_t *cold_raw, float *cold_s)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
-    volatile uint8_t buf[2];
+    uint8_t res;
+    uint8_t reg;
+    uint8_t buf[2];
     
     if (handle == NULL)                                                                                 /* check handle */
     {
@@ -424,8 +433,8 @@ uint8_t mcp9600_continuous_read(mcp9600_handle_t *handle, int16_t *hot_raw, floa
         return 3;                                                                                       /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_THERMOCOUPLE_HOT_JUNCTION, (uint8_t *)buf, 2);          /* read config */
-    if (res)                                                                                            /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_THERMOCOUPLE_HOT_JUNCTION, (uint8_t *)buf, 2);         /* read config */
+    if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: read hot junction temperature failed.\n");                        /* read hot junction temperature failed */
        
@@ -434,8 +443,8 @@ uint8_t mcp9600_continuous_read(mcp9600_handle_t *handle, int16_t *hot_raw, floa
     *hot_raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                             /* get raw data */
     *hot_s = (float)(*hot_raw) / 16.0f;                                                                 /* convert the data */
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_JUNCTIONS_TEMPERATURE_DELTA, (uint8_t *)buf, 2);        /* read config */
-    if (res)                                                                                            /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_JUNCTIONS_TEMPERATURE_DELTA, (uint8_t *)buf, 2);       /* read config */
+    if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: read junction thermocouple delta failed.\n");                     /* junction thermocouple delta failed */
        
@@ -444,22 +453,22 @@ uint8_t mcp9600_continuous_read(mcp9600_handle_t *handle, int16_t *hot_raw, floa
     *delta_raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                           /* get raw data */
     *delta_s = (float)(*delta_raw) / 16.0f;                                                             /* convert the data */
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);              /* read config */
-    if (res)                                                                                            /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);             /* read config */
+    if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                            /* read device configuration failed */
        
         return 1;                                                                                       /* return error */
     }
-    res = _mcp9600_iic_read(handle, MCP9600_REG_COLD_JUNCTION_TEMPERATURE, (uint8_t *)buf, 2);          /* read config */
-    if (res)                                                                                            /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_COLD_JUNCTION_TEMPERATURE, (uint8_t *)buf, 2);         /* read config */
+    if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: read cold junction temperature failed.\n");                       /* read cold junction temperature failed */
        
         return 1;                                                                                       /* return error */
     }
     *cold_raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                            /* get raw data */
-    if ((reg >> 7) & 0x01)
+    if (((reg >> 7) & 0x01) != 0)                                                                       /* check the config */
     {
         *cold_s = (float)(*cold_raw) / 16.0f;                                                           /* convert the data */
     }
@@ -491,10 +500,10 @@ uint8_t mcp9600_continuous_read(mcp9600_handle_t *handle, int16_t *hot_raw, floa
 uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *hot_s,
                             int16_t *delta_raw, float *delta_s, int16_t *cold_raw, float *cold_s)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
-    volatile uint16_t timeout;
-    volatile uint8_t buf[2];
+    uint8_t res;
+    uint8_t reg;
+    uint16_t timeout;
+    uint8_t buf[2];
     
     if (handle == NULL)                                                                                 /* check handle */
     {
@@ -505,8 +514,8 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
         return 3;                                                                                       /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);                            /* read config */
-    if (res)                                                                                            /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);                           /* read config */
+    if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: read status failed.\n");                                          /* read status failed */
        
@@ -514,16 +523,16 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
     }
     reg &= ~(1 << 7);                                                                                   /* clear flag */
     reg &= ~(1 << 6);                                                                                   /* clear flag */
-    res = _mcp9600_iic_write(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);                           /* write config */
-    if (res)                                                                                            /* check result */
+    res = a_mcp9600_iic_write(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);                          /* write config */
+    if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: write status failed.\n");                                         /* write status failed */
        
         return 1;                                                                                       /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);              /* read config */
-    if (res)                                                                                            /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);             /* read config */
+    if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                            /* read device configuration failed */
        
@@ -531,18 +540,18 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
     }
     reg &= ~(3 << 0);                                                                                   /* clear configure */
     reg |= 0x02 << 0;                                                                                   /* set configure */
-    res = _mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);             /* write config */
-    if (res)                                                                                            /* check result */
+    res = a_mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);            /* write config */
+    if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: write device configuration failed.\n");                           /* write device configuration failed */
        
         return 1;                                                                                       /* return error */
     }
     timeout = 10000;                                                                                    /* set timeout 10000 ms */
-    while (timeout)                                                                                     /* wait timeout */
+    while (timeout != 0)                                                                                /* wait timeout */
     {
-        res = _mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);                        /* read config */
-        if (res)                                                                                        /* check result */
+        res = a_mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);                       /* read config */
+        if (res != 0)                                                                                   /* check result */
         {
             handle->debug_print("mcp9600: read status failed.\n");                                      /* read status failed */
            
@@ -562,8 +571,8 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
         return 4;                                                                                       /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_THERMOCOUPLE_HOT_JUNCTION, (uint8_t *)buf, 2);          /* read config */
-    if (res)                                                                                            /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_THERMOCOUPLE_HOT_JUNCTION, (uint8_t *)buf, 2);         /* read config */
+    if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: read hot junction temperature failed.\n");                        /* read hot junction temperature failed */
        
@@ -572,8 +581,8 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
     *hot_raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                             /* get raw data */
     *hot_s = (float)(*hot_raw) / 16.0f;                                                                 /* convert the data */
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_JUNCTIONS_TEMPERATURE_DELTA, (uint8_t *)buf, 2);        /* read config */
-    if (res)                                                                                            /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_JUNCTIONS_TEMPERATURE_DELTA, (uint8_t *)buf, 2);       /* read config */
+    if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: read junction thermocouple delta failed.\n");                     /* junction thermocouple delta failed */
        
@@ -582,22 +591,22 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
     *delta_raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                           /* get raw data */
     *delta_s = (float)(*delta_raw) / 16.0f;                                                             /* convert the data */
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);              /* read config */
-    if (res)                                                                                            /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);             /* read config */
+    if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                            /* read device configuration failed */
        
         return 1;                                                                                       /* return error */
     }
-    res = _mcp9600_iic_read(handle, MCP9600_REG_COLD_JUNCTION_TEMPERATURE, (uint8_t *)buf, 2);          /* read config */
-    if (res)                                                                                            /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_COLD_JUNCTION_TEMPERATURE, (uint8_t *)buf, 2);         /* read config */
+    if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: read cold junction temperature failed.\n");                       /* read cold junction temperature failed */
        
         return 1;                                                                                       /* return error */
     }
     *cold_raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                            /* get raw data */
-    if ((reg >> 7) & 0x01)
+    if (((reg >> 7) & 0x01) != 0)                                                                       /* check the config */
     {
         *cold_s = (float)(*cold_raw) / 16.0f;                                                           /* convert the data */
     }
@@ -622,8 +631,8 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
  */
 uint8_t mcp9600_get_status_burst_complete_flag(mcp9600_handle_t *handle, mcp9600_bool_t *status)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                             /* check handle */
     {
@@ -634,8 +643,8 @@ uint8_t mcp9600_get_status_burst_complete_flag(mcp9600_handle_t *handle, mcp9600
         return 3;                                                                   /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                        /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                   /* check result */
     {
         handle->debug_print("mcp9600: read status failed.\n");                      /* read status failed */
        
@@ -659,8 +668,8 @@ uint8_t mcp9600_get_status_burst_complete_flag(mcp9600_handle_t *handle, mcp9600
  */
 uint8_t mcp9600_clear_status_burst_complete_flag(mcp9600_handle_t *handle)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                             /* check handle */
     {
@@ -671,16 +680,16 @@ uint8_t mcp9600_clear_status_burst_complete_flag(mcp9600_handle_t *handle)
         return 3;                                                                   /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                        /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                   /* check result */
     {
         handle->debug_print("mcp9600: read status failed.\n");                      /* read status failed */
        
         return 1;                                                                   /* return error */
     }
     reg &= ~(1 << 7);                                                               /* clear flag */
-    res = _mcp9600_iic_write(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);       /* write config */
-    if (res)                                                                        /* check result */
+    res = a_mcp9600_iic_write(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);      /* write config */
+    if (res != 0)                                                                   /* check result */
     {
         handle->debug_print("mcp9600: write status failed.\n");                     /* write status failed */
        
@@ -703,8 +712,8 @@ uint8_t mcp9600_clear_status_burst_complete_flag(mcp9600_handle_t *handle)
  */
 uint8_t mcp9600_get_status_temperature_update_flag(mcp9600_handle_t *handle, mcp9600_bool_t *status)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                             /* check handle */
     {
@@ -715,8 +724,8 @@ uint8_t mcp9600_get_status_temperature_update_flag(mcp9600_handle_t *handle, mcp
         return 3;                                                                   /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                        /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                   /* check result */
     {
         handle->debug_print("mcp9600: read status failed.\n");                      /* read status failed */
        
@@ -740,8 +749,8 @@ uint8_t mcp9600_get_status_temperature_update_flag(mcp9600_handle_t *handle, mcp
  */
 uint8_t mcp9600_clear_status_temperature_update_flag(mcp9600_handle_t *handle)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                             /* check handle */
     {
@@ -752,16 +761,16 @@ uint8_t mcp9600_clear_status_temperature_update_flag(mcp9600_handle_t *handle)
         return 3;                                                                   /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                        /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                   /* check result */
     {
         handle->debug_print("mcp9600: read status failed.\n");                      /* read status failed */
        
         return 1;                                                                   /* return error */
     }
     reg &= ~(1 << 6);                                                               /* clear flag */
-    res = _mcp9600_iic_write(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);       /* write config */
-    if (res)                                                                        /* check result */
+    res = a_mcp9600_iic_write(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);      /* write config */
+    if (res != 0)                                                                   /* check result */
     {
         handle->debug_print("mcp9600: write status failed.\n");                     /* write status failed */
        
@@ -784,8 +793,8 @@ uint8_t mcp9600_clear_status_temperature_update_flag(mcp9600_handle_t *handle)
  */
 uint8_t mcp9600_get_status_input_range(mcp9600_handle_t *handle, mcp9600_input_range_t *range)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                             /* check handle */
     {
@@ -796,8 +805,8 @@ uint8_t mcp9600_get_status_input_range(mcp9600_handle_t *handle, mcp9600_input_r
         return 3;                                                                   /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                        /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                   /* check result */
     {
         handle->debug_print("mcp9600: read status failed.\n");                      /* read status failed */
        
@@ -823,8 +832,8 @@ uint8_t mcp9600_get_status_input_range(mcp9600_handle_t *handle, mcp9600_input_r
  */
 uint8_t mcp9600_get_alert_status(mcp9600_handle_t *handle, mcp9600_alert_t alert, mcp9600_alert_status_t *status)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                             /* check handle */
     {
@@ -835,8 +844,8 @@ uint8_t mcp9600_get_alert_status(mcp9600_handle_t *handle, mcp9600_alert_t alert
         return 3;                                                                   /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                        /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                   /* check result */
     {
         handle->debug_print("mcp9600: read status failed.\n");                      /* read status failed */
        
@@ -862,8 +871,8 @@ uint8_t mcp9600_get_alert_status(mcp9600_handle_t *handle, mcp9600_alert_t alert
  */
 uint8_t mcp9600_get_hot_junction_temperature(mcp9600_handle_t *handle, int16_t *raw, float *s)
 {
-    volatile uint8_t res;
-    volatile uint8_t buf[2];
+    uint8_t res;
+    uint8_t buf[2];
     
     if (handle == NULL)                                                                               /* check handle */
     {
@@ -874,8 +883,8 @@ uint8_t mcp9600_get_hot_junction_temperature(mcp9600_handle_t *handle, int16_t *
         return 3;                                                                                     /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_THERMOCOUPLE_HOT_JUNCTION, (uint8_t *)buf, 2);        /* read config */
-    if (res)                                                                                          /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_THERMOCOUPLE_HOT_JUNCTION, (uint8_t *)buf, 2);       /* read config */
+    if (res != 0)                                                                                     /* check result */
     {
         handle->debug_print("mcp9600: read hot junction temperature failed.\n");                      /* read hot junction temperature failed */
        
@@ -902,8 +911,8 @@ uint8_t mcp9600_get_hot_junction_temperature(mcp9600_handle_t *handle, int16_t *
  */
 uint8_t mcp9600_get_junction_thermocouple_delta(mcp9600_handle_t *handle, int16_t *raw, float *s)
 {
-    volatile uint8_t res;
-    volatile uint8_t buf[2];
+    uint8_t res;
+    uint8_t buf[2];
     
     if (handle == NULL)                                                                                 /* check handle */
     {
@@ -914,8 +923,8 @@ uint8_t mcp9600_get_junction_thermocouple_delta(mcp9600_handle_t *handle, int16_
         return 3;                                                                                       /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_JUNCTIONS_TEMPERATURE_DELTA, (uint8_t *)buf, 2);        /* read config */
-    if (res)                                                                                            /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_JUNCTIONS_TEMPERATURE_DELTA, (uint8_t *)buf, 2);       /* read config */
+    if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: read junction thermocouple delta failed.\n");                     /* junction thermocouple delta failed */
        
@@ -942,9 +951,9 @@ uint8_t mcp9600_get_junction_thermocouple_delta(mcp9600_handle_t *handle, int16_
  */
 uint8_t mcp9600_get_cold_junction_temperature(mcp9600_handle_t *handle, int16_t *raw, float *s)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
-    volatile uint8_t buf[2];
+    uint8_t res;
+    uint8_t reg;
+    uint8_t buf[2];
     
     if (handle == NULL)                                                                               /* check handle */
     {
@@ -955,16 +964,16 @@ uint8_t mcp9600_get_cold_junction_temperature(mcp9600_handle_t *handle, int16_t 
         return 3;                                                                                     /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);            /* read config */
-    if (res)                                                                                          /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);           /* read config */
+    if (res != 0)                                                                                     /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                          /* read device configuration failed */
        
         return 1;                                                                                     /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_COLD_JUNCTION_TEMPERATURE, (uint8_t *)buf, 2);        /* read config */
-    if (res)                                                                                          /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_COLD_JUNCTION_TEMPERATURE, (uint8_t *)buf, 2);       /* read config */
+    if (res != 0)                                                                                     /* check result */
     {
         handle->debug_print("mcp9600: read cold junction temperature failed.\n");                     /* read cold junction temperature failed */
        
@@ -972,7 +981,7 @@ uint8_t mcp9600_get_cold_junction_temperature(mcp9600_handle_t *handle, int16_t 
     }
     
     *raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                               /* get raw data */
-    if ((reg >> 7) & 0x01)
+    if (((reg >> 7) & 0x01) != 0)                                                                     /* check the config */
     {
         *s = (float)(*raw) / 16.0f;                                                                   /* convert the data */
     }
@@ -998,12 +1007,12 @@ uint8_t mcp9600_get_cold_junction_temperature(mcp9600_handle_t *handle, int16_t 
  */
 uint8_t mcp9600_get_raw_adc(mcp9600_handle_t *handle, int32_t *raw, double *uv)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
-    volatile uint8_t shift;
-    volatile uint16_t mask;
-    volatile uint8_t buf[3];
-    volatile double resolution;
+    uint8_t res;
+    uint8_t reg;
+    uint8_t shift;
+    uint16_t mask;
+    uint8_t buf[3];
+    double resolution;
     
     if (handle == NULL)                                                                               /* check handle */
     {
@@ -1014,8 +1023,8 @@ uint8_t mcp9600_get_raw_adc(mcp9600_handle_t *handle, int32_t *raw, double *uv)
         return 3;                                                                                     /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);            /* read config */
-    if (res)                                                                                          /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);           /* read config */
+    if (res != 0)                                                                                     /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                          /* read device configuration failed */
        
@@ -1048,8 +1057,8 @@ uint8_t mcp9600_get_raw_adc(mcp9600_handle_t *handle, int32_t *raw, double *uv)
         mask = 0x3F;                                                                                  /* set mask 0x3F */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_RAW_ADC_DATA, (uint8_t *)buf, 3);                     /* read config */
-    if (res)                                                                                          /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_RAW_ADC_DATA, (uint8_t *)buf, 3);                    /* read config */
+    if (res != 0)                                                                                     /* check result */
     {
         handle->debug_print("mcp9600: read raw adc data failed.\n");                                  /* read raw adc data failed */
        
@@ -1057,11 +1066,11 @@ uint8_t mcp9600_get_raw_adc(mcp9600_handle_t *handle, int32_t *raw, double *uv)
     }
     
     *raw = (int32_t)(((uint32_t)buf[0] << 16) | ((uint32_t)buf[1]) << 8) | buf[2];                    /* get raw data */
-    if (buf[0] & 0x80)                                                                                /* check sign */
+    if ((buf[0] & 0x80) != 0)                                                                         /* check sign */
     {
         *raw = (int32_t)((uint32_t)(*raw) | ((uint32_t)(0xFF) << 24));                                /* set sign bits */
     }
-    if ((*raw) & 0x80000000)                                                                          /* sign*/
+    if (((*raw) & 0x80000000U) != 0)                                                                  /* sign*/
     {
         *raw = ((*raw) >> shift) | (uint32_t)(mask) << (32 - shift);                                  /* set raw */
     }
@@ -1088,8 +1097,8 @@ uint8_t mcp9600_get_raw_adc(mcp9600_handle_t *handle, int32_t *raw, double *uv)
  */
 uint8_t mcp9600_set_cold_junction_resolution(mcp9600_handle_t *handle, mcp9600_cold_junction_resolution_t resolution)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                           /* check handle */
     {
@@ -1100,8 +1109,8 @@ uint8_t mcp9600_set_cold_junction_resolution(mcp9600_handle_t *handle, mcp9600_c
         return 3;                                                                                 /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                      /* read device configuration failed */
        
@@ -1110,8 +1119,8 @@ uint8_t mcp9600_set_cold_junction_resolution(mcp9600_handle_t *handle, mcp9600_c
     
     reg &= ~(1 << 7);                                                                             /* clear configure */
     reg |= resolution << 7;                                                                       /* set configure */
-    res = _mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* write config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);      /* write config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: write device configuration failed.\n");                     /* write device configuration failed */
        
@@ -1134,8 +1143,8 @@ uint8_t mcp9600_set_cold_junction_resolution(mcp9600_handle_t *handle, mcp9600_c
  */
 uint8_t mcp9600_get_cold_junction_resolution(mcp9600_handle_t *handle, mcp9600_cold_junction_resolution_t *resolution)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                           /* check handle */
     {
@@ -1146,8 +1155,8 @@ uint8_t mcp9600_get_cold_junction_resolution(mcp9600_handle_t *handle, mcp9600_c
         return 3;                                                                                 /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                      /* read device configuration failed */
        
@@ -1172,8 +1181,8 @@ uint8_t mcp9600_get_cold_junction_resolution(mcp9600_handle_t *handle, mcp9600_c
  */
 uint8_t mcp9600_set_adc_resolution(mcp9600_handle_t *handle, mcp9600_adc_resolution_t resolution)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                           /* check handle */
     {
@@ -1184,8 +1193,8 @@ uint8_t mcp9600_set_adc_resolution(mcp9600_handle_t *handle, mcp9600_adc_resolut
         return 3;                                                                                 /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                      /* read device configuration failed */
        
@@ -1194,8 +1203,8 @@ uint8_t mcp9600_set_adc_resolution(mcp9600_handle_t *handle, mcp9600_adc_resolut
     
     reg &= ~(3 << 5);                                                                             /* clear configure */
     reg |= resolution << 5;                                                                       /* set configure */
-    res = _mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* write config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);      /* write config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: write device configuration failed.\n");                     /* write device configuration failed */
        
@@ -1218,8 +1227,8 @@ uint8_t mcp9600_set_adc_resolution(mcp9600_handle_t *handle, mcp9600_adc_resolut
  */
 uint8_t mcp9600_get_adc_resolution(mcp9600_handle_t *handle, mcp9600_adc_resolution_t *resolution)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                           /* check handle */
     {
@@ -1230,8 +1239,8 @@ uint8_t mcp9600_get_adc_resolution(mcp9600_handle_t *handle, mcp9600_adc_resolut
         return 3;                                                                                 /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                      /* read device configuration failed */
        
@@ -1256,8 +1265,8 @@ uint8_t mcp9600_get_adc_resolution(mcp9600_handle_t *handle, mcp9600_adc_resolut
  */
 uint8_t mcp9600_set_burst_mode_sample(mcp9600_handle_t *handle, mcp9600_burst_mode_sample_t sample)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                           /* check handle */
     {
@@ -1268,8 +1277,8 @@ uint8_t mcp9600_set_burst_mode_sample(mcp9600_handle_t *handle, mcp9600_burst_mo
         return 3;                                                                                 /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                      /* read device configuration failed */
        
@@ -1278,8 +1287,8 @@ uint8_t mcp9600_set_burst_mode_sample(mcp9600_handle_t *handle, mcp9600_burst_mo
     
     reg &= ~(7 << 2);                                                                             /* clear configure */
     reg |= sample << 2;                                                                           /* set configure */
-    res = _mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* write config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);      /* write config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: write device configuration failed.\n");                     /* write device configuration failed */
        
@@ -1302,8 +1311,8 @@ uint8_t mcp9600_set_burst_mode_sample(mcp9600_handle_t *handle, mcp9600_burst_mo
  */
 uint8_t mcp9600_get_burst_mode_sample(mcp9600_handle_t *handle, mcp9600_burst_mode_sample_t *sample)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                           /* check handle */
     {
@@ -1314,8 +1323,8 @@ uint8_t mcp9600_get_burst_mode_sample(mcp9600_handle_t *handle, mcp9600_burst_mo
         return 3;                                                                                 /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                      /* read device configuration failed */
        
@@ -1340,8 +1349,8 @@ uint8_t mcp9600_get_burst_mode_sample(mcp9600_handle_t *handle, mcp9600_burst_mo
  */
 uint8_t mcp9600_set_mode(mcp9600_handle_t *handle, mcp9600_mode_t mode)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                           /* check handle */
     {
@@ -1352,8 +1361,8 @@ uint8_t mcp9600_set_mode(mcp9600_handle_t *handle, mcp9600_mode_t mode)
         return 3;                                                                                 /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                      /* read device configuration failed */
        
@@ -1362,8 +1371,8 @@ uint8_t mcp9600_set_mode(mcp9600_handle_t *handle, mcp9600_mode_t mode)
     
     reg &= ~(3 << 0);                                                                             /* clear configure */
     reg |= mode << 0;                                                                             /* set configure */
-    res = _mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* write config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);      /* write config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: write device configuration failed.\n");                     /* write device configuration failed */
        
@@ -1386,8 +1395,8 @@ uint8_t mcp9600_set_mode(mcp9600_handle_t *handle, mcp9600_mode_t mode)
  */
 uint8_t mcp9600_get_mode(mcp9600_handle_t *handle, mcp9600_mode_t *mode)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                           /* check handle */
     {
@@ -1398,8 +1407,8 @@ uint8_t mcp9600_get_mode(mcp9600_handle_t *handle, mcp9600_mode_t *mode)
         return 3;                                                                                 /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                      /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                 /* check result */
     {
         handle->debug_print("mcp9600: read device configuration failed.\n");                      /* read device configuration failed */
        
@@ -1424,8 +1433,8 @@ uint8_t mcp9600_get_mode(mcp9600_handle_t *handle, mcp9600_mode_t *mode)
  */
 uint8_t mcp9600_set_thermocouple_type(mcp9600_handle_t *handle, mcp9600_thermocouple_type_t type)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                                        /* check handle */
     {
@@ -1436,8 +1445,8 @@ uint8_t mcp9600_set_thermocouple_type(mcp9600_handle_t *handle, mcp9600_thermoco
         return 3;                                                                                              /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_THERMOCOUPLE_SENSOR_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                                   /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_THERMOCOUPLE_SENSOR_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                              /* check result */
     {
         handle->debug_print("mcp9600: read thermocouple sensor configuration failed.\n");                      /* read thermocouple sensor configuration failed */
        
@@ -1446,8 +1455,8 @@ uint8_t mcp9600_set_thermocouple_type(mcp9600_handle_t *handle, mcp9600_thermoco
     
     reg &= ~(0x7 << 4);                                                                                        /* clear configure */
     reg |= type << 4;                                                                                          /* set configure */
-    res = _mcp9600_iic_write(handle, MCP9600_REG_THERMOCOUPLE_SENSOR_CONFIGURATION, (uint8_t *)&reg, 1);       /* write config */
-    if (res)                                                                                                   /* check result */
+    res = a_mcp9600_iic_write(handle, MCP9600_REG_THERMOCOUPLE_SENSOR_CONFIGURATION, (uint8_t *)&reg, 1);      /* write config */
+    if (res != 0)                                                                                              /* check result */
     {
         handle->debug_print("mcp9600: write thermocouple sensor configuration failed.\n");                     /* write thermocouple sensor configuration failed */
        
@@ -1470,8 +1479,8 @@ uint8_t mcp9600_set_thermocouple_type(mcp9600_handle_t *handle, mcp9600_thermoco
  */
 uint8_t mcp9600_get_thermocouple_type(mcp9600_handle_t *handle, mcp9600_thermocouple_type_t *type)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                                        /* check handle */
     {
@@ -1482,8 +1491,8 @@ uint8_t mcp9600_get_thermocouple_type(mcp9600_handle_t *handle, mcp9600_thermoco
         return 3;                                                                                              /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_THERMOCOUPLE_SENSOR_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                                   /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_THERMOCOUPLE_SENSOR_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                              /* check result */
     {
         handle->debug_print("mcp9600: read thermocouple sensor configuration failed.\n");                      /* read thermocouple sensor configuration failed */
        
@@ -1507,8 +1516,8 @@ uint8_t mcp9600_get_thermocouple_type(mcp9600_handle_t *handle, mcp9600_thermoco
  */
 uint8_t mcp9600_set_filter_coefficient(mcp9600_handle_t *handle, mcp9600_filter_coefficient_t coefficient)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                                        /* check handle */
     {
@@ -1519,8 +1528,8 @@ uint8_t mcp9600_set_filter_coefficient(mcp9600_handle_t *handle, mcp9600_filter_
         return 3;                                                                                              /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_THERMOCOUPLE_SENSOR_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                                   /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_THERMOCOUPLE_SENSOR_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                              /* check result */
     {
         handle->debug_print("mcp9600: read thermocouple sensor configuration failed.\n");                      /* read thermocouple sensor configuration failed */
        
@@ -1529,8 +1538,8 @@ uint8_t mcp9600_set_filter_coefficient(mcp9600_handle_t *handle, mcp9600_filter_
     
     reg &= ~(0x7 << 0);                                                                                        /* clear configure */
     reg |= coefficient << 0;                                                                                   /* set configure */
-    res = _mcp9600_iic_write(handle, MCP9600_REG_THERMOCOUPLE_SENSOR_CONFIGURATION, (uint8_t *)&reg, 1);       /* write config */
-    if (res)                                                                                                   /* check result */
+    res = a_mcp9600_iic_write(handle, MCP9600_REG_THERMOCOUPLE_SENSOR_CONFIGURATION, (uint8_t *)&reg, 1);      /* write config */
+    if (res != 0)                                                                                              /* check result */
     {
         handle->debug_print("mcp9600: write thermocouple sensor configuration failed.\n");                     /* write thermocouple sensor configuration failed */
        
@@ -1553,8 +1562,8 @@ uint8_t mcp9600_set_filter_coefficient(mcp9600_handle_t *handle, mcp9600_filter_
  */
 uint8_t mcp9600_get_filter_coefficient(mcp9600_handle_t *handle, mcp9600_filter_coefficient_t *coefficient)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg;
+    uint8_t res;
+    uint8_t reg;
     
     if (handle == NULL)                                                                                        /* check handle */
     {
@@ -1565,8 +1574,8 @@ uint8_t mcp9600_get_filter_coefficient(mcp9600_handle_t *handle, mcp9600_filter_
         return 3;                                                                                              /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_THERMOCOUPLE_SENSOR_CONFIGURATION, (uint8_t *)&reg, 1);        /* read config */
-    if (res)                                                                                                   /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_THERMOCOUPLE_SENSOR_CONFIGURATION, (uint8_t *)&reg, 1);       /* read config */
+    if (res != 0)                                                                                              /* check result */
     {
         handle->debug_print("mcp9600: read thermocouple sensor configuration failed.\n");                      /* read thermocouple sensor configuration failed */
        
@@ -1590,18 +1599,18 @@ uint8_t mcp9600_get_filter_coefficient(mcp9600_handle_t *handle, mcp9600_filter_
  */
 uint8_t mcp9600_alert_limit_convert_to_register(mcp9600_handle_t *handle, float c, int16_t *reg)
 {
-    if (handle == NULL)                                                   /* check handle */
+    if (handle == NULL)                 /* check handle */
     {
-        return 2;                                                         /* return error */
+        return 2;                       /* return error */
     }
-    if (handle->inited != 1)                                              /* check handle initialization */
+    if (handle->inited != 1)            /* check handle initialization */
     {
-        return 3;                                                         /* return error */
+        return 3;                       /* return error */
     }
     
-    *reg = c * 16.0f;                                                     /* convert */
+    *reg = (int16_t)(c * 16.0f);        /* convert */
     
-    return 0;                                                             /* success return 0 */
+    return 0;                           /* success return 0 */
 }
 
 /**
@@ -1617,18 +1626,18 @@ uint8_t mcp9600_alert_limit_convert_to_register(mcp9600_handle_t *handle, float 
  */
 uint8_t mcp9600_alert_limit_convert_to_data(mcp9600_handle_t *handle, int16_t reg, float *c)
 {
-    if (handle == NULL)                                                   /* check handle */
+    if (handle == NULL)              /* check handle */
     {
-        return 2;                                                         /* return error */
+        return 2;                    /* return error */
     }
-    if (handle->inited != 1)                                              /* check handle initialization */
+    if (handle->inited != 1)         /* check handle initialization */
     {
-        return 3;                                                         /* return error */
+        return 3;                    /* return error */
     }
     
-    *c  = reg / 16.0f;                                                    /* convert */
+    *c  = (float)reg / 16.0f;        /* convert */
     
-    return 0;                                                             /* success return 0 */
+    return 0;                        /* success return 0 */
 }
 
 /**
@@ -1646,9 +1655,9 @@ uint8_t mcp9600_alert_limit_convert_to_data(mcp9600_handle_t *handle, int16_t re
  */
 uint8_t mcp9600_set_alert_limit(mcp9600_handle_t *handle, mcp9600_alert_t alert, int16_t reg)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[2];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[2];
     
     if (handle == NULL)                                                   /* check handle */
     {
@@ -1663,40 +1672,49 @@ uint8_t mcp9600_set_alert_limit(mcp9600_handle_t *handle, mcp9600_alert_t alert,
     {
         case MCP9600_ALERT_1 :                                            /* alert 1 */
         {
+            res = 0;                                                      /* set ok */
             reg_addr = MCP9600_REG_TEMPERATURE_ALERT1_LIMIT;              /* set alert 1 */
             
             break;                                                        /* break */
         }
         case MCP9600_ALERT_2 :                                            /* alert 2 */
         {
+            res = 0;                                                      /* set ok */
             reg_addr = MCP9600_REG_TEMPERATURE_ALERT2_LIMIT;              /* set alert 2 */
             
             break;                                                        /* break */
         }
         case MCP9600_ALERT_3 :                                            /* alert 3 */
         {
+            res = 0;                                                      /* set ok */
             reg_addr = MCP9600_REG_TEMPERATURE_ALERT3_LIMIT;              /* set alert 3 */
             
             break;                                                        /* break */
         }
         case MCP9600_ALERT_4 :                                            /* alert 4 */
         {
+            res = 0;                                                      /* set ok */
             reg_addr = MCP9600_REG_TEMPERATURE_ALERT4_LIMIT;              /* set alert 4 */
             
             break;                                                        /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");          /* alert is invalid */
-           
-            return 4;                                                     /* return error */
+            res = 1;                                                      /* set failed */
+            
+            break;                                                        /* break */
         }
     }
+    if (res != 0)                                                         /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");              /* alert is invalid */
         
+        return 4;                                                         /* return error */
+    }
     buf[0] = (reg >> 8) & 0xFF;                                           /* set MSB */
     buf[1] = (reg >> 0) & 0xFF;                                           /* set LSB */
-    res = _mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 2);        /* set alert limit */
-    if (res)                                                              /* check result */
+    res = a_mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 2);       /* set alert limit */
+    if (res != 0)                                                         /* check result */
     {
         handle->debug_print("mcp9600: set alert limit failed.\n");        /* set alert limit failed */
        
@@ -1721,9 +1739,9 @@ uint8_t mcp9600_set_alert_limit(mcp9600_handle_t *handle, mcp9600_alert_t alert,
  */
 uint8_t mcp9600_get_alert_limit(mcp9600_handle_t *handle, mcp9600_alert_t alert, int16_t *reg)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[2];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[2];
     
     if (handle == NULL)                                                   /* check handle */
     {
@@ -1738,38 +1756,47 @@ uint8_t mcp9600_get_alert_limit(mcp9600_handle_t *handle, mcp9600_alert_t alert,
     {
         case MCP9600_ALERT_1 :                                            /* alert 1 */
         {
+            res = 0;                                                      /* set ok */
             reg_addr = MCP9600_REG_TEMPERATURE_ALERT1_LIMIT;              /* set alert 1 */
             
             break;                                                        /* break */
         }
         case MCP9600_ALERT_2 :                                            /* alert 2 */
         {
+            res = 0;                                                      /* set ok */
             reg_addr = MCP9600_REG_TEMPERATURE_ALERT2_LIMIT;              /* set alert 2 */
             
             break;                                                        /* break */
         }
         case MCP9600_ALERT_3 :                                            /* alert 3 */
         {
+            res = 0;                                                      /* set ok */
             reg_addr = MCP9600_REG_TEMPERATURE_ALERT3_LIMIT;              /* set alert 3 */
             
             break;                                                        /* break */
         }
         case MCP9600_ALERT_4 :                                            /* alert 4 */
         {
+            res = 0;                                                      /* set ok */
             reg_addr = MCP9600_REG_TEMPERATURE_ALERT4_LIMIT;              /* set alert 4 */
             
             break;                                                        /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");          /* alert is invalid */
-           
-            return 4;                                                     /* return error */
+            res = 1;                                                      /* set failed */
+            
+            break;                                                        /* break */
         }
     }
-    
-    res = _mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 2);         /* get alert limit */
-    if (res)                                                              /* check result */
+    if (res != 0)                                                         /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");              /* alert is invalid */
+        
+        return 4;                                                         /* return error */
+    }
+    res = a_mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 2);        /* get alert limit */
+    if (res != 0)                                                         /* check result */
     {
         handle->debug_print("mcp9600: get alert limit failed.\n");        /* get alert limit failed */
        
@@ -1793,18 +1820,18 @@ uint8_t mcp9600_get_alert_limit(mcp9600_handle_t *handle, mcp9600_alert_t alert,
  */
 uint8_t mcp9600_alert_hysteresis_convert_to_register(mcp9600_handle_t *handle, float c, uint8_t *reg)
 {
-    if (handle == NULL)                                                   /* check handle */
+    if (handle == NULL)             /* check handle */
     {
-        return 2;                                                         /* return error */
+        return 2;                   /* return error */
     }
-    if (handle->inited != 1)                                              /* check handle initialization */
+    if (handle->inited != 1)        /* check handle initialization */
     {
-        return 3;                                                         /* return error */
+        return 3;                   /* return error */
     }
     
-    *reg = (uint8_t)(c);                                                  /* convert */
+    *reg = (uint8_t)(c);            /* convert */
     
-    return 0;                                                             /* success return 0 */
+    return 0;                       /* success return 0 */
 }
 
 /**
@@ -1820,18 +1847,18 @@ uint8_t mcp9600_alert_hysteresis_convert_to_register(mcp9600_handle_t *handle, f
  */
 uint8_t mcp9600_alert_hysteresis_convert_to_data(mcp9600_handle_t *handle, uint8_t reg, float *c)
 {
-    if (handle == NULL)                                                   /* check handle */
+    if (handle == NULL)             /* check handle */
     {
-        return 2;                                                         /* return error */
+        return 2;                   /* return error */
     }
-    if (handle->inited != 1)                                              /* check handle initialization */
+    if (handle->inited != 1)        /* check handle initialization */
     {
-        return 3;                                                         /* return error */
+        return 3;                   /* return error */
     }
     
-    *c  = (float)(reg);                                                   /* convert */
+    *c  = (float)(reg);             /* convert */
     
-    return 0;                                                             /* success return 0 */
+    return 0;                       /* success return 0 */
 }
 
 /**
@@ -1849,9 +1876,9 @@ uint8_t mcp9600_alert_hysteresis_convert_to_data(mcp9600_handle_t *handle, uint8
  */
 uint8_t mcp9600_set_alert_hysteresis(mcp9600_handle_t *handle, mcp9600_alert_t alert, uint8_t reg)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[1];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[1];
     
     if (handle == NULL)                                                        /* check handle */
     {
@@ -1866,39 +1893,48 @@ uint8_t mcp9600_set_alert_hysteresis(mcp9600_handle_t *handle, mcp9600_alert_t a
     {
         case MCP9600_ALERT_1 :                                                 /* alert 1 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT1_HYSTERESIS;                          /* set alert 1 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_2 :                                                 /* alert 2 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT2_HYSTERESIS;                          /* set alert 2 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_3 :                                                 /* alert 3 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT3_HYSTERESIS;                          /* set alert 3 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_4 :                                                 /* alert 4 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT4_HYSTERESIS;                          /* set alert 4 */
             
             break;                                                             /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");               /* alert is invalid */
-           
-            return 4;                                                          /* return error */
+            res = 1;                                                           /* set failed */
+            
+            break;                                                             /* break */
         }
     }
+    if (res != 0)                                                              /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");                   /* alert is invalid */
         
+        return 4;                                                              /* return error */
+    }
     buf[0] = reg;                                                              /* set register */
-    res = _mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 1);             /* set alert hysteresis */
-    if (res)                                                                   /* check result */
+    res = a_mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 1);            /* set alert hysteresis */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: set alert hysteresis failed.\n");        /* set alert hysteresis failed */
        
@@ -1923,9 +1959,9 @@ uint8_t mcp9600_set_alert_hysteresis(mcp9600_handle_t *handle, mcp9600_alert_t a
  */
 uint8_t mcp9600_get_alert_hysteresis(mcp9600_handle_t *handle, mcp9600_alert_t alert, uint8_t *reg)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[1];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[1];
     
     if (handle == NULL)                                                        /* check handle */
     {
@@ -1940,38 +1976,47 @@ uint8_t mcp9600_get_alert_hysteresis(mcp9600_handle_t *handle, mcp9600_alert_t a
     {
         case MCP9600_ALERT_1 :                                                 /* alert 1 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT1_HYSTERESIS;                          /* set alert 1 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_2 :                                                 /* alert 2 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT2_HYSTERESIS;                          /* set alert 2 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_3 :                                                 /* alert 3 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT3_HYSTERESIS;                          /* set alert 3 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_4 :                                                 /* alert 4 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT4_HYSTERESIS;                          /* set alert 4 */
             
             break;                                                             /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");               /* alert is invalid */
-           
-            return 4;                                                          /* return error */
+            res = 1;                                                           /* set failed */
+            
+            break;                                                             /* break */
         }
     }
-    
-    res = _mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);              /* get alert hysteresis */
-    if (res)                                                                   /* check result */
+    if (res != 0)                                                              /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");                   /* alert is invalid */
+        
+        return 4;                                                              /* return error */
+    }
+    res = a_mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);             /* get alert hysteresis */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: get alert hysteresis failed.\n");        /* get alert hysteresis failed */
        
@@ -1996,9 +2041,9 @@ uint8_t mcp9600_get_alert_hysteresis(mcp9600_handle_t *handle, mcp9600_alert_t a
  */
 uint8_t mcp9600_clear_interrupt(mcp9600_handle_t *handle, mcp9600_alert_t alert)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[1];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[1];
     
     if (handle == NULL)                                                        /* check handle */
     {
@@ -2013,38 +2058,47 @@ uint8_t mcp9600_clear_interrupt(mcp9600_handle_t *handle, mcp9600_alert_t alert)
     {
         case MCP9600_ALERT_1 :                                                 /* alert 1 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT1_CONFIGURATION;                       /* set alert 1 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_2 :                                                 /* alert 2 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT2_CONFIGURATION;                       /* set alert 2 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_3 :                                                 /* alert 3 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT3_CONFIGURATION;                       /* set alert 3 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_4 :                                                 /* alert 4 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT4_CONFIGURATION;                       /* set alert 4 */
             
             break;                                                             /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");               /* alert is invalid */
-           
-            return 4;                                                          /* return error */
+            res = 1;                                                           /* set failed */
+            
+            break;                                                             /* break */
         }
     }
-    
-    res = _mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);              /* get alert config */
-    if (res)                                                                   /* check result */
+    if (res != 0)                                                              /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");                   /* alert is invalid */
+        
+        return 4;                                                              /* return error */
+    }
+    res = a_mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);             /* get alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: get alert config failed.\n");            /* get alert config failed */
        
@@ -2052,8 +2106,8 @@ uint8_t mcp9600_clear_interrupt(mcp9600_handle_t *handle, mcp9600_alert_t alert)
     }
     buf[0] &= ~(1 << 7);                                                       /* clear reg */
     buf[0] |= 1 << 7;                                                          /* set clear */
-    res = _mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 1);             /* set alert config */
-    if (res)                                                                   /* check result */
+    res = a_mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 1);            /* set alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: set alert config failed.\n");            /* set alert config failed */
        
@@ -2078,9 +2132,9 @@ uint8_t mcp9600_clear_interrupt(mcp9600_handle_t *handle, mcp9600_alert_t alert)
  */
 uint8_t mcp9600_get_interrupt(mcp9600_handle_t *handle, mcp9600_alert_t alert, uint8_t *status)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[1];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[1];
     
     if (handle == NULL)                                                        /* check handle */
     {
@@ -2095,38 +2149,47 @@ uint8_t mcp9600_get_interrupt(mcp9600_handle_t *handle, mcp9600_alert_t alert, u
     {
         case MCP9600_ALERT_1 :                                                 /* alert 1 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT1_CONFIGURATION;                       /* set alert 1 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_2 :                                                 /* alert 2 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT2_CONFIGURATION;                       /* set alert 2 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_3 :                                                 /* alert 3 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT3_CONFIGURATION;                       /* set alert 3 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_4 :                                                 /* alert 4 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT4_CONFIGURATION;                       /* set alert 4 */
             
             break;                                                             /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");               /* alert is invalid */
-           
-            return 4;                                                          /* return error */
+            res = 1;                                                           /* set failed */
+            
+            break;                                                             /* break */
         }
     }
-    
-    res = _mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);              /* get alert config */
-    if (res)                                                                   /* check result */
+    if (res != 0)                                                              /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");                   /* alert is invalid */
+        
+        return 4;                                                              /* return error */
+    }
+    res = a_mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);             /* get alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: get alert config failed.\n");            /* get alert config failed */
        
@@ -2153,9 +2216,9 @@ uint8_t mcp9600_get_interrupt(mcp9600_handle_t *handle, mcp9600_alert_t alert, u
 uint8_t mcp9600_set_temperature_maintain_detect(mcp9600_handle_t *handle, mcp9600_alert_t alert,
                                                 mcp9600_temperature_maintain_detect_t maintain_detect)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[1];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[1];
     
     if (handle == NULL)                                                        /* check handle */
     {
@@ -2170,38 +2233,47 @@ uint8_t mcp9600_set_temperature_maintain_detect(mcp9600_handle_t *handle, mcp960
     {
         case MCP9600_ALERT_1 :                                                 /* alert 1 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT1_CONFIGURATION;                       /* set alert 1 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_2 :                                                 /* alert 2 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT2_CONFIGURATION;                       /* set alert 2 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_3 :                                                 /* alert 3 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT3_CONFIGURATION;                       /* set alert 3 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_4 :                                                 /* alert 4 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT4_CONFIGURATION;                       /* set alert 4 */
             
             break;                                                             /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");               /* alert is invalid */
-           
-            return 4;                                                          /* return error */
+            res = 1;                                                           /* set failed */
+            
+            break;                                                             /* break */
         }
     }
-    
-    res = _mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);              /* get alert config */
-    if (res)                                                                   /* check result */
+    if (res != 0)                                                              /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");                   /* alert is invalid */
+        
+        return 4;                                                              /* return error */
+    }
+    res = a_mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);             /* get alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: get alert config failed.\n");            /* get alert config failed */
        
@@ -2209,8 +2281,8 @@ uint8_t mcp9600_set_temperature_maintain_detect(mcp9600_handle_t *handle, mcp960
     }
     buf[0] &= ~(1 << 4);                                                       /* clear reg */
     buf[0] |= maintain_detect << 4;                                            /* set maintain detect */
-    res = _mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 1);             /* set alert config */
-    if (res)                                                                   /* check result */
+    res = a_mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 1);            /* set alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: set alert config failed.\n");            /* set alert config failed */
        
@@ -2236,9 +2308,9 @@ uint8_t mcp9600_set_temperature_maintain_detect(mcp9600_handle_t *handle, mcp960
 uint8_t mcp9600_get_temperature_maintain_detect(mcp9600_handle_t *handle, mcp9600_alert_t alert,
                                                 mcp9600_temperature_maintain_detect_t *maintain_detect)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[1];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[1];
     
     if (handle == NULL)                                                                      /* check handle */
     {
@@ -2253,38 +2325,47 @@ uint8_t mcp9600_get_temperature_maintain_detect(mcp9600_handle_t *handle, mcp960
     {
         case MCP9600_ALERT_1 :                                                               /* alert 1 */
         {
+            res = 0;                                                                         /* set ok */
             reg_addr = MCP9600_REG_ALERT1_CONFIGURATION;                                     /* set alert 1 */
             
             break;                                                                           /* break */
         }
         case MCP9600_ALERT_2 :                                                               /* alert 2 */
         {
+            res = 0;                                                                         /* set ok */
             reg_addr = MCP9600_REG_ALERT2_CONFIGURATION;                                     /* set alert 2 */
             
             break;                                                                           /* break */
         }
         case MCP9600_ALERT_3 :                                                               /* alert 3 */
         {
+            res = 0;                                                                         /* set ok */
             reg_addr = MCP9600_REG_ALERT3_CONFIGURATION;                                     /* set alert 3 */
             
             break;                                                                           /* break */
         }
         case MCP9600_ALERT_4 :                                                               /* alert 4 */
         {
+            res = 0;                                                                         /* set ok */
             reg_addr = MCP9600_REG_ALERT4_CONFIGURATION;                                     /* set alert 4 */
             
             break;                                                                           /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");                             /* alert is invalid */
-           
-            return 4;                                                                        /* return error */
+            res = 1;                                                                         /* set failed */
+            
+            break;                                                                           /* break */
         }
     }
-    
-    res = _mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);                            /* get alert config */
-    if (res)                                                                                 /* check result */
+    if (res != 0)                                                                            /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");                                 /* alert is invalid */
+        
+        return 4;                                                                            /* return error */
+    }
+    res = a_mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);                           /* get alert config */
+    if (res != 0)                                                                            /* check result */
     {
         handle->debug_print("mcp9600: get alert config failed.\n");                          /* get alert config failed */
        
@@ -2310,9 +2391,9 @@ uint8_t mcp9600_get_temperature_maintain_detect(mcp9600_handle_t *handle, mcp960
  */
 uint8_t mcp9600_set_detect_edge(mcp9600_handle_t *handle, mcp9600_alert_t alert, mcp9600_detect_edge_t edge)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[1];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[1];
     
     if (handle == NULL)                                                        /* check handle */
     {
@@ -2327,38 +2408,47 @@ uint8_t mcp9600_set_detect_edge(mcp9600_handle_t *handle, mcp9600_alert_t alert,
     {
         case MCP9600_ALERT_1 :                                                 /* alert 1 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT1_CONFIGURATION;                       /* set alert 1 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_2 :                                                 /* alert 2 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT2_CONFIGURATION;                       /* set alert 2 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_3 :                                                 /* alert 3 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT3_CONFIGURATION;                       /* set alert 3 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_4 :                                                 /* alert 4 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT4_CONFIGURATION;                       /* set alert 4 */
             
             break;                                                             /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");               /* alert is invalid */
-           
-            return 4;                                                          /* return error */
+            res = 1;                                                           /* set failed */
+            
+            break;                                                             /* break */
         }
     }
-    
-    res = _mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);              /* get alert config */
-    if (res)                                                                   /* check result */
+    if (res != 0)                                                              /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");                   /* alert is invalid */
+        
+        return 4;                                                              /* return error */
+    }
+    res = a_mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);             /* get alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: get alert config failed.\n");            /* get alert config failed */
        
@@ -2366,8 +2456,8 @@ uint8_t mcp9600_set_detect_edge(mcp9600_handle_t *handle, mcp9600_alert_t alert,
     }
     buf[0] &= ~(1 << 3);                                                       /* clear reg */
     buf[0] |= edge << 3;                                                       /* set detect edge */
-    res = _mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 1);             /* set alert config */
-    if (res)                                                                   /* check result */
+    res = a_mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 1);            /* set alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: set alert config failed.\n");            /* set alert config failed */
        
@@ -2392,9 +2482,9 @@ uint8_t mcp9600_set_detect_edge(mcp9600_handle_t *handle, mcp9600_alert_t alert,
  */
 uint8_t mcp9600_get_detect_edge(mcp9600_handle_t *handle, mcp9600_alert_t alert, mcp9600_detect_edge_t *edge)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[1];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[1];
     
     if (handle == NULL)                                                        /* check handle */
     {
@@ -2409,38 +2499,47 @@ uint8_t mcp9600_get_detect_edge(mcp9600_handle_t *handle, mcp9600_alert_t alert,
     {
         case MCP9600_ALERT_1 :                                                 /* alert 1 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT1_CONFIGURATION;                       /* set alert 1 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_2 :                                                 /* alert 2 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT2_CONFIGURATION;                       /* set alert 2 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_3 :                                                 /* alert 3 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT3_CONFIGURATION;                       /* set alert 3 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_4 :                                                 /* alert 4 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT4_CONFIGURATION;                       /* set alert 4 */
             
             break;                                                             /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");               /* alert is invalid */
-           
-            return 4;                                                          /* return error */
+            res = 1;                                                           /* set failed */
+            
+            break;                                                             /* break */
         }
     }
-    
-    res = _mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);              /* get alert config */
-    if (res)                                                                   /* check result */
+    if (res != 0)                                                              /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");                   /* alert is invalid */
+        
+        return 4;                                                              /* return error */
+    }
+    res = a_mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);             /* get alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: get alert config failed.\n");            /* get alert config failed */
        
@@ -2466,9 +2565,9 @@ uint8_t mcp9600_get_detect_edge(mcp9600_handle_t *handle, mcp9600_alert_t alert,
  */
 uint8_t mcp9600_set_active_level(mcp9600_handle_t *handle, mcp9600_alert_t alert, mcp9600_active_level_t level)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[1];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[1];
     
     if (handle == NULL)                                                        /* check handle */
     {
@@ -2483,38 +2582,47 @@ uint8_t mcp9600_set_active_level(mcp9600_handle_t *handle, mcp9600_alert_t alert
     {
         case MCP9600_ALERT_1 :                                                 /* alert 1 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT1_CONFIGURATION;                       /* set alert 1 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_2 :                                                 /* alert 2 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT2_CONFIGURATION;                       /* set alert 2 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_3 :                                                 /* alert 3 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT3_CONFIGURATION;                       /* set alert 3 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_4 :                                                 /* alert 4 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT4_CONFIGURATION;                       /* set alert 4 */
             
             break;                                                             /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");               /* alert is invalid */
-           
-            return 4;                                                          /* return error */
+            res = 1;                                                           /* set failed */
+            
+            break;                                                             /* break */
         }
     }
-    
-    res = _mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);              /* get alert config */
-    if (res)                                                                   /* check result */
+    if (res != 0)                                                              /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");                   /* alert is invalid */
+        
+        return 4;                                                              /* return error */
+    }
+    res = a_mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);             /* get alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: get alert config failed.\n");            /* get alert config failed */
        
@@ -2522,8 +2630,8 @@ uint8_t mcp9600_set_active_level(mcp9600_handle_t *handle, mcp9600_alert_t alert
     }
     buf[0] &= ~(1 << 2);                                                       /* clear reg */
     buf[0] |= level << 2;                                                      /* set active level */
-    res = _mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 1);             /* set alert config */
-    if (res)                                                                   /* check result */
+    res = a_mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 1);            /* set alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: set alert config failed.\n");            /* set alert config failed */
        
@@ -2548,9 +2656,9 @@ uint8_t mcp9600_set_active_level(mcp9600_handle_t *handle, mcp9600_alert_t alert
  */
 uint8_t mcp9600_get_active_level(mcp9600_handle_t *handle, mcp9600_alert_t alert, mcp9600_active_level_t *level)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[1];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[1];
     
     if (handle == NULL)                                                        /* check handle */
     {
@@ -2565,38 +2673,47 @@ uint8_t mcp9600_get_active_level(mcp9600_handle_t *handle, mcp9600_alert_t alert
     {
         case MCP9600_ALERT_1 :                                                 /* alert 1 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT1_CONFIGURATION;                       /* set alert 1 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_2 :                                                 /* alert 2 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT2_CONFIGURATION;                       /* set alert 2 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_3 :                                                 /* alert 3 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT3_CONFIGURATION;                       /* set alert 3 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_4 :                                                 /* alert 4 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT4_CONFIGURATION;                       /* set alert 4 */
             
             break;                                                             /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");               /* alert is invalid */
-           
-            return 4;                                                          /* return error */
+            res = 1;                                                           /* set failed */
+            
+            break;                                                             /* break */
         }
     }
-    
-    res = _mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);              /* get alert config */
-    if (res)                                                                   /* check result */
+    if (res != 0)                                                              /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");                   /* alert is invalid */
+        
+        return 4;                                                              /* return error */
+    }
+    res = a_mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);             /* get alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: get alert config failed.\n");            /* get alert config failed */
        
@@ -2622,9 +2739,9 @@ uint8_t mcp9600_get_active_level(mcp9600_handle_t *handle, mcp9600_alert_t alert
  */
 uint8_t mcp9600_set_interrupt_mode(mcp9600_handle_t *handle, mcp9600_alert_t alert, mcp9600_interrupt_mode_t mode)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[1];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[1];
     
     if (handle == NULL)                                                        /* check handle */
     {
@@ -2639,38 +2756,47 @@ uint8_t mcp9600_set_interrupt_mode(mcp9600_handle_t *handle, mcp9600_alert_t ale
     {
         case MCP9600_ALERT_1 :                                                 /* alert 1 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT1_CONFIGURATION;                       /* set alert 1 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_2 :                                                 /* alert 2 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT2_CONFIGURATION;                       /* set alert 2 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_3 :                                                 /* alert 3 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT3_CONFIGURATION;                       /* set alert 3 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_4 :                                                 /* alert 4 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT4_CONFIGURATION;                       /* set alert 4 */
             
             break;                                                             /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");               /* alert is invalid */
-           
-            return 4;                                                          /* return error */
+            res = 1;                                                           /* set failed */
+            
+            break;                                                             /* break */
         }
     }
-    
-    res = _mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);              /* get alert config */
-    if (res)                                                                   /* check result */
+    if (res != 0)                                                              /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");                   /* alert is invalid */
+        
+        return 4;                                                              /* return error */
+    }
+    res = a_mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);             /* get alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: get alert config failed.\n");            /* get alert config failed */
        
@@ -2678,8 +2804,8 @@ uint8_t mcp9600_set_interrupt_mode(mcp9600_handle_t *handle, mcp9600_alert_t ale
     }
     buf[0] &= ~(1 << 1);                                                       /* clear reg */
     buf[0] |= mode << 1;                                                       /* set interrupt mode */
-    res = _mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 1);             /* set alert config */
-    if (res)                                                                   /* check result */
+    res = a_mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 1);            /* set alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: set alert config failed.\n");            /* set alert config failed */
        
@@ -2704,9 +2830,9 @@ uint8_t mcp9600_set_interrupt_mode(mcp9600_handle_t *handle, mcp9600_alert_t ale
  */
 uint8_t mcp9600_get_interrupt_mode(mcp9600_handle_t *handle, mcp9600_alert_t alert, mcp9600_interrupt_mode_t *mode)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[1];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[1];
     
     if (handle == NULL)                                                        /* check handle */
     {
@@ -2721,38 +2847,47 @@ uint8_t mcp9600_get_interrupt_mode(mcp9600_handle_t *handle, mcp9600_alert_t ale
     {
         case MCP9600_ALERT_1 :                                                 /* alert 1 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT1_CONFIGURATION;                       /* set alert 1 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_2 :                                                 /* alert 2 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT2_CONFIGURATION;                       /* set alert 2 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_3 :                                                 /* alert 3 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT3_CONFIGURATION;                       /* set alert 3 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_4 :                                                 /* alert 4 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT4_CONFIGURATION;                       /* set alert 4 */
             
             break;                                                             /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");               /* alert is invalid */
-           
-            return 4;                                                          /* return error */
+            res = 1;                                                           /* set failed */
+            
+            break;                                                             /* break */
         }
     }
-    
-    res = _mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);              /* get alert config */
-    if (res)                                                                   /* check result */
+    if (res != 0)                                                              /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");                   /* alert is invalid */
+        
+        return 4;                                                              /* return error */
+    }
+    res = a_mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);             /* get alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: get alert config failed.\n");            /* get alert config failed */
        
@@ -2778,9 +2913,9 @@ uint8_t mcp9600_get_interrupt_mode(mcp9600_handle_t *handle, mcp9600_alert_t ale
  */
 uint8_t mcp9600_set_alert_output(mcp9600_handle_t *handle, mcp9600_alert_t alert, mcp9600_bool_t enable)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[1];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[1];
     
     if (handle == NULL)                                                        /* check handle */
     {
@@ -2795,38 +2930,47 @@ uint8_t mcp9600_set_alert_output(mcp9600_handle_t *handle, mcp9600_alert_t alert
     {
         case MCP9600_ALERT_1 :                                                 /* alert 1 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT1_CONFIGURATION;                       /* set alert 1 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_2 :                                                 /* alert 2 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT2_CONFIGURATION;                       /* set alert 2 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_3 :                                                 /* alert 3 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT3_CONFIGURATION;                       /* set alert 3 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_4 :                                                 /* alert 4 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT4_CONFIGURATION;                       /* set alert 4 */
             
             break;                                                             /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");               /* alert is invalid */
-           
-            return 4;                                                          /* return error */
+            res = 1;                                                           /* set failed */
+            
+            break;                                                             /* break */
         }
     }
-    
-    res = _mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);              /* get alert config */
-    if (res)                                                                   /* check result */
+    if (res != 0)                                                              /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");                   /* alert is invalid */
+        
+        return 4;                                                              /* return error */
+    }
+    res = a_mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);             /* get alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: get alert config failed.\n");            /* get alert config failed */
        
@@ -2834,8 +2978,8 @@ uint8_t mcp9600_set_alert_output(mcp9600_handle_t *handle, mcp9600_alert_t alert
     }
     buf[0] &= ~(1 << 0);                                                       /* clear reg */
     buf[0] |= enable << 0;                                                     /* set alert output */
-    res = _mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 1);             /* set alert config */
-    if (res)                                                                   /* check result */
+    res = a_mcp9600_iic_write(handle, reg_addr, (uint8_t *)buf, 1);            /* set alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: set alert config failed.\n");            /* set alert config failed */
        
@@ -2860,9 +3004,9 @@ uint8_t mcp9600_set_alert_output(mcp9600_handle_t *handle, mcp9600_alert_t alert
  */
 uint8_t mcp9600_get_alert_output(mcp9600_handle_t *handle, mcp9600_alert_t alert, mcp9600_bool_t *enable)
 {
-    volatile uint8_t res;
-    volatile uint8_t reg_addr;
-    volatile uint8_t buf[1];
+    uint8_t res;
+    uint8_t reg_addr;
+    uint8_t buf[1];
     
     if (handle == NULL)                                                        /* check handle */
     {
@@ -2877,38 +3021,47 @@ uint8_t mcp9600_get_alert_output(mcp9600_handle_t *handle, mcp9600_alert_t alert
     {
         case MCP9600_ALERT_1 :                                                 /* alert 1 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT1_CONFIGURATION;                       /* set alert 1 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_2 :                                                 /* alert 2 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT2_CONFIGURATION;                       /* set alert 2 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_3 :                                                 /* alert 3 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT3_CONFIGURATION;                       /* set alert 3 */
             
             break;                                                             /* break */
         }
         case MCP9600_ALERT_4 :                                                 /* alert 4 */
         {
+            res = 0;                                                           /* set ok */
             reg_addr = MCP9600_REG_ALERT4_CONFIGURATION;                       /* set alert 4 */
             
             break;                                                             /* break */
         }
         default :
         {
-            handle->debug_print("mcp9600: alert is invalid.\n");               /* alert is invalid */
-           
-            return 4;                                                          /* return error */
+            res = 1;                                                           /* set failed */
+            
+            break;                                                             /* break */
         }
     }
-    
-    res = _mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);              /* get alert config */
-    if (res)                                                                   /* check result */
+    if (res != 0)                                                              /* check the result */
+    {
+        handle->debug_print("mcp9600: alert is invalid.\n");                   /* alert is invalid */
+        
+        return 4;                                                              /* return error */
+    }
+    res = a_mcp9600_iic_read(handle, reg_addr, (uint8_t *)buf, 1);             /* get alert config */
+    if (res != 0)                                                              /* check result */
     {
         handle->debug_print("mcp9600: get alert config failed.\n");            /* get alert config failed */
        
@@ -2933,8 +3086,8 @@ uint8_t mcp9600_get_alert_output(mcp9600_handle_t *handle, mcp9600_alert_t alert
  */
 uint8_t mcp9600_get_device_id_revision(mcp9600_handle_t *handle, uint8_t *id, uint8_t *revision)
 {
-    volatile uint8_t res;
-    volatile uint8_t buf[2];
+    uint8_t res;
+    uint8_t buf[2];
     
     if (handle == NULL)                                                                       /* check handle */
     {
@@ -2945,8 +3098,8 @@ uint8_t mcp9600_get_device_id_revision(mcp9600_handle_t *handle, uint8_t *id, ui
         return 3;                                                                             /* return error */
     }
     
-    res = _mcp9600_iic_read(handle, MCP9600_REG_DEVICE_ID_REVISON, (uint8_t *)buf, 2);        /* read device id */
-    if (res)                                                                                  /* check result */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_ID_REVISON, (uint8_t *)buf, 2);       /* read device id */
+    if (res != 0)                                                                             /* check result */
     {
         handle->debug_print("mcp9600: read device id failed.\n");                             /* read device id failed */
        
@@ -2982,7 +3135,7 @@ uint8_t mcp9600_set_reg(mcp9600_handle_t *handle, uint8_t reg, uint8_t *buf, uin
         return 3;                                            /* return error */
     }
   
-    return _mcp9600_iic_write(handle, reg, buf, len);        /* write data */
+    return a_mcp9600_iic_write(handle, reg, buf, len);       /* write data */
 }
 
 /**
@@ -2998,7 +3151,7 @@ uint8_t mcp9600_set_reg(mcp9600_handle_t *handle, uint8_t reg, uint8_t *buf, uin
  *             - 3 handle is not initialized
  * @note       none
  */
-uint8_t mcp9600_get_reg(mcp9600_handle_t *handle, uint16_t reg, uint8_t *buf, uint16_t len)
+uint8_t mcp9600_get_reg(mcp9600_handle_t *handle, uint8_t reg, uint8_t *buf, uint16_t len)
 {
     if (handle == NULL)                                     /* check handle */
     {
@@ -3009,7 +3162,7 @@ uint8_t mcp9600_get_reg(mcp9600_handle_t *handle, uint16_t reg, uint8_t *buf, ui
         return 3;                                           /* return error */
     }
   
-    return _mcp9600_iic_read(handle, reg, buf, len);        /* read data */
+    return a_mcp9600_iic_read(handle, reg, buf, len);       /* read data */
 }
 
 /**

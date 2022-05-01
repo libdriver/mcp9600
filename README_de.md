@@ -6,48 +6,48 @@
 
 ## LibDriver MCP9600
 
-[![MISRA](https://img.shields.io/badge/misra-compliant-brightgreen.svg)](/misra/README.md) [![API](https://img.shields.io/badge/api-reference-blue.svg)](https://www.libdriver.com/docs/mcp9600/index.html) [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](/LICENSE)
+[![MISRA](https://img.shields.io/badge/misra-compliant-brightgreen.svg)](/misra/README.md) [![API](https://img.shields.io/badge/api-reference-blue.svg)](https://www.libdriver.com/docs/mcp9600/index.html) [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](/LICENSE) 
 
-MCP9600 是一款完全集成的熱電偶電動勢 (EMF) 到攝氏度轉換器，具有集成的冷端補償功能。 MCP9600 支持 8 種熱電偶類型（K、J、T、N、S、E、B 和 R）。 MCP9600 提供用戶可編程寄存器，為各種溫度傳感應用增加了設計靈活性。這些寄存器允許用戶選擇設置，例如電池供電應用的低功耗模式、用於快速瞬態溫度的可調數字濾波器和四個可單獨編程的溫度警報輸出，可用於檢測多個溫度區域。 MCP9600可用於石油化工熱管理、手持測量設備、工業設備熱管理、商用和工業烘箱、工業發動機熱監測器、溫度檢測架等。
+Der MCP9600 ist ein vollintegrierter Thermoelement-Wandler von elektromotorischer Kraft (EMF) in Grad Celsius mit integrierter Kaltstellenkompensation. Das MCP9600 unterstützt 8 Thermoelementtypen (K, J, T, N, S, E, B und R). Der MCP9600 bietet benutzerprogrammierbare Register und erhöht die Designflexibilität für verschiedene Temperaturmessanwendungen. Die Register ermöglichen vom Benutzer wählbare Einstellungen, wie z. B. Energiesparmodi für batteriebetriebene Anwendungen, einen einstellbaren Digitalfilter für schnelle Übergangstemperaturen und vier individuell programmierbare Temperaturwarnausgänge, die zur Erkennung mehrerer Temperaturzonen verwendet werden können im petrochemischen Wärmemanagement, in Handmessgeräten, im Wärmemanagement von Industrieanlagen, in gewerblichen und industriellen Öfen, in der Wärmeüberwachung von Industriemotoren, in Temperaturerfassungsgestellen und so weiter.
 
-LibDriver MCP9600是LibDriver推出的MCP9600全功能驅動，該驅動提供單次讀取、連續讀取、中斷模式等功能並且它符合MISRA標準。
+LibDriver MCP9600 ist ein voll funktionsfähiger Treiber von MCP9600, der von LibDriver gestartet wurde. Er bietet Schusslesen, kontinuierliches Lesen, Interrupt-Lesemodus und andere Funktionen. LibDriver ist MISRA-konform.
 
-### 目錄
+### Inhaltsverzeichnis
 
-  - [說明](#說明)
-  - [安裝](#安裝)
-  - [使用](#使用)
+  - [Anweisung](#Anweisung)
+  - [Installieren](#Installieren)
+  - [Nutzung](#Nutzung)
     - [example basic](#example-basic)
     - [example shot](#example-shot)
     - [example interrupt](#example-interrupt)
-  - [文檔](#文檔)
-  - [貢獻](#貢獻)
-  - [版權](#版權)
-  - [聯繫我們](#聯繫我們)
+  - [Dokument](#Dokument)
+  - [Beitrag](#Beitrag)
+  - [Lizenz](#Lizenz)
+  - [Kontaktieren Sie uns](#Kontaktieren-Sie-uns)
 
-### 說明
+### Anweisung
 
-/src目錄包含了LibDriver MCP9600的源文件。
+/src enthält LibDriver MCP9600-Quelldateien.
 
-/interface目錄包含了LibDriver MCP9600與平台無關的IIC總線模板。
+/interface enthält die plattformunabhängige Vorlage LibDriver MCP9600 IIC。
 
-/test目錄包含了LibDriver MCP9600驅動測試程序，該程序可以簡單的測試芯片必要功能。
+/test enthält den Testcode des LibDriver MCP9600-Treibers und dieser Code kann die erforderliche Funktion des Chips einfach testen。
 
-/example目錄包含了LibDriver MCP9600編程範例。
+/example enthält LibDriver MCP9600-Beispielcode.
 
-/doc目錄包含了LibDriver MCP9600離線文檔。
+/doc enthält das LibDriver MCP9600-Offlinedokument.
 
-/datasheet目錄包含了MCP9600數據手冊。
+/Datenblatt enthält MCP9600-Datenblatt。
 
-/project目錄包含了常用Linux與單片機開發板的工程樣例。所有工程均採用shell腳本作為調試方法，詳細內容可參考每個工程裡面的README.md。
+/project enthält den allgemeinen Beispielcode für Linux- und MCU-Entwicklungsboards. Alle Projekte verwenden das Shell-Skript, um den Treiber zu debuggen, und die detaillierten Anweisungen finden Sie in der README.md jedes Projekts.
 
-### 安裝
+### Installieren
 
-參考/interface目錄下與平台無關的IIC總線模板，完成指定平台的IIC總線驅動。
+Verweisen Sie auf eine plattformunabhängige IIC-Schnittstellenvorlage und stellen Sie Ihren Plattform-IIC-Treiber fertig.
 
-將/src目錄，/interface目錄和/example目錄加入工程。
+Fügen Sie /src, /interface und /example zu Ihrem Projekt hinzu.
 
-### 使用
+### Nutzung
 
 #### example basic
 
@@ -102,7 +102,6 @@ else
     return 0;
 }
 ```
-
 #### example shot
 
 ```C
@@ -156,6 +155,7 @@ else
     return 0;
 }
 ```
+
 #### example interrupt
 
 ```C
@@ -267,28 +267,61 @@ else
     return 0;
 }
 ```
-### 文檔
 
-在線文檔: https://www.libdriver.com/docs/mcp9600/index.html
+### Dokument
 
-離線文檔: /doc/html/index.html
+Online-Dokumente: https://www.libdriver.com/docs/mcp9600/index.html
 
-### 貢獻
+Offline-Dokumente: /doc/html/index.html
 
-請聯繫lishifenging@outlook.com
+### Beitrag
 
-### 版權
+Bitte senden Sie eine E-Mail an lishifenging@outlook.com
 
-版權 (c) 2015 - 現在 LibDriver 版權所有
+### Lizenz
 
-MIT 許可證（MIT）
+Urheberrechte © (c) 2015 - Gegenwart LibDriver Alle Rechte vorbehalten
 
-特此免費授予任何獲得本軟件副本和相關文檔文件（下稱“軟件”）的人不受限制地處置該軟件的權利，包括不受限制地使用、複製、修改、合併、發布、分發、轉授許可和/或出售該軟件副本，以及再授權被配發了本軟件的人如上的權利，須在下列條件下：
 
-上述版權聲明和本許可聲明應包含在該軟件的所有副本或實質成分中。
 
-本軟件是“如此”提供的，沒有任何形式的明示或暗示的保證，包括但不限於對適銷性、特定用途的適用性和不侵權的保證。在任何情況下，作者或版權持有人都不對任何索賠、損害或其他責任負責，無論這些追責來自合同、侵權或其它行為中，還是產生於、源於或有關於本軟件以及本軟件的使用或其它處置。
+Die MIT-Lizenz (MIT)
 
-### 聯繫我們
 
-請聯繫lishifenging@outlook.com
+
+Hiermit wird jeder Person kostenlos die Erlaubnis erteilt, eine Kopie zu erhalten
+
+dieser Software und zugehörigen Dokumentationsdateien (die „Software“) zu behandeln
+
+in der Software ohne Einschränkung, einschließlich, aber nicht beschränkt auf die Rechte
+
+zu verwenden, zu kopieren, zu modifizieren, zusammenzuführen, zu veröffentlichen, zu verteilen, unterzulizenzieren und/oder zu verkaufen
+
+Kopien der Software und Personen, denen die Software gehört, zu gestatten
+
+dazu eingerichtet werden, unter folgenden Bedingungen:
+
+
+
+Der obige Urheberrechtshinweis und dieser Genehmigungshinweis müssen in allen enthalten sein
+
+Kopien oder wesentliche Teile der Software.
+
+
+
+DIE SOFTWARE WIRD "WIE BESEHEN" BEREITGESTELLT, OHNE JEGLICHE GEWÄHRLEISTUNG, AUSDRÜCKLICH ODER
+
+STILLSCHWEIGEND, EINSCHLIESSLICH, ABER NICHT BESCHRÄNKT AUF DIE GEWÄHRLEISTUNG DER MARKTGÄNGIGKEIT,
+
+EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG VON RECHTEN DRITTER. IN KEINEM FALL DARF DAS
+
+AUTOREN ODER URHEBERRECHTSINHABER HAFTEN FÜR JEGLICHE ANSPRÜCHE, SCHÄDEN ODER ANDERE
+
+HAFTUNG, OB AUS VERTRAG, DELIKT ODER ANDERWEITIG, ENTSTEHEND AUS,
+
+AUS ODER IM ZUSAMMENHANG MIT DER SOFTWARE ODER DER VERWENDUNG ODER ANDEREN HANDLUNGEN MIT DER
+
+SOFTWARE.
+
+### Kontaktieren Sie uns
+
+Bitte senden Sie eine E-Mail an lishifenging@outlook.com

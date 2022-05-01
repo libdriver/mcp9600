@@ -49,10 +49,10 @@ static mcp9600_handle_t gs_handle;        /**< mcp9600 handle */
  */
 uint8_t mcp9600_interrupt_test(mcp9600_address_t addr_pin, mcp9600_thermocouple_type_t type)
 {
-    volatile uint8_t res;
-    volatile int16_t reg;
-    volatile uint8_t reg2;
-    volatile uint16_t timeout;
+    uint8_t res;
+    int16_t reg;
+    uint8_t reg2;
+    uint16_t timeout;
     mcp9600_info_t info;
     
     /* link interface function */
@@ -66,7 +66,7 @@ uint8_t mcp9600_interrupt_test(mcp9600_address_t addr_pin, mcp9600_thermocouple_
     
     /* get information */
     res = mcp9600_info(&info);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: get info failed.\n");
        
@@ -91,7 +91,7 @@ uint8_t mcp9600_interrupt_test(mcp9600_address_t addr_pin, mcp9600_thermocouple_
     
     /* set mcp9600 iic address */
     res = mcp9600_set_addr_pin(&gs_handle, addr_pin);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set addr pin failed.\n");
         
@@ -100,7 +100,7 @@ uint8_t mcp9600_interrupt_test(mcp9600_address_t addr_pin, mcp9600_thermocouple_
     
     /* chip init */
     res = mcp9600_init(&gs_handle);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: init failed.\n");
         
@@ -109,220 +109,220 @@ uint8_t mcp9600_interrupt_test(mcp9600_address_t addr_pin, mcp9600_thermocouple_
     
     /* set normal */
     res = mcp9600_set_mode(&gs_handle, MCP9600_MODE_NORMAL);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set mode failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set filter coefficient */
     res = mcp9600_set_filter_coefficient(&gs_handle, MCP9600_FILTER_COEFFICIENT_0);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set filter coefficient failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set thermocouple type */
     res = mcp9600_set_thermocouple_type(&gs_handle, type);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set thermocouple type failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set cold junction resolution */
     res = mcp9600_set_cold_junction_resolution(&gs_handle, MCP9600_COLD_JUNCTION_RESOLUTION_0P0625);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set cold junction resolution failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set adc resolution */
     res = mcp9600_set_adc_resolution(&gs_handle, MCP9600_ADC_RESOLUTION_18_BIT);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set adc resolution failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set burst mode sample */
     res = mcp9600_set_burst_mode_sample(&gs_handle, MCP9600_BURST_MODE_SAMPLE_1);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set burst mode sample failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* alert1 limit convert to register */
     res = mcp9600_alert_limit_convert_to_register(&gs_handle, 30, (int16_t *)&reg);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: alert limit convert to register failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert1 limit */
     res = mcp9600_set_alert_limit(&gs_handle, MCP9600_ALERT_1, reg);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set alert limit failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* alert2 limit convert to register */
     res = mcp9600_alert_limit_convert_to_register(&gs_handle, 31, (int16_t *)&reg);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: alert limit convert to register failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert2 limit */
     res = mcp9600_set_alert_limit(&gs_handle, MCP9600_ALERT_2, reg);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set alert limit failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* alert3 limit convert to register */
     res = mcp9600_alert_limit_convert_to_register(&gs_handle, 32, (int16_t *)&reg);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: alert limit convert to register failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert3 limit */
     res = mcp9600_set_alert_limit(&gs_handle, MCP9600_ALERT_3, reg);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set alert limit failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* alert4 limit convert to register */
     res = mcp9600_alert_limit_convert_to_register(&gs_handle, 33, (int16_t *)&reg);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: alert limit convert to register failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert4 limit */
     res = mcp9600_set_alert_limit(&gs_handle, MCP9600_ALERT_4, reg);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set alert limit failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* alert1 hysteresis convert to register */
     res = mcp9600_alert_hysteresis_convert_to_register(&gs_handle, 31, (uint8_t *)&reg2);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: alert hysteresis convert to register failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert1 hysteresis */
     res = mcp9600_set_alert_hysteresis(&gs_handle, MCP9600_ALERT_1, reg2);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set alert hysteresis failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* alert2 hysteresis convert to register */
     res = mcp9600_alert_hysteresis_convert_to_register(&gs_handle, 32, (uint8_t *)&reg2);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: alert hysteresis convert to register failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert2 hysteresis */
     res = mcp9600_set_alert_hysteresis(&gs_handle, MCP9600_ALERT_2, reg2);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set alert hysteresis failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* alert3 hysteresis convert to register */
     res = mcp9600_alert_hysteresis_convert_to_register(&gs_handle, 33, (uint8_t *)&reg2);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: alert hysteresis convert to register failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert3 hysteresis */
     res = mcp9600_set_alert_hysteresis(&gs_handle, MCP9600_ALERT_3, reg2);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set alert hysteresis failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* alert4 hysteresis convert to register */
     res = mcp9600_alert_hysteresis_convert_to_register(&gs_handle, 34, (uint8_t *)&reg2);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: alert hysteresis convert to register failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert4 hysteresis */
     res = mcp9600_set_alert_hysteresis(&gs_handle, MCP9600_ALERT_4, reg2);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set alert hysteresis failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
@@ -330,10 +330,10 @@ uint8_t mcp9600_interrupt_test(mcp9600_address_t addr_pin, mcp9600_thermocouple_
     /* set alert1 temperature maintain detect */
     res = mcp9600_set_temperature_maintain_detect(&gs_handle, MCP9600_ALERT_1,
                                                   MCP9600_TEMPERATURE_MAINTAIN_DETECT_HOT_JUNCTION);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set temperature maintain detect failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
@@ -341,10 +341,10 @@ uint8_t mcp9600_interrupt_test(mcp9600_address_t addr_pin, mcp9600_thermocouple_
     /* set alert2 temperature maintain detect */
     res = mcp9600_set_temperature_maintain_detect(&gs_handle, MCP9600_ALERT_2,
                                                   MCP9600_TEMPERATURE_MAINTAIN_DETECT_HOT_JUNCTION);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set temperature maintain detect failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
@@ -352,10 +352,10 @@ uint8_t mcp9600_interrupt_test(mcp9600_address_t addr_pin, mcp9600_thermocouple_
     /* set alert3 temperature maintain detect */
     res = mcp9600_set_temperature_maintain_detect(&gs_handle, MCP9600_ALERT_3,
                                                   MCP9600_TEMPERATURE_MAINTAIN_DETECT_HOT_JUNCTION);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set temperature maintain detect failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
@@ -363,242 +363,242 @@ uint8_t mcp9600_interrupt_test(mcp9600_address_t addr_pin, mcp9600_thermocouple_
     /* set alert4 temperature maintain detect */
     res = mcp9600_set_temperature_maintain_detect(&gs_handle, MCP9600_ALERT_4,
                                                   MCP9600_TEMPERATURE_MAINTAIN_DETECT_HOT_JUNCTION);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set temperature maintain detect failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert1 detect edge */
     res = mcp9600_set_detect_edge(&gs_handle, MCP9600_ALERT_1, MCP9600_DETECT_EDGE_FALLING);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set detect edge failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert2 detect edge */
     res = mcp9600_set_detect_edge(&gs_handle, MCP9600_ALERT_2, MCP9600_DETECT_EDGE_FALLING);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set detect edge failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert3 detect edge */
     res = mcp9600_set_detect_edge(&gs_handle, MCP9600_ALERT_3, MCP9600_DETECT_EDGE_FALLING);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set detect edge failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert4 detect edge */
     res = mcp9600_set_detect_edge(&gs_handle, MCP9600_ALERT_4, MCP9600_DETECT_EDGE_FALLING);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set detect edge failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert1 active level */
     res = mcp9600_set_active_level(&gs_handle, MCP9600_ALERT_1, MCP9600_ACTIVE_LEVEL_LOW);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set active level failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert2 active level */
     res = mcp9600_set_active_level(&gs_handle, MCP9600_ALERT_2, MCP9600_ACTIVE_LEVEL_LOW);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set active level failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert3 active level */
     res = mcp9600_set_active_level(&gs_handle, MCP9600_ALERT_3, MCP9600_ACTIVE_LEVEL_LOW);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set active level failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert4 active level */
     res = mcp9600_set_active_level(&gs_handle, MCP9600_ALERT_4, MCP9600_ACTIVE_LEVEL_LOW);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set active level failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert1 interrupt mode */
     res = mcp9600_set_interrupt_mode(&gs_handle, MCP9600_ALERT_1, MCP9600_INTERRUPT_MODE_COMPARATOR);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set interrupt mode failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert2 interrupt mode */
     res = mcp9600_set_interrupt_mode(&gs_handle, MCP9600_ALERT_2, MCP9600_INTERRUPT_MODE_COMPARATOR);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set interrupt mode failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert3 interrupt mode */
     res = mcp9600_set_interrupt_mode(&gs_handle, MCP9600_ALERT_3, MCP9600_INTERRUPT_MODE_COMPARATOR);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set interrupt mode failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert4 interrupt mode */
     res = mcp9600_set_interrupt_mode(&gs_handle, MCP9600_ALERT_4, MCP9600_INTERRUPT_MODE_COMPARATOR);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set interrupt mode failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert1 output */
     res = mcp9600_set_alert_output(&gs_handle, MCP9600_ALERT_1, MCP9600_BOOL_TRUE);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set alert output failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert2 output */
     res = mcp9600_set_alert_output(&gs_handle, MCP9600_ALERT_2, MCP9600_BOOL_TRUE);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set alert output failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert3 output */
     res = mcp9600_set_alert_output(&gs_handle, MCP9600_ALERT_3, MCP9600_BOOL_TRUE);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set alert output failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* set alert4 output */
     res = mcp9600_set_alert_output(&gs_handle, MCP9600_ALERT_4, MCP9600_BOOL_TRUE);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: set alert output failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* clear alert1 */
     res = mcp9600_clear_interrupt(&gs_handle, MCP9600_ALERT_1);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: clear interrupt failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* clear alert2 */
     res = mcp9600_clear_interrupt(&gs_handle, MCP9600_ALERT_2);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: clear interrupt failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* clear alert3 */
     res = mcp9600_clear_interrupt(&gs_handle, MCP9600_ALERT_3);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: clear interrupt failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* clear alert4 */
     res = mcp9600_clear_interrupt(&gs_handle, MCP9600_ALERT_4);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: clear interrupt failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* start continuous read */
     res = mcp9600_start_continuous_read(&gs_handle);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: start continuous read failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     timeout = 50;
-    while (timeout)
+    while (timeout != 0)
     {
-        volatile int16_t hot_raw;
-        volatile float hot_s;
-        volatile int16_t delta_raw;
-        volatile float delta_s;
-        volatile int16_t cold_raw;
-        volatile float cold_s;
+        int16_t hot_raw;
+        float hot_s;
+        int16_t delta_raw;
+        float delta_s;
+        int16_t cold_raw;
+        float cold_s;
         
         /* continuous read */
         res = mcp9600_continuous_read(&gs_handle, (int16_t *)&hot_raw, (float *)&hot_s,
                                      (int16_t *)&delta_raw, (float *)&delta_s,
                                      (int16_t *)&cold_raw, (float *)&cold_s);
-        if (res)
+        if (res != 0)
         {
             mcp9600_interface_debug_print("mcp9600: continuous read failed.\n");
-            mcp9600_deinit(&gs_handle);
+            (void)mcp9600_deinit(&gs_handle);
             
             return 1;
         }
@@ -619,10 +619,10 @@ uint8_t mcp9600_interrupt_test(mcp9600_address_t addr_pin, mcp9600_thermocouple_
     
     /* stop continuous read */
     res = mcp9600_stop_continuous_read(&gs_handle);
-    if (res)
+    if (res != 0)
     {
         mcp9600_interface_debug_print("mcp9600: stop continuous read failed.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
@@ -631,14 +631,14 @@ uint8_t mcp9600_interrupt_test(mcp9600_address_t addr_pin, mcp9600_thermocouple_
     if (timeout == 0)
     {
         mcp9600_interface_debug_print("mcp9600: check timeout.\n");
-        mcp9600_deinit(&gs_handle);
+        (void)mcp9600_deinit(&gs_handle);
         
         return 1;
     }
     
     /* finish interrupt test */
     mcp9600_interface_debug_print("mcp9600: finish interrupt test.\n");
-    mcp9600_deinit(&gs_handle);
+    (void)mcp9600_deinit(&gs_handle);
     
     return 0;
 }
