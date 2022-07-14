@@ -242,13 +242,15 @@ uint8_t mcp9600_init(mcp9600_handle_t *handle)
     if (res != 0)                                                                   /* check result */
     {
         handle->debug_print("mcp9600: read device id failed.\n");                   /* read device id failed */
-       
+        (void)handle->iic_deinit();                                                 /* iic deinit */
+        
         return 1;                                                                   /* return error */
     }
     if (buf[0] != 0x40)                                                             /* check id */
     {
         handle->debug_print("mcp9600: id is invalid.\n");                           /* id is invalid */
-       
+        (void)handle->iic_deinit();                                                 /* iic deinit */
+        
         return 4;                                                                   /* return error */
     }
     handle->inited = 1;                                                             /* set inited */
