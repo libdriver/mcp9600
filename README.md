@@ -29,15 +29,15 @@ LibDriver MCP9600 is a full function driver of MCP9600 launched by LibDriver.It 
 
 /src includes LibDriver MCP9600 source files.
 
-/interface includes LibDriver MCP9600 IIC platform independent template。
+/interface includes LibDriver MCP9600 IIC platform independent template.
 
-/test includes LibDriver MCP9600 driver test code and this code can test the chip necessary function simply。
+/test includes LibDriver MCP9600 driver test code and this code can test the chip necessary function simply.
 
 /example includes LibDriver MCP9600 sample code.
 
 /doc includes LibDriver MCP9600 offline document.
 
-/datasheet includes MCP9600 datasheet。
+/datasheet includes MCP9600 datasheet.
 
 /project includes the common Linux and MCU development board sample code. All projects use the shell script to debug the driver and the detail instruction can be found in each project's README.md.
 
@@ -52,6 +52,8 @@ Add /src, /interface and /example to your project.
 #### example basic
 
 ```C
+#include "driver_mcp9600_basic.h"
+
 uint8_t res;
 uint16_t i, times;
 
@@ -106,6 +108,8 @@ else
 #### example shot
 
 ```C
+#include "driver_mcp9600_shot.h"
+
 uint8_t res;
 uint16_t i, times;
 
@@ -159,6 +163,8 @@ else
 #### example interrupt
 
 ```C
+#include "driver_mcp9600_interrupt.h"
+
 uint8_t res;
 uint16_t i, times;
 uint8_t g_flag;

@@ -52,6 +52,8 @@ LibDriver MCP9600是LibDriver推出的MCP9600全功能驅動，該驅動提供�
 #### example basic
 
 ```C
+#include "driver_mcp9600_basic.h"
+
 uint8_t res;
 uint16_t i, times;
 
@@ -106,6 +108,8 @@ else
 #### example shot
 
 ```C
+#include "driver_mcp9600_shot.h"
+
 uint8_t res;
 uint16_t i, times;
 
@@ -159,6 +163,8 @@ else
 #### example interrupt
 
 ```C
+#include "driver_mcp9600_interrupt.h"
+
 uint8_t res;
 uint16_t i, times;
 uint8_t g_flag;

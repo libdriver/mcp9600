@@ -52,6 +52,8 @@ LibDriver MCP9600は、LibDriverによって起動されたMCP9600の全機能�
 #### example basic
 
 ```C
+#include "driver_mcp9600_basic.h"
+
 uint8_t res;
 uint16_t i, times;
 
@@ -106,6 +108,8 @@ else
 #### example shot
 
 ```c
+#include "driver_mcp9600_shot.h"
+
 uint8_t res;
 uint16_t i, times;
 
@@ -160,6 +164,8 @@ else
 #### example interrupt
 
 ```c
+#include "driver_mcp9600_interrupt.h"
+
 uint8_t res;
 uint16_t i, times;
 uint8_t g_flag;
