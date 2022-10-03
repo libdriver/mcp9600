@@ -52,6 +52,8 @@ LibDriver MCP9600은 LibDriver에서 출시한 MCP9600의 전체 기능 드라�
 #### example basic
 
 ```C
+#include "driver_mcp9600_basic.h"
+
 uint8_t res;
 uint16_t i, times;
 
@@ -106,6 +108,8 @@ else
 #### example shot
 
 ```C
+#include "driver_mcp9600_shot.h"
+
 uint8_t res;
 uint16_t i, times;
 
@@ -160,6 +164,8 @@ else
 #### example interrupt
 
 ```C
+#include "driver_mcp9600_interrupt.h"
+
 uint8_t res;
 uint16_t i, times;
 uint8_t g_flag;
