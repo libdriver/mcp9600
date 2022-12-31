@@ -1,12 +1,12 @@
-### 1. Chip
+### 1. Board
 
-#### 1.1 Chip Info
+#### 1.1 Board Info
 
-chip name : Raspberry Pi 4B.
+Board Name: Raspberry Pi 4B.
 
-iic pin: SCL/SDA GPIO3/GPIO2.
+IIC Pin: SCL/SDA GPIO3/GPIO2.
 
-gpio pin: INT GPIO17.
+GPIO Pin: INT GPIO17.
 
 ### 2. Install
 
@@ -76,29 +76,59 @@ find_package(mcp9600 REQUIRED)
 
 #### 3.1 Command Instruction
 
-​          mcp9600 is a basic command which can test all mcp9600 driver function:
+1. Show mcp9600 chip and driver information.
 
-​          -i        show mcp9600 chip and driver information.
+   ```shell
+   mcp9600 (-i | --information)
+   ```
 
-​          -h       show mcp9600 help.
+2. Show mcp9600 help.
 
-​          -p       show mcp9600 pin connections of the current board.
+   ```shell
+   mcp9600 (-h | --help)
+   ```
 
-​          -t (reg -a (0 | 1) | read <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r) | interrupt -a (0 | 1) -type (k | j | t | n | s | e | b | r))           
+3. Show mcp9600 pin connections of the current board.
 
-​          -t reg -a (0 | 1)       run mcp9600 register test.
+   ```shell
+   mcp9600 (-p | --port)
+   ```
 
-​          -t read <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r)         run mcp9600 read test. times means test times.
+4. Run mcp9600 register test.
 
-​          -t interrupt -a (0 | 1) -type (k | j | t | n | s | e | b | r)         run mcp9600 interrupt test.
+   ```shell
+   mcp9600 (-t reg | --test=reg) [--addr=<0 | 1>]
+   ```
 
-​          -c (basic <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r) | shot <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r) | interrupt <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r))
+5. Run mcp9600 read test, num means test times.
 
-​          -c basic <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r)         run mcp9600 basic read function.times means read times.
+   ```shell
+   mcp9600 (-t read | --test=read) [--addr=<0 | 1>] [--times=<num>] [--type=<k | j | t | n | s | e | b | r>]
+   ```
 
-​          -c shot <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r)         run mcp9600 shot read function.times means read times.
+6. Run mcp9600 interrupt test.
 
-​          -c interrupt <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r)         run mcp9600 interrupt read function.times means read times.
+   ```shell
+   mcp9600 (-t int | --test=int) [--addr=<0 | 1>] [--type=<k | j | t | n | s | e | b | r>]
+   ```
+
+7. Run mcp9600 basic read function, num means read times.
+
+   ```shell
+   mcp9600 (-e read | --example=read) [--addr=<0 | 1>] [--times=<num>] [--type=<k | j | t | n | s | e | b | r>]
+   ```
+
+8. Run mcp9600 shot read function, num means read times.
+
+   ```shell
+   mcp9600 (-e shot | --example=shot) [--addr=<0 | 1>] [--times=<num>] [--type=<k | j | t | n | s | e | b | r>]
+   ```
+
+9. Run mcp9600 interrupt read function, num means read times.
+
+   ```shell
+   mcp9600 (-e int | --example=int) [--addr=<0 | 1>] [--times=<num>] [--type=<k | j | t | n | s | e | b | r>]
+   ```
 
 #### 3.2 Command Example
 
@@ -125,7 +155,7 @@ mcp9600: INT connected to GPIO17(BCM).
 ```
 
 ```shell
-./mcp9600 -t reg -a 0
+./mcp9600 -t reg --addr=0
 
 mcp9600: chip is Microchip MCP9600.
 mcp9600: manufacturer is Microchip.
@@ -302,26 +332,26 @@ mcp9600: check alert output ok.
 mcp9600: set alert4 enable output.
 mcp9600: check alert output ok.
 mcp9600: mcp9600_alert_limit_convert_to_register/mcp9600_alert_limit_convert_to_data test.
-mcp9600: alert limit 7.6800 to reg 122 and converted to data 7.6250.
+mcp9600: alert limit 3.8300 to reg 61 and converted to data 3.8125.
 mcp9600: mcp9600_set_alert_limit/mcp9600_get_alert_limit test.
-mcp9600: set alert1 limit 6800.
+mcp9600: set alert1 limit 8700.
 mcp9600: check alert limit ok.
-mcp9600: set alert2 limit 1000.
+mcp9600: set alert2 limit 17800.
 mcp9600: check alert limit ok.
-mcp9600: set alert3 limit 16100.
+mcp9600: set alert3 limit 11600.
 mcp9600: check alert limit ok.
-mcp9600: set alert4 limit 18400.
-mcp9600: check alert limit ok.
+mcp9600: set alert4 limit 19400.
+mcp9600: check alert limit error.
 mcp9600: mcp9600_alert_hysteresis_convert_to_register/mcp9600_alert_hysteresis_convert_to_data test.
-mcp9600: alert hysteresis 7.4100 to reg 7 and converted to data 7.0000.
+mcp9600: alert hysteresis 3.3500 to reg 3 and converted to data 3.0000.
 mcp9600: mcp9600_set_alert_hysteresis/mcp9600_get_alert_hysteresis test.
-mcp9600: set alert1 hysteresis 200.
+mcp9600: set alert1 hysteresis 74.
 mcp9600: check alert hysteresis ok.
-mcp9600: set alert2 hysteresis 127.
+mcp9600: set alert2 hysteresis 236.
 mcp9600: check alert hysteresis ok.
-mcp9600: set alert3 hysteresis 19.
+mcp9600: set alert3 hysteresis 41.
 mcp9600: check alert hysteresis ok.
-mcp9600: set alert4 hysteresis 196.
+mcp9600: set alert4 hysteresis 205.
 mcp9600: check alert hysteresis ok.
 mcp9600: mcp9600_get_interrupt/mcp9600_clear_interrupt test.
 mcp9600: alert1 get interrupt 0x00.
@@ -340,14 +370,14 @@ mcp9600: check alert status 1.
 mcp9600: check alert status 1.
 mcp9600: check alert status 1.
 mcp9600: mcp9600_get_status_burst_complete_flag/mcp9600_clear_status_burst_complete_flag test.
-mcp9600: check burst complete flag status 1.
+mcp9600: check burst complete flag status 0.
 mcp9600: mcp9600_get_status_temperature_update_flag/mcp9600_clear_status_temperature_update_flag test.
 mcp9600: check temperature update flag status 1.
 mcp9600: finish register test.
 ```
 
 ```shell
-./mcp9600 -t read 5 -a 0 -type k
+./mcp9600 -t read --addr=0 --times=3 --type=k
 
 mcp9600: chip is Microchip MCP9600.
 mcp9600: manufacturer is Microchip.
@@ -360,168 +390,114 @@ mcp9600: max temperature is 125.0C.
 mcp9600: min temperature is -40.0C.
 mcp9600: start read test.
 mcp9600: start continuous read test.
-mcp9600: hot 26.56 delta 0.00 cold 106.00.
-mcp9600: hot 26.56 delta 0.06 cold 105.25.
-mcp9600: hot 26.56 delta 0.06 cold 105.50.
-mcp9600: hot 26.56 delta 0.06 cold 105.50.
-mcp9600: hot 26.56 delta 0.06 cold 105.50.
+mcp9600: hot 47.69 delta 22.38 cold 111.00.
+mcp9600: hot 29.94 delta 1.94 cold 111.50.
+mcp9600: hot 29.94 delta 1.94 cold 111.75.
 mcp9600: start single read test.
-mcp9600: hot 30.56 delta 4.12 cold 105.75.
-mcp9600: hot 32.31 delta 6.00 cold 105.50.
-mcp9600: hot 33.44 delta 7.12 cold 105.50.
-mcp9600: hot 33.94 delta 7.62 cold 105.75.
-mcp9600: hot 34.19 delta 7.88 cold 105.50.
+mcp9600: hot 29.94 delta 1.94 cold 111.75.
+mcp9600: hot 29.94 delta 1.94 cold 111.75.
+mcp9600: hot 29.94 delta 1.94 cold 111.75.
 mcp9600: set cold junction resolution 0.25.
-mcp9600: hot 34.19 delta 7.88 cold 26.38.
-mcp9600: hot 34.31 delta 8.12 cold 26.25.
-mcp9600: hot 34.31 delta 8.19 cold 26.25.
-mcp9600: hot 34.56 delta 8.25 cold 26.50.
-mcp9600: hot 34.69 delta 8.31 cold 26.50.
+mcp9600: hot 29.94 delta 1.94 cold 27.94.
+mcp9600: hot 29.81 delta 1.94 cold 27.75.
+mcp9600: hot 29.81 delta 1.94 cold 27.75.
 mcp9600: set adc resolution 18 bit.
-mcp9600: hot 34.75 delta 8.38 cold 26.50.
-mcp9600: raw is 171 uv is 342.000000.
-mcp9600: hot 34.62 delta 8.38 cold 26.25.
-mcp9600: raw is 172 uv is 344.000000.
-mcp9600: hot 34.62 delta 8.44 cold 26.25.
-mcp9600: raw is 173 uv is 346.000000.
-mcp9600: hot 34.69 delta 8.44 cold 26.25.
-mcp9600: raw is 173 uv is 346.000000.
-mcp9600: hot 34.75 delta 8.50 cold 26.25.
-mcp9600: raw is 174 uv is 348.000000.
+mcp9600: hot 29.81 delta 1.94 cold 27.75.
+mcp9600: raw is 40 uv is 80.000000.
+mcp9600: hot 29.81 delta 1.94 cold 27.75.
+mcp9600: raw is 40 uv is 80.000000.
+mcp9600: hot 29.81 delta 1.94 cold 27.75.
+mcp9600: raw is 40 uv is 80.000000.
 mcp9600: set adc resolution 16 bit.
-mcp9600: hot 34.81 delta 8.56 cold 26.25.
-mcp9600: raw is 43 uv is 344.000000.
-mcp9600: hot 34.88 delta 8.62 cold 26.50.
-mcp9600: raw is 44 uv is 352.000000.
-mcp9600: hot 34.88 delta 8.62 cold 26.25.
-mcp9600: raw is 44 uv is 352.000000.
-mcp9600: hot 34.88 delta 8.62 cold 26.25.
-mcp9600: raw is 44 uv is 352.000000.
-mcp9600: hot 34.88 delta 8.62 cold 26.25.
-mcp9600: raw is 44 uv is 352.000000.
+mcp9600: hot 29.88 delta 1.94 cold 28.00.
+mcp9600: raw is 10 uv is 80.000000.
+mcp9600: hot 16.06 delta 1.94 cold 28.00.
+mcp9600: raw is 10 uv is 80.000000.
+mcp9600: hot 29.94 delta 1.94 cold 16.06.
+mcp9600: raw is 0 uv is 0.000000.
 mcp9600: set adc resolution 14 bit.
-mcp9600: hot 34.94 delta 8.62 cold 26.50.
-mcp9600: raw is 11 uv is 352.000000.
-mcp9600: hot 34.88 delta 8.62 cold 26.25.
-mcp9600: raw is 11 uv is 352.000000.
-mcp9600: hot 34.88 delta 8.62 cold 26.25.
-mcp9600: raw is 11 uv is 352.000000.
-mcp9600: hot 34.88 delta 8.62 cold 26.25.
-mcp9600: raw is 11 uv is 352.000000.
-mcp9600: hot 34.88 delta 8.62 cold 26.25.
-mcp9600: raw is 11 uv is 352.000000.
+mcp9600: hot 29.81 delta 1.94 cold 27.75.
+mcp9600: raw is 2 uv is 64.000000.
+mcp9600: hot 16.06 delta 1.94 cold 16.06.
+mcp9600: raw is 2 uv is 64.000000.
+mcp9600: hot 29.81 delta 1.94 cold 27.75.
+mcp9600: raw is 2 uv is 64.000000.
 mcp9600: set adc resolution 12 bit.
-mcp9600: hot 34.88 delta 8.62 cold 26.25.
-mcp9600: raw is 2 uv is 256.000000.
-mcp9600: hot 34.88 delta 8.62 cold 26.25.
-mcp9600: raw is 2 uv is 256.000000.
-mcp9600: hot 34.88 delta 8.62 cold 26.25.
-mcp9600: raw is 2 uv is 256.000000.
-mcp9600: hot 34.88 delta 8.62 cold 26.25.
-mcp9600: raw is 2 uv is 256.000000.
-mcp9600: hot 34.88 delta 8.62 cold 26.25.
-mcp9600: raw is 2 uv is 256.000000.
+mcp9600: hot 29.81 delta 1.94 cold 27.75.
+mcp9600: raw is 0 uv is 0.000000.
+mcp9600: hot 29.81 delta 1.94 cold 27.75.
+mcp9600: raw is 0 uv is 0.000000.
+mcp9600: hot 29.81 delta 1.94 cold 27.75.
+mcp9600: raw is 0 uv is 0.000000.
 mcp9600: set burst mode sample 1.
-mcp9600: hot 35.31 delta 9.12 cold 26.25.
-mcp9600: hot 35.44 delta 9.31 cold 26.25.
-mcp9600: hot 35.50 delta 9.38 cold 26.25.
-mcp9600: hot 35.50 delta 9.38 cold 26.25.
-mcp9600: hot 35.50 delta 9.38 cold 26.25.
+mcp9600: hot 30.50 delta 2.69 cold 27.75.
+mcp9600: hot 30.75 delta 2.94 cold 27.75.
+mcp9600: hot 28.81 delta 1.00 cold 27.75.
 mcp9600: set burst mode sample 2.
-mcp9600: hot 35.50 delta 9.38 cold 26.25.
-mcp9600: hot 35.50 delta 9.38 cold 26.25.
-mcp9600: hot 35.50 delta 9.38 cold 26.25.
-mcp9600: hot 35.50 delta 9.38 cold 26.25.
-mcp9600: hot 35.50 delta 9.38 cold 26.25.
+mcp9600: hot 29.94 delta 2.19 cold 27.75.
+mcp9600: hot 30.75 delta 3.00 cold 27.75.
+mcp9600: hot 31.06 delta 3.06 cold 28.00.
 mcp9600: set burst mode sample 4.
-mcp9600: hot 35.50 delta 9.38 cold 26.25.
-mcp9600: hot 35.75 delta 9.38 cold 26.50.
-mcp9600: hot 35.62 delta 9.38 cold 26.25.
-mcp9600: hot 35.75 delta 9.38 cold 26.50.
-mcp9600: hot 35.75 delta 9.38 cold 26.50.
+mcp9600: hot 30.94 delta 3.06 cold 27.75.
+mcp9600: hot 30.75 delta 3.00 cold 27.75.
+mcp9600: hot 31.00 delta 3.00 cold 28.00.
 mcp9600: set burst mode sample 8.
-mcp9600: hot 35.75 delta 9.38 cold 26.50.
-mcp9600: hot 35.75 delta 9.38 cold 26.50.
-mcp9600: hot 35.75 delta 9.38 cold 26.50.
-mcp9600: hot 35.75 delta 9.38 cold 26.50.
-mcp9600: hot 35.75 delta 9.38 cold 26.50.
+mcp9600: hot 31.06 delta 3.06 cold 28.00.
+mcp9600: hot 31.06 delta 3.06 cold 28.00.
+mcp9600: hot 31.06 delta 3.06 cold 28.00.
 mcp9600: set burst mode sample 16.
-mcp9600: hot 35.88 delta 9.38 cold 26.50.
-mcp9600: hot 36.00 delta 9.38 cold 26.75.
-mcp9600: hot 35.88 delta 9.38 cold 26.50.
-mcp9600: hot 35.88 delta 9.38 cold 26.50.
-mcp9600: hot 35.88 delta 9.38 cold 26.50.
+mcp9600: hot 31.06 delta 3.06 cold 28.00.
+mcp9600: hot 30.94 delta 3.06 cold 27.75.
+mcp9600: hot 31.06 delta 3.06 cold 28.00.
 mcp9600: set burst mode sample 32.
-mcp9600: hot 35.88 delta 9.38 cold 26.50.
-mcp9600: hot 36.00 delta 9.38 cold 26.75.
-mcp9600: hot 35.88 delta 9.38 cold 26.50.
-mcp9600: hot 35.88 delta 9.38 cold 26.50.
-mcp9600: hot 35.88 delta 9.38 cold 26.50.
+mcp9600: hot 31.06 delta 3.06 cold 28.00.
+mcp9600: hot 31.06 delta 3.06 cold 28.00.
+mcp9600: hot 31.06 delta 3.06 cold 28.00.
 mcp9600: set burst mode sample 64.
-mcp9600: hot 35.88 delta 9.38 cold 26.50.
-mcp9600: hot 32.81 delta 6.38 cold 26.50.
-mcp9600: hot 32.94 delta 6.38 cold 26.75.
-mcp9600: hot 32.81 delta 6.38 cold 26.50.
-mcp9600: hot 29.69 delta 3.19 cold 26.50.
+mcp9600: hot 31.06 delta 3.06 cold 28.00.
+mcp9600: hot 31.19 delta 3.06 cold 28.00.
+mcp9600: hot 31.06 delta 3.06 cold 28.00.
 mcp9600: set burst mode sample 128.
-mcp9600: hot 29.81 delta 3.19 cold 26.75.
-mcp9600: hot 29.81 delta 3.19 cold 26.75.
-mcp9600: hot 29.81 delta 3.19 cold 26.75.
-mcp9600: hot 26.88 delta 0.06 cold 26.75.
-mcp9600: hot 26.75 delta 0.06 cold 26.75.
+mcp9600: hot 31.19 delta 3.06 cold 28.00.
+mcp9600: hot 31.19 delta 3.06 cold 28.00.
+mcp9600: hot 31.19 delta 3.06 cold 28.00.
 mcp9600: set filter coefficient 0.
-mcp9600: hot 26.56 delta 0.00 cold 26.50.
-mcp9600: hot 26.56 delta 0.00 cold 26.50.
-mcp9600: hot 26.56 delta 0.00 cold 26.50.
-mcp9600: hot 26.56 delta 0.00 cold 26.50.
-mcp9600: hot 26.56 delta 0.00 cold 26.50.
+mcp9600: hot 31.12 delta 3.12 cold 28.00.
+mcp9600: hot 31.12 delta 3.12 cold 28.00.
+mcp9600: hot 31.12 delta 3.12 cold 28.00.
 mcp9600: set filter coefficient 1.
-mcp9600: hot 26.56 delta 0.00 cold 26.50.
-mcp9600: hot 26.56 delta 0.00 cold 26.50.
-mcp9600: hot 26.56 delta 0.00 cold 26.50.
-mcp9600: hot 26.56 delta 0.00 cold 26.50.
-mcp9600: hot 26.56 delta 0.00 cold 26.50.
+mcp9600: hot 30.06 delta 2.06 cold 28.00.
+mcp9600: hot 30.31 delta 2.31 cold 28.00.
+mcp9600: hot 30.31 delta 2.31 cold 28.00.
 mcp9600: set filter coefficient 2.
-mcp9600: hot 26.31 delta 0.00 cold 26.25.
-mcp9600: hot 26.31 delta 0.00 cold 26.25.
-mcp9600: hot 28.38 delta 2.00 cold 26.50.
-mcp9600: hot 31.00 delta 4.69 cold 26.25.
-mcp9600: hot 32.06 delta 5.69 cold 26.50.
+mcp9600: hot 29.25 delta 1.25 cold 28.00.
+mcp9600: hot 29.56 delta 1.69 cold 27.75.
+mcp9600: hot 29.81 delta 1.88 cold 28.00.
 mcp9600: set filter coefficient 3.
-mcp9600: hot 32.75 delta 6.31 cold 26.50.
-mcp9600: hot 32.75 delta 6.31 cold 26.25.
-mcp9600: hot 32.75 delta 6.31 cold 26.50.
-mcp9600: hot 32.75 delta 6.31 cold 26.50.
-mcp9600: hot 33.81 delta 7.50 cold 26.25.
+mcp9600: hot 28.69 delta 0.69 cold 28.00.
+mcp9600: hot 29.12 delta 1.12 cold 28.00.
+mcp9600: hot 29.38 delta 1.38 cold 28.00.
 mcp9600: set filter coefficient 4.
-mcp9600: hot 33.06 delta 6.62 cold 26.50.
-mcp9600: hot 33.62 delta 7.19 cold 26.50.
-mcp9600: hot 34.00 delta 7.62 cold 26.25.
-mcp9600: hot 34.25 delta 8.00 cold 26.25.
-mcp9600: hot 34.00 delta 7.69 cold 26.50.
+mcp9600: hot 28.38 delta 0.31 cold 28.00.
+mcp9600: hot 28.69 delta 0.62 cold 28.00.
+mcp9600: hot 28.88 delta 0.81 cold 28.00.
 mcp9600: set filter coefficient 5.
-mcp9600: hot 32.50 delta 6.31 cold 26.25.
-mcp9600: hot 32.75 delta 6.62 cold 26.25.
-mcp9600: hot 33.00 delta 6.88 cold 26.25.
-mcp9600: hot 33.25 delta 7.12 cold 26.25.
-mcp9600: hot 33.50 delta 7.38 cold 26.50.
+mcp9600: hot 28.19 delta 0.19 cold 28.00.
+mcp9600: hot 28.19 delta 0.19 cold 28.00.
+mcp9600: hot 28.19 delta 0.19 cold 28.00.
 mcp9600: set filter coefficient 6.
-mcp9600: hot 35.81 delta 9.44 cold 26.50.
-mcp9600: hot 35.81 delta 9.44 cold 26.50.
-mcp9600: hot 35.81 delta 9.44 cold 26.25.
-mcp9600: hot 35.81 delta 9.44 cold 26.25.
-mcp9600: hot 35.81 delta 9.44 cold 26.25.
+mcp9600: hot 28.06 delta 0.00 cold 28.00.
+mcp9600: hot 28.06 delta 0.00 cold 28.00.
+mcp9600: hot 28.06 delta 0.00 cold 28.00.
 mcp9600: set filter coefficient 7.
-mcp9600: hot 35.56 delta 9.44 cold 26.25.
-mcp9600: hot 35.56 delta 9.44 cold 26.50.
-mcp9600: hot 35.56 delta 9.44 cold 26.25.
-mcp9600: hot 35.56 delta 9.44 cold 26.25.
-mcp9600: hot 35.56 delta 9.44 cold 26.25.
+mcp9600: hot 28.06 delta 0.00 cold 28.00.
+mcp9600: hot 28.06 delta 0.00 cold 28.00.
+mcp9600: hot 28.06 delta 0.00 cold 28.00.
 mcp9600: finish read test.
 ```
 
 ```shell
-./mcp9600 -t interrupt -a 0 -type k
+./mcp9600 -t int --addr=0 --type=k
 
 mcp9600: chip is Microchip MCP9600.
 mcp9600: manufacturer is Microchip.
@@ -533,62 +509,85 @@ mcp9600: max current is 2.50mA.
 mcp9600: max temperature is 125.0C.
 mcp9600: min temperature is -40.0C.
 mcp9600: start interrupt test.
-mcp9600: hot 26.31 delta 0.00 cold 105.00.
+mcp9600: hot 28.06 delta 0.00 cold 112.00.
 mcp9600: 49/50.
-mcp9600: hot 27.56 delta 0.94 cold 106.00.
+mcp9600: hot 29.50 delta 1.38 cold 112.25.
 mcp9600: 48/50.
-mcp9600: hot 27.44 delta 0.88 cold 105.75.
+mcp9600: hot 29.56 delta 1.38 cold 112.50.
 mcp9600: 47/50.
-mcp9600: hot 27.50 delta 0.88 cold 106.00.
+mcp9600: hot 29.56 delta 1.38 cold 112.50.
 mcp9600: 46/50.
-mcp9600: hot 31.12 delta 4.62 cold 106.00.
+mcp9600: hot 29.56 delta 1.31 cold 112.50.
+mcp9600: 45/50.
+mcp9600: hot 29.56 delta 1.38 cold 112.50.
+mcp9600: 44/50.
+mcp9600: hot 29.56 delta 1.31 cold 112.50.
+mcp9600: 43/50.
+mcp9600: hot 29.56 delta 1.31 cold 112.50.
+mcp9600: 42/50.
+mcp9600: hot 29.56 delta 1.31 cold 112.50.
+mcp9600: 41/50.
+mcp9600: hot 29.56 delta 1.31 cold 112.50.
+mcp9600: 40/50.
+mcp9600: hot 29.56 delta 1.31 cold 112.50.
+mcp9600: 39/50.
+mcp9600: hot 29.62 delta 1.44 cold 112.50.
+mcp9600: 38/50.
+mcp9600: hot 29.75 delta 1.56 cold 112.50.
+mcp9600: 37/50.
+mcp9600: hot 33.06 delta 5.00 cold 112.50.
 mcp9600: find interrupt and please check alert1 - alert4.
 mcp9600: finish interrupt test.
 ```
 
 ```shell
-./mcp9600 -c basic 3 -a 0 -type k
+./mcp9600 -e read --addr=0 --times=3 --type=k
 
-mcp9600: 3 / 3 hot 26.88 delta 0.19 cold 106.25.
-mcp9600: 2 / 3 hot 26.81 delta 0.19 cold 106.00.
-mcp9600: 1 / 3 hot 26.81 delta 0.19 cold 106.25.
+mcp9600: 3/3 hot 33.38 delta 5.31 cold 112.50.
+mcp9600: 2/3 hot 30.12 delta 1.94 cold 112.50.
+mcp9600: 1/3 hot 30.12 delta 1.94 cold 112.50.
 ```
 
 ```shell
-./mcp9600 -c shot 3 -a 0 -type k
+./mcp9600 -e shot --addr=0 --times=3 --type=k
 
-mcp9600: 3 / 3 hot 26.81 delta 0.19 cold 106.00.
-mcp9600: 2 / 3 hot 26.81 delta 0.19 cold 106.00.
-mcp9600: 1 / 3 hot 26.81 delta 0.19 cold 106.00.
+mcp9600: 3/3 hot 30.00 delta 1.75 cold 112.50.
+mcp9600: 2/3 hot 29.94 delta 1.75 cold 112.50.
+mcp9600: 1/3 hot 29.94 delta 1.75 cold 112.75.
 ```
 
 ```shell
-./mcp9600 -c interrupt 50 -a 0 -type k
+./mcp9600 -e int --addr=0 --times=3 --type=k
 
-mcp9600: 50 / 50 hot 28.81 delta 1.75 cold 107.75.
+mcp9600: 3/3 hot 29.94 delta 1.75 cold 112.75.
 mcp9600: find interrupt.
 ```
 
 ```shell
 ./mcp9600 -h
 
-mcp9600 -i
-	show mcp9600 chip and driver information.
-mcp9600 -h
-	show mcp9600 help.
-mcp9600 -p
-	show mcp9600 pin connections of the current board.
-mcp9600 -t reg -a (0|1)
-	run mcp9600 register test.
-mcp9600 -t read <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r)
-	run mcp9600 read test.times means test times..
-mcp9600 -t interrupt -a (0 | 1) -type (k | j | t | n | s | e | b | r)
-	run mcp9600 interrupt test.
-mcp9600 -c basic <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r)
-	run mcp9600 basic read function.times means read times.
-mcp9600 -c shot <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r)
-	run mcp9600 shot read function.times means read times.
-mcp9600 -c interrupt <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r)
-	run mcp9600 interrupt read function.times means read times.
+Usage:
+  mcp9600 (-i | --information)
+  mcp9600 (-h | --help)
+  mcp9600 (-p | --port)
+  mcp9600 (-t reg | --test=reg) [--addr=<0 | 1>]
+  mcp9600 (-t read | --test=read) [--addr=<0 | 1>] [--times=<num>] [--type=<k | j | t | n | s | e | b | r>]
+  mcp9600 (-t int | --test=int) [--addr=<0 | 1>] [--type=<k | j | t | n | s | e | b | r>]
+  mcp9600 (-e read | --example=read) [--addr=<0 | 1>] [--times=<num>] [--type=<k | j | t | n | s | e | b | r>]
+  mcp9600 (-e shot | --example=shot) [--addr=<0 | 1>] [--times=<num>] [--type=<k | j | t | n | s | e | b | r>]
+  mcp9600 (-e int | --example=int) [--addr=<0 | 1>] [--times=<num>] [--type=<k | j | t | n | s | e | b | r>]
+
+Options:
+      --addr=<0 | 1>               Set the addr pin.([default: 0])
+  -e <read | shot | int>, --example=<read | shot | int>
+                                   Run the driver example.
+  -h, --help                       Show the help.
+  -i, --information                Show the chip information.
+  -p, --port                       Display the pin connections of the current board.
+  -t <reg | read | int>, --test=<reg | read | int>
+                                   Run the driver test.
+      --times=<num>                Set the running times.([default: 3])
+      --type=<k | j | t | n | s | e | b | r>
+                                   Set the thermocouple type.([default: k])
 ```
 

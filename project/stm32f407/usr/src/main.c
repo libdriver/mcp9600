@@ -45,14 +45,15 @@
 #include "delay.h"
 #include "uart.h"
 #include "gpio.h"
+#include "getopt.h"
 #include <stdlib.h>
 
 /**
  * @brief global var definition
  */
 uint8_t g_buf[256];        /**< uart buffer */
-uint16_t g_len;            /**< uart buffer length */
-uint8_t g_flag;            /**< interrupt flag */
+volatile uint16_t g_len;   /**< uart buffer length */
+volatile uint8_t g_flag;   /**< interrupt flag */
 
 /**
  * @brief exti 0 irq
@@ -88,689 +89,463 @@ void HAL_GPIO_EXTI_Callback(uint16_t pin)
  */
 uint8_t mcp9600(uint8_t argc, char **argv)
 {
+    int c;
+    int longindex = 0;
+    const char short_options[] = "hipe:t:";
+    const struct option long_options[] =
+    {
+        {"help", no_argument, NULL, 'h'},
+        {"information", no_argument, NULL, 'i'},
+        {"port", no_argument, NULL, 'p'},
+        {"example", required_argument, NULL, 'e'},
+        {"test", required_argument, NULL, 't'},
+        {"addr", required_argument, NULL, 1},
+        {"times", required_argument, NULL, 2},
+        {"type", required_argument, NULL, 3},
+        {NULL, 0, NULL, 0},
+    };
+    char type[32] = "unknow";
+    uint32_t times = 3;
+    mcp9600_address_t addr = MCP9600_ADDRESS_0;
+    mcp9600_thermocouple_type_t chip_type = MCP9600_THERMOCOUPLE_TYPE_K;
+    
+    /* if no params */
     if (argc == 1)
     {
+        /* goto the help */
         goto help;
     }
-    else if (argc == 2)
+    
+    /* init 0 */
+    optind = 0;
+    
+    /* parse */
+    do
     {
-        if (strcmp("-i", argv[1]) == 0)
+        /* parse the args */
+        c = getopt_long(argc, argv, short_options, long_options, &longindex);
+        
+        /* judge the result */
+        switch (c)
         {
-            mcp9600_info_t info;
+            /* help */
+            case 'h' :
+            {
+                /* set the type */
+                memset(type, 0, sizeof(char) * 32);
+                snprintf(type, 32, "h");
+                
+                break;
+            }
             
-            /* print mcp9600 info */
-            mcp9600_info(&info);
-            mcp9600_interface_debug_print("mcp9600: chip is %s.\n", info.chip_name);
-            mcp9600_interface_debug_print("mcp9600: manufacturer is %s.\n", info.manufacturer_name);
-            mcp9600_interface_debug_print("mcp9600: interface is %s.\n", info.interface);
-            mcp9600_interface_debug_print("mcp9600: driver version is %d.%d.\n", info.driver_version / 1000, (info.driver_version % 1000) / 100);
-            mcp9600_interface_debug_print("mcp9600: min supply voltage is %0.1fV.\n", info.supply_voltage_min_v);
-            mcp9600_interface_debug_print("mcp9600: max supply voltage is %0.1fV.\n", info.supply_voltage_max_v);
-            mcp9600_interface_debug_print("mcp9600: max current is %0.2fmA.\n", info.max_current_ma);
-            mcp9600_interface_debug_print("mcp9600: max temperature is %0.1fC.\n", info.temperature_max);
-            mcp9600_interface_debug_print("mcp9600: min temperature is %0.1fC.\n", info.temperature_min);
+            /* information */
+            case 'i' :
+            {
+                /* set the type */
+                memset(type, 0, sizeof(char) * 32);
+                snprintf(type, 32, "i");
+                
+                break;
+            }
             
+            /* port */
+            case 'p' :
+            {
+                /* set the type */
+                memset(type, 0, sizeof(char) * 32);
+                snprintf(type, 32, "p");
+                
+                break;
+            }
+            
+            /* example */
+            case 'e' :
+            {
+                /* set the type */
+                memset(type, 0, sizeof(char) * 32);
+                snprintf(type, 32, "e_%s", optarg);
+                
+                break;
+            }
+            
+            /* test */
+            case 't' :
+            {
+                /* set the type */
+                memset(type, 0, sizeof(char) * 32);
+                snprintf(type, 32, "t_%s", optarg);
+                
+                break;
+            }
+            
+            /* addr */
+            case 1 :
+            {
+                /* set the addr pin */
+                if (strcmp("0", optarg) == 0)
+                {
+                    addr = MCP9600_ADDRESS_0;
+                }
+                else if (strcmp("1", optarg) == 0)
+                {
+                    addr = MCP9600_ADDRESS_1;
+                }
+                else
+                {
+                    return 5;
+                }
+                
+                break;
+            }
+
+            /* running times */
+            case 2 :
+            {
+                /* set the times */
+                times = atol(optarg);
+                
+                break;
+            } 
+            
+            /* type */
+            case 3 :
+            {
+                /* set the type */
+                if (strcmp("k", optarg) == 0)
+                {
+                    chip_type = MCP9600_THERMOCOUPLE_TYPE_K;
+                }
+                else if (strcmp("j", optarg) == 0)
+                {
+                    chip_type = MCP9600_THERMOCOUPLE_TYPE_J;
+                }
+                else if (strcmp("t", optarg) == 0)
+                {
+                    chip_type = MCP9600_THERMOCOUPLE_TYPE_T;
+                }
+                else if (strcmp("n", optarg) == 0)
+                {
+                    chip_type = MCP9600_THERMOCOUPLE_TYPE_N;
+                }
+                else if (strcmp("s", optarg) == 0)
+                {
+                    chip_type = MCP9600_THERMOCOUPLE_TYPE_S;
+                }
+                else if (strcmp("e", optarg) == 0)
+                {
+                    chip_type = MCP9600_THERMOCOUPLE_TYPE_E;
+                }
+                else if (strcmp("b", optarg) == 0)
+                {
+                    chip_type = MCP9600_THERMOCOUPLE_TYPE_B;
+                }
+                else if (strcmp("r", optarg) == 0)
+                {
+                    chip_type = MCP9600_THERMOCOUPLE_TYPE_R;
+                }
+                else
+                {
+                    return 5;
+                }
+                
+                break;
+            }
+            
+            /* the end */
+            case -1 :
+            {
+                break;
+            }
+            
+            /* others */
+            default :
+            {
+                return 5;
+            }
+        }
+    } while (c != -1);
+
+    /* run the function */
+    if (strcmp("t_reg", type) == 0)
+    {
+        /* run reg test */
+        if (mcp9600_register_test(addr) != 0)
+        {
+            return 1;
+        }
+        else
+        {
             return 0;
         }
-        else if (strcmp("-p", argv[1]) == 0)
+    }
+    else if (strcmp("t_read", type) == 0)
+    {
+        /* run read test */
+        if (mcp9600_read_test(addr, chip_type, times) != 0)
         {
-            /* print pin connection */
-            mcp9600_interface_debug_print("mcp9600: SCL connected to GPIOB PIN8.\n");
-            mcp9600_interface_debug_print("mcp9600: SDA connected to GPIOB PIN9.\n");
-            mcp9600_interface_debug_print("mcp9600: INT connected to GPIOB PIN0.\n");
-            
+            return 1;
+        }
+        else
+        {
             return 0;
         }
-        else if (strcmp("-h", argv[1]) == 0)
+    }
+    else if (strcmp("t_int", type) == 0)
+    {
+        /* run int test */
+        if (mcp9600_interrupt_test(addr, chip_type) != 0)
         {
-            /* show mcp9600 help */
-            
-            help:
-            
-            mcp9600_interface_debug_print("mcp9600 -i\n\tshow mcp9600 chip and driver information.\n");
-            mcp9600_interface_debug_print("mcp9600 -h\n\tshow mcp9600 help.\n");
-            mcp9600_interface_debug_print("mcp9600 -p\n\tshow mcp9600 pin connections of the current board.\n");
-            mcp9600_interface_debug_print("mcp9600 -t reg -a (0|1)\n\trun mcp9600 register test.\n");
-            mcp9600_interface_debug_print("mcp9600 -t read <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r)\n\trun mcp9600 read test."
-                                          "times means test times..\n");
-            mcp9600_interface_debug_print("mcp9600 -t interrupt -a (0 | 1) -type (k | j | t | n | s | e | b | r)\n\t"
-                                          "run mcp9600 interrupt test.\n");
-            mcp9600_interface_debug_print("mcp9600 -c basic <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r)\n\t"
-                                          "run mcp9600 basic read function.times means read times.\n");
-            mcp9600_interface_debug_print("mcp9600 -c shot <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r)\n\t"
-                                          "run mcp9600 shot read function.times means read times.\n");
-            mcp9600_interface_debug_print("mcp9600 -c interrupt <times> -a (0 | 1) -type (k | j | t | n | s | e | b | r)\n\t"
-                                          "run mcp9600 interrupt read function.times means read times.\n");
-            
+            return 1;
+        }
+        else
+        {
             return 0;
         }
-        else
-        {
-            return 5;
-        }
     }
-    else if (argc == 5)
+    else if (strcmp("e_read", type) == 0)
     {
-        if (strcmp("-t", argv[1]) == 0)
+        uint8_t res;
+        uint32_t i;
+        
+        /* basic init */
+        res = mcp9600_basic_init(addr, chip_type);
+        if (res != 0)
         {
-            if (strcmp("reg", argv[2]) == 0)
-            {
-                if (strcmp("-a", argv[3]) == 0)
-                {
-                    mcp9600_address_t addr_pin;
-                    
-                    if (strcmp("0", argv[4]) == 0)
-                    {
-                        addr_pin = MCP9600_ADDRESS_0;
-                    }
-                    else if (strcmp("1", argv[4]) == 0)
-                    {
-                        addr_pin = MCP9600_ADDRESS_1;
-                    }
-                    else
-                    {
-                        return 5;
-                    }
-                    
-                    return mcp9600_register_test(addr_pin);
-                }
-                else
-                {
-                    return 5;
-                }
-            }
-            else
-            {
-                return 5;
-            }
+            return 1;
         }
-        else
+        
+        /* loop */
+        for (i = 0; i < times; i++)
         {
-            return 5;
+            int16_t hot_raw;
+            float hot_s;
+            int16_t delta_raw;
+            float delta_s;
+            int16_t cold_raw;
+            float cold_s;
+            
+            /* basic read */
+            res = mcp9600_basic_read((int16_t *)&hot_raw, (float *)&hot_s,
+                                     (int16_t *)&delta_raw, (float *)&delta_s,
+                                     (int16_t *)&cold_raw, (float *)&cold_s);
+            if (res != 0)
+            {
+                mcp9600_interface_debug_print("mcp9600: basic read failed.\n");
+                (void)mcp9600_basic_deinit();
+                
+                return 1;
+            }
+            
+            /* 1000 ms */
+            mcp9600_interface_delay_ms(1000);
+            
+            /* output */
+            mcp9600_interface_debug_print("mcp9600: %d/%d hot %0.2f delta %0.2f cold %0.2f.\n", times - i, times, hot_s, delta_s, cold_s);
         }
+        
+        /* deinit */
+        (void)mcp9600_basic_deinit();
+        
+        return 0;
     }
-    else if (argc == 7)
+    else if (strcmp("e_shot", type) == 0)
     {
-        if (strcmp("-t", argv[1]) == 0)
+        uint8_t res;
+        uint32_t i;
+
+        /* shot init */
+        res = mcp9600_shot_init(addr, chip_type);
+        if (res != 0)
         {
-            if (strcmp("interrupt", argv[2]) == 0)
-            {
-                if (strcmp("-a", argv[3]) == 0)
-                {
-                    if (strcmp("-type", argv[5]) == 0)
-                    {
-                        mcp9600_address_t addr_pin;
-                        mcp9600_thermocouple_type_t type;
-                        
-                        if (strcmp("0", argv[4]) == 0)
-                        {
-                            addr_pin = MCP9600_ADDRESS_0;
-                        }
-                        else if (strcmp("1", argv[4]) == 0)
-                        {
-                            addr_pin = MCP9600_ADDRESS_1;
-                        }
-                        else
-                        {
-                            return 5;
-                        }
-                        if (strcmp("k", argv[6]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_K;
-                        }
-                        else if (strcmp("j", argv[6]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_J;
-                        }
-                        else if (strcmp("t", argv[6]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_T;
-                        }
-                        else if (strcmp("n", argv[6]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_N;
-                        }
-                        else if (strcmp("s", argv[6]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_S;
-                        }
-                        else if (strcmp("e", argv[6]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_E;
-                        }
-                        else if (strcmp("b", argv[6]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_B;
-                        }
-                        else if (strcmp("r", argv[6]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_R;
-                        }
-                        else
-                        {
-                            return 5;
-                        }
-                        
-                        return mcp9600_interrupt_test(addr_pin, type);
-                    }
-                    else
-                    {
-                        return 5;
-                    }
-                }
-                else
-                {
-                    return 5;
-                }
-            }
-            else
-            {
-                return 5;
-            }
+            return 1;
         }
-        else
+        
+        /* loop */
+        for (i = 0; i < times; i++)
         {
-            return 5;
+            int16_t hot_raw;
+            float hot_s;
+            int16_t delta_raw;
+            float delta_s;
+            int16_t cold_raw;
+            float cold_s;
+            
+            /* shot read */
+            res = mcp9600_shot_read((int16_t *)&hot_raw, (float *)&hot_s,
+                                    (int16_t *)&delta_raw, (float *)&delta_s,
+                                    (int16_t *)&cold_raw, (float *)&cold_s);
+            if (res != 0)
+            {
+                mcp9600_interface_debug_print("mcp9600: shot read failed.\n");
+                (void)mcp9600_shot_deinit();
+                
+                return 1;
+            }
+            
+            /* 1000 ms */
+            mcp9600_interface_delay_ms(1000);
+            
+            /* output */
+            mcp9600_interface_debug_print("mcp9600: %d/%d hot %0.2f delta %0.2f cold %0.2f.\n", times - i, times, hot_s, delta_s, cold_s);
         }
+        
+        /* deinit */
+        (void)mcp9600_shot_deinit();
+        
+        return 0;
     }
-    else if (argc == 8)
+    else if (strcmp("e_int", type) == 0)
     {
-        if (strcmp("-t", argv[1]) == 0)
+        uint8_t res;
+        uint32_t i;
+
+        /* gpio init */
+        g_flag = 0;
+        res = gpio_interrupt_init();
+        if (res != 0)
         {
-            if (strcmp("read", argv[2]) == 0)
+            return 1;
+        }
+        
+        /* interrupt init */
+        res = mcp9600_interrupt_init(addr, chip_type);
+        if (res != 0)
+        {
+            (void)gpio_interrupt_deinit();
+            
+            return 1;
+        }
+        
+        /* clear all */
+        res = mcp9600_interrupt_clear(MCP9600_ALERT_1);
+        if (res != 0)
+        {
+            mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
+            (void)mcp9600_interrupt_deinit();
+            (void)gpio_interrupt_deinit();
+        }
+        res = mcp9600_interrupt_clear(MCP9600_ALERT_2);
+        if (res != 0)
+        {
+            mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
+            (void)mcp9600_interrupt_deinit();
+            (void)gpio_interrupt_deinit();
+        }
+        res = mcp9600_interrupt_clear(MCP9600_ALERT_3);
+        if (res != 0)
+        {
+            mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
+            (void)mcp9600_interrupt_deinit();
+            (void)gpio_interrupt_deinit();
+        }
+        res = mcp9600_interrupt_clear(MCP9600_ALERT_4);
+        if (res != 0)
+        {
+            mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
+            (void)mcp9600_interrupt_deinit();
+            (void)gpio_interrupt_deinit();
+        }
+        
+        /* loop */
+        for (i = 0; i < times; i++)
+        {
+            int16_t hot_raw;
+            float hot_s;
+            int16_t delta_raw;
+            float delta_s;
+            int16_t cold_raw;
+            float cold_s;
+            
+            /* interrupt read */
+            res = mcp9600_interrupt_read((int16_t *)&hot_raw, (float *)&hot_s,
+                                         (int16_t *)&delta_raw, (float *)&delta_s,
+                                         (int16_t *)&cold_raw, (float *)&cold_s);
+            if (res != 0)
             {
-                if (strcmp("-a", argv[4]) == 0)
-                {
-                    if (strcmp("-type", argv[6]) == 0)
-                    {
-                        mcp9600_address_t addr_pin;
-                        mcp9600_thermocouple_type_t type;
-                        
-                        if (strcmp("0", argv[5]) == 0)
-                        {
-                            addr_pin = MCP9600_ADDRESS_0;
-                        }
-                        else if (strcmp("1", argv[5]) == 0)
-                        {
-                            addr_pin = MCP9600_ADDRESS_1;
-                        }
-                        else
-                        {
-                            return 5;
-                        }
-                        if (strcmp("k", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_K;
-                        }
-                        else if (strcmp("j", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_J;
-                        }
-                        else if (strcmp("t", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_T;
-                        }
-                        else if (strcmp("n", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_N;
-                        }
-                        else if (strcmp("s", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_S;
-                        }
-                        else if (strcmp("e", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_E;
-                        }
-                        else if (strcmp("b", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_B;
-                        }
-                        else if (strcmp("r", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_R;
-                        }
-                        else
-                        {
-                            return 5;
-                        }
-                        
-                        return mcp9600_read_test(addr_pin, type, atoi(argv[3]));
-                    }
-                    else
-                    {
-                        return 5;
-                    }
-                }
-                else
-                {
-                    return 5;
-                }
+                mcp9600_interface_debug_print("mcp9600: interrupt read failed.\n");
+                (void)mcp9600_interrupt_deinit();
+                (void)gpio_interrupt_deinit();
+                
+                return 1;
             }
-            else
+            
+            /* 1000 ms */
+            mcp9600_interface_delay_ms(1000);
+            
+            /* output */
+            mcp9600_interface_debug_print("mcp9600: %d/%d hot %0.2f delta %0.2f cold %0.2f.\n", times - i, times, hot_s, delta_s, cold_s);
+            
+            /* check the flag */
+            if (g_flag != 0)
             {
-                return 5;
+                mcp9600_interface_debug_print("mcp9600: find interrupt.\n");
+                
+                break;
             }
         }
-        else if (strcmp("-c", argv[1]) == 0)
-        {
-            if (strcmp("basic", argv[2]) == 0)
-            {
-                if (strcmp("-a", argv[4]) == 0)
-                {
-                    if (strcmp("-type", argv[6]) == 0)
-                    {
-                        uint8_t res;
-                        uint16_t i, times;
-                        mcp9600_address_t addr_pin;
-                        mcp9600_thermocouple_type_t type;
-                        
-                        if (strcmp("0", argv[5]) == 0)
-                        {
-                            addr_pin = MCP9600_ADDRESS_0;
-                        }
-                        else if (strcmp("1", argv[5]) == 0)
-                        {
-                            addr_pin = MCP9600_ADDRESS_1;
-                        }
-                        else
-                        {
-                            return 5;
-                        }
-                        if (strcmp("k", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_K;
-                        }
-                        else if (strcmp("j", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_J;
-                        }
-                        else if (strcmp("t", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_T;
-                        }
-                        else if (strcmp("n", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_N;
-                        }
-                        else if (strcmp("s", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_S;
-                        }
-                        else if (strcmp("e", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_E;
-                        }
-                        else if (strcmp("b", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_B;
-                        }
-                        else if (strcmp("r", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_R;
-                        }
-                        else
-                        {
-                            return 5;
-                        }
-                        
-                        times = (uint16_t)atoi(argv[3]);
-                        
-                        /* basic init */
-                        res = mcp9600_basic_init(addr_pin, type);
-                        if (res != 0)
-                        {
-                            return 1;
-                        }
-                        
-                        for (i = 0; i < times; i++)
-                        {
-                            int16_t hot_raw;
-                            float hot_s;
-                            int16_t delta_raw;
-                            float delta_s;
-                            int16_t cold_raw;
-                            float cold_s;
-                            
-                            /* basic read */
-                            res = mcp9600_basic_read((int16_t *)&hot_raw, (float *)&hot_s,
-                                                     (int16_t *)&delta_raw, (float *)&delta_s,
-                                                     (int16_t *)&cold_raw, (float *)&cold_s);
-                            if (res != 0)
-                            {
-                                mcp9600_interface_debug_print("mcp9600: basic read failed.\n");
-                                (void)mcp9600_basic_deinit();
-                                
-                                return 1;
-                            }
-                            
-                            /* 1000 ms */
-                            mcp9600_interface_delay_ms(1000);
-                            
-                            /* print */
-                            mcp9600_interface_debug_print("mcp9600: %d / %d hot %0.2f delta %0.2f cold %0.2f.\n", times - i, times, hot_s, delta_s, cold_s);
-                        }
-                        
-                        /* deinit */
-                        res = mcp9600_basic_deinit();
-                        if (res != 0)
-                        {
-                            return 1;
-                        }
-                        else
-                        {
-                            return 0;
-                        }
-                    }
-                    else
-                    {
-                        return 5;
-                    }
-                }
-                else
-                {
-                    return 5;
-                }
-            }
-            else if (strcmp("shot", argv[2]) == 0)
-            {
-                if (strcmp("-a", argv[4]) == 0)
-                {
-                    if (strcmp("-type", argv[6]) == 0)
-                    {
-                        uint8_t res;
-                        uint16_t i, times;
-                        mcp9600_address_t addr_pin;
-                        mcp9600_thermocouple_type_t type;
-                        
-                        if (strcmp("0", argv[5]) == 0)
-                        {
-                            addr_pin = MCP9600_ADDRESS_0;
-                        }
-                        else if (strcmp("1", argv[5]) == 0)
-                        {
-                            addr_pin = MCP9600_ADDRESS_1;
-                        }
-                        else
-                        {
-                            return 5;
-                        }
-                        if (strcmp("k", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_K;
-                        }
-                        else if (strcmp("j", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_J;
-                        }
-                        else if (strcmp("t", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_T;
-                        }
-                        else if (strcmp("n", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_N;
-                        }
-                        else if (strcmp("s", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_S;
-                        }
-                        else if (strcmp("e", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_E;
-                        }
-                        else if (strcmp("b", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_B;
-                        }
-                        else if (strcmp("r", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_R;
-                        }
-                        else
-                        {
-                            return 5;
-                        }
-                        
-                        times = (uint16_t)atoi(argv[3]);
-                        
-                        /* shot init */
-                        res = mcp9600_shot_init(addr_pin, type);
-                        if (res != 0)
-                        {
-                            return 1;
-                        }
-                        
-                        for (i = 0; i < times; i++)
-                        {
-                            int16_t hot_raw;
-                            float hot_s;
-                            int16_t delta_raw;
-                            float delta_s;
-                            int16_t cold_raw;
-                            float cold_s;
-                            
-                            /* shot read */
-                            res = mcp9600_shot_read((int16_t *)&hot_raw, (float *)&hot_s,
-                                                    (int16_t *)&delta_raw, (float *)&delta_s,
-                                                    (int16_t *)&cold_raw, (float *)&cold_s);
-                            if (res != 0)
-                            {
-                                mcp9600_interface_debug_print("mcp9600: shot read failed.\n");
-                                (void)mcp9600_shot_deinit();
-                                
-                                return 1;
-                            }
-                            
-                            /* 1000 ms */
-                            mcp9600_interface_delay_ms(1000);
-                            
-                            /* print */
-                            mcp9600_interface_debug_print("mcp9600: %d / %d hot %0.2f delta %0.2f cold %0.2f.\n", times - i, times, hot_s, delta_s, cold_s);
-                        }
-                        
-                        /* deinit */
-                        res = mcp9600_shot_deinit();
-                        if (res != 0)
-                        {
-                            return 1;
-                        }
-                        else
-                        {
-                            return 0;
-                        }
-                    }
-                    else
-                    {
-                        return 5;
-                    }
-                }
-                else
-                {
-                    return 5;
-                }
-            }
-            else if (strcmp("interrupt", argv[2]) == 0)
-            {
-                if (strcmp("-a", argv[4]) == 0)
-                {
-                    if (strcmp("-type", argv[6]) == 0)
-                    {
-                        uint8_t res;
-                        uint16_t i, times;
-                        mcp9600_address_t addr_pin;
-                        mcp9600_thermocouple_type_t type;
-                        
-                        if (strcmp("0", argv[5]) == 0)
-                        {
-                            addr_pin = MCP9600_ADDRESS_0;
-                        }
-                        else if (strcmp("1", argv[5]) == 0)
-                        {
-                            addr_pin = MCP9600_ADDRESS_1;
-                        }
-                        else
-                        {
-                            return 5;
-                        }
-                        if (strcmp("k", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_K;
-                        }
-                        else if (strcmp("j", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_J;
-                        }
-                        else if (strcmp("t", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_T;
-                        }
-                        else if (strcmp("n", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_N;
-                        }
-                        else if (strcmp("s", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_S;
-                        }
-                        else if (strcmp("e", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_E;
-                        }
-                        else if (strcmp("b", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_B;
-                        }
-                        else if (strcmp("r", argv[7]) == 0)
-                        {
-                            type = MCP9600_THERMOCOUPLE_TYPE_R;
-                        }
-                        else
-                        {
-                            return 5;
-                        }
-                        
-                        times = (uint16_t)atoi(argv[3]);
-                        
-                        /* gpio init */
-                        g_flag = 0;
-                        res = gpio_interrupt_init();
-                        if (res != 0)
-                        {
-                            return 1;
-                        }
-                        
-                        /* interrupt init */
-                        res = mcp9600_interrupt_init(addr_pin, type);
-                        if (res != 0)
-                        {
-                            (void)gpio_interrupt_deinit();
-                            
-                            return 1;
-                        }
-                        
-                        /* clear all */
-                        res = mcp9600_interrupt_clear(MCP9600_ALERT_1);
-                        if (res != 0)
-                        {
-                            mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
-                            (void)mcp9600_interrupt_deinit();
-                            (void)gpio_interrupt_deinit();
-                        }
-                        res = mcp9600_interrupt_clear(MCP9600_ALERT_2);
-                        if (res != 0)
-                        {
-                            mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
-                            (void)mcp9600_interrupt_deinit();
-                            (void)gpio_interrupt_deinit();
-                        }
-                        res = mcp9600_interrupt_clear(MCP9600_ALERT_3);
-                        if (res != 0)
-                        {
-                            mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
-                            (void)mcp9600_interrupt_deinit();
-                            (void)gpio_interrupt_deinit();
-                        }
-                        res = mcp9600_interrupt_clear(MCP9600_ALERT_4);
-                        if (res != 0)
-                        {
-                            mcp9600_interface_debug_print("mcp9600: interrupt clear failed.\n");
-                            (void)mcp9600_interrupt_deinit();
-                            (void)gpio_interrupt_deinit();
-                        }
-                        
-                        for (i = 0; i < times; i++)
-                        {
-                            int16_t hot_raw;
-                            float hot_s;
-                            int16_t delta_raw;
-                            float delta_s;
-                            int16_t cold_raw;
-                            float cold_s;
-                            
-                            /* interrupt read */
-                            res = mcp9600_interrupt_read((int16_t *)&hot_raw, (float *)&hot_s,
-                                                    (int16_t *)&delta_raw, (float *)&delta_s,
-                                                    (int16_t *)&cold_raw, (float *)&cold_s);
-                            if (res != 0)
-                            {
-                                mcp9600_interface_debug_print("mcp9600: interrupt read failed.\n");
-                                (void)mcp9600_interrupt_deinit();
-                                (void)gpio_interrupt_deinit();
-                                
-                                return 1;
-                            }
-                            
-                            /* 1000 ms */
-                            mcp9600_interface_delay_ms(1000);
-                            
-                            /* print */
-                            mcp9600_interface_debug_print("mcp9600: %d / %d hot %0.2f delta %0.2f cold %0.2f.\n", times - i, times, hot_s, delta_s, cold_s);
-                            
-                            if (g_flag != 0)
-                            {
-                                mcp9600_interface_debug_print("mcp9600: find interrupt.\n");
-                                
-                                break;
-                            }
-                        }
-                        
-                        /* deinit */
-                        res = mcp9600_interrupt_deinit();
-                        if (res != 0)
-                        {
-                            (void)gpio_interrupt_deinit();
-                            
-                            return 1;
-                        }
-                        else
-                        {
-                            (void)gpio_interrupt_deinit();
-                            
-                            return 0;
-                        }
-                    }
-                    else
-                    {
-                        return 5;
-                    }
-                }
-                else
-                {
-                    return 5;
-                }
-            }
-            else
-            {
-                return 5;
-            }
-        }
-        else
-        {
-            return 5;
-        }
+        
+        /* deinit */
+        (void)mcp9600_interrupt_deinit();
+        (void)gpio_interrupt_deinit();
+        
+        return 0;
     }
-    /* param is invalid */
+    else if (strcmp("h", type) == 0)
+    {
+        help:
+        mcp9600_interface_debug_print("Usage:\n");
+        mcp9600_interface_debug_print("  mcp9600 (-i | --information)\n");
+        mcp9600_interface_debug_print("  mcp9600 (-h | --help)\n");
+        mcp9600_interface_debug_print("  mcp9600 (-p | --port)\n");
+        mcp9600_interface_debug_print("  mcp9600 (-t reg | --test=reg) [--addr=<0 | 1>]\n");
+        mcp9600_interface_debug_print("  mcp9600 (-t read | --test=read) [--addr=<0 | 1>] [--times=<num>] [--type=<k | j | t | n | s | e | b | r>]\n");
+        mcp9600_interface_debug_print("  mcp9600 (-t int | --test=int) [--addr=<0 | 1>] [--type=<k | j | t | n | s | e | b | r>]\n");
+        mcp9600_interface_debug_print("  mcp9600 (-e read | --example=read) [--addr=<0 | 1>] [--times=<num>] [--type=<k | j | t | n | s | e | b | r>]\n");
+        mcp9600_interface_debug_print("  mcp9600 (-e shot | --example=shot) [--addr=<0 | 1>] [--times=<num>] [--type=<k | j | t | n | s | e | b | r>]\n");
+        mcp9600_interface_debug_print("  mcp9600 (-e int | --example=int) [--addr=<0 | 1>] [--times=<num>] [--type=<k | j | t | n | s | e | b | r>]\n");
+        mcp9600_interface_debug_print("\n");
+        mcp9600_interface_debug_print("Options:\n");
+        mcp9600_interface_debug_print("      --addr=<0 | 1>               Set the addr pin.([default: 0])\n");
+        mcp9600_interface_debug_print("  -e <read | shot | int>, --example=<read | shot | int>\n");
+        mcp9600_interface_debug_print("                                   Run the driver example.\n");
+        mcp9600_interface_debug_print("  -h, --help                       Show the help.\n");
+        mcp9600_interface_debug_print("  -i, --information                Show the chip information.\n");
+        mcp9600_interface_debug_print("  -p, --port                       Display the pin connections of the current board.\n");
+        mcp9600_interface_debug_print("  -t <reg | read | int>, --test=<reg | read | int>\n");
+        mcp9600_interface_debug_print("                                   Run the driver test.\n");
+        mcp9600_interface_debug_print("      --times=<num>                Set the running times.([default: 3])\n");
+        mcp9600_interface_debug_print("      --type=<k | j | t | n | s | e | b | r>\n");
+        mcp9600_interface_debug_print("                                   Set the thermocouple type.([default: k])\n");
+        
+        return 0;
+    }
+    else if (strcmp("i", type) == 0)
+    {
+        mcp9600_info_t info;
+        
+        /* print mcp9600 info */
+        mcp9600_info(&info);
+        mcp9600_interface_debug_print("mcp9600: chip is %s.\n", info.chip_name);
+        mcp9600_interface_debug_print("mcp9600: manufacturer is %s.\n", info.manufacturer_name);
+        mcp9600_interface_debug_print("mcp9600: interface is %s.\n", info.interface);
+        mcp9600_interface_debug_print("mcp9600: driver version is %d.%d.\n", info.driver_version / 1000, (info.driver_version % 1000) / 100);
+        mcp9600_interface_debug_print("mcp9600: min supply voltage is %0.1fV.\n", info.supply_voltage_min_v);
+        mcp9600_interface_debug_print("mcp9600: max supply voltage is %0.1fV.\n", info.supply_voltage_max_v);
+        mcp9600_interface_debug_print("mcp9600: max current is %0.2fmA.\n", info.max_current_ma);
+        mcp9600_interface_debug_print("mcp9600: max temperature is %0.1fC.\n", info.temperature_max);
+        mcp9600_interface_debug_print("mcp9600: min temperature is %0.1fC.\n", info.temperature_min);
+        
+        return 0;
+    }
+    else if (strcmp("p", type) == 0)
+    {
+        /* print pin connection */
+        mcp9600_interface_debug_print("mcp9600: SCL connected to GPIOB PIN8.\n");
+        mcp9600_interface_debug_print("mcp9600: SDA connected to GPIOB PIN9.\n");
+        mcp9600_interface_debug_print("mcp9600: INT connected to GPIOB PIN0.\n");
+        
+        return 0;
+    }
     else
     {
         return 5;
@@ -791,19 +566,19 @@ int main(void)
     /* delay init */
     delay_init();
     
-    /* uart1 init */
-    uart1_init(115200);
+    /* uart init */
+    uart_init(115200);
     
     /* shell init && register mcp9600 fuction */
     shell_init();
     shell_register("mcp9600", mcp9600);
-    uart1_print("mcp9600: welcome to libdriver mcp9600.\n");
+    uart_print("mcp9600: welcome to libdriver mcp9600.\n");
     
     while (1)
     {
         /* read uart */
-        g_len = uart1_read(g_buf, 256);
-        if (g_len)
+        g_len = uart_read(g_buf, 256);
+        if (g_len != 0)
         {
             /* run shell */
             res = shell_parse((char *)g_buf, g_len);
@@ -813,29 +588,29 @@ int main(void)
             }
             else if (res == 1)
             {
-                uart1_print("mcp9600: run failed.\n");
+                uart_print("mcp9600: run failed.\n");
             }
             else if (res == 2)
             {
-                uart1_print("mcp9600: unknow command.\n");
+                uart_print("mcp9600: unknow command.\n");
             }
             else if (res == 3)
             {
-                uart1_print("mcp9600: length is too long.\n");
+                uart_print("mcp9600: length is too long.\n");
             }
             else if (res == 4)
             {
-                uart1_print("mcp9600: pretreat failed.\n");
+                uart_print("mcp9600: pretreat failed.\n");
             }
             else if (res == 5)
             {
-                uart1_print("mcp9600: param is invalid.\n");
+                uart_print("mcp9600: param is invalid.\n");
             }
             else
             {
-                uart1_print("mcp9600: unknow status code.\n");
+                uart_print("mcp9600: unknow status code.\n");
             }
-            uart1_flush();
+            uart_flush();
         }
         delay_ms(100);
     }
