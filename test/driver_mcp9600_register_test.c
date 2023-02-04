@@ -1808,7 +1808,7 @@ uint8_t mcp9600_register_test(mcp9600_address_t addr_pin)
     res = mcp9600_alert_hysteresis_convert_to_data(&gs_handle, reg2, (float *)&c_check);
     if (res != 0)
     {
-        mcp9600_interface_debug_print("mcp9600: alert hysteresis convertt to data failed.\n");
+        mcp9600_interface_debug_print("mcp9600: alert hysteresis convert to data failed.\n");
         (void)mcp9600_deinit(&gs_handle);
         
         return 1;
