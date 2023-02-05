@@ -104,7 +104,7 @@ uint8_t mcp9600(uint8_t argc, char **argv)
         {"type", required_argument, NULL, 3},
         {NULL, 0, NULL, 0},
     };
-    char type[33] = "unknow";
+    char type[33] = "unknown";
     uint32_t times = 3;
     mcp9600_address_t addr = MCP9600_ADDRESS_0;
     mcp9600_thermocouple_type_t chip_type = MCP9600_THERMOCOUPLE_TYPE_K;
@@ -569,7 +569,7 @@ int main(void)
     /* uart init */
     uart_init(115200);
     
-    /* shell init && register mcp9600 fuction */
+    /* shell init && register mcp9600 function */
     shell_init();
     shell_register("mcp9600", mcp9600);
     uart_print("mcp9600: welcome to libdriver mcp9600.\n");
@@ -592,7 +592,7 @@ int main(void)
             }
             else if (res == 2)
             {
-                uart_print("mcp9600: unknow command.\n");
+                uart_print("mcp9600: unknown command.\n");
             }
             else if (res == 3)
             {
@@ -608,7 +608,7 @@ int main(void)
             }
             else
             {
-                uart_print("mcp9600: unknow status code.\n");
+                uart_print("mcp9600: unknown status code.\n");
             }
             uart_flush();
         }

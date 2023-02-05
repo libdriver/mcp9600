@@ -1854,7 +1854,7 @@ $(document).ready(function(){initNavTree('driver__mcp9600__register__test_8c_sou
 <div class="line"><a name="l01808"></a><span class="lineno"> 1808</span>&#160;    res = <a class="code" href="group__mcp9600__base__driver.html#ga5c4cb7c74921a02d3d1aced4658be02f">mcp9600_alert_hysteresis_convert_to_data</a>(&amp;gs_handle, reg2, (<span class="keywordtype">float</span> *)&amp;c_check);</div>
 <div class="line"><a name="l01809"></a><span class="lineno"> 1809</span>&#160;    <span class="keywordflow">if</span> (res != 0)</div>
 <div class="line"><a name="l01810"></a><span class="lineno"> 1810</span>&#160;    {</div>
-<div class="line"><a name="l01811"></a><span class="lineno"> 1811</span>&#160;        <a class="code" href="group__mcp9600__interface__driver.html#ga750ea6193ec3f854306006205119c032">mcp9600_interface_debug_print</a>(<span class="stringliteral">&quot;mcp9600: alert hysteresis convertt to data failed.\n&quot;</span>);</div>
+<div class="line"><a name="l01811"></a><span class="lineno"> 1811</span>&#160;        <a class="code" href="group__mcp9600__interface__driver.html#ga750ea6193ec3f854306006205119c032">mcp9600_interface_debug_print</a>(<span class="stringliteral">&quot;mcp9600: alert hysteresis convert to data failed.\n&quot;</span>);</div>
 <div class="line"><a name="l01812"></a><span class="lineno"> 1812</span>&#160;        (void)<a class="code" href="group__mcp9600__base__driver.html#gaf2d00e5cb1819fa65f9bcfae155f8d67">mcp9600_deinit</a>(&amp;gs_handle);</div>
 <div class="line"><a name="l01813"></a><span class="lineno"> 1813</span>&#160;        </div>
 <div class="line"><a name="l01814"></a><span class="lineno"> 1814</span>&#160;        <span class="keywordflow">return</span> 1;</div>

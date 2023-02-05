@@ -82,7 +82,7 @@ extern "C"{
 #define MCP9600_SHOT_DEFAULT_ALERT1_OUTPUT                         MCP9600_BOOL_FALSE                                 /**< disable output */
 #define MCP9600_SHOT_DEFAULT_ALERT2_OUTPUT                         MCP9600_BOOL_FALSE                                 /**< disable output */
 #define MCP9600_SHOT_DEFAULT_ALERT3_OUTPUT                         MCP9600_BOOL_FALSE                                 /**< disable output */
-#define MCP9600_SHOT_DEFAULT_ALERT4_OUTPUT                         MCP9600_BOOL_FALSE                                 /**< dsiable output */
+#define MCP9600_SHOT_DEFAULT_ALERT4_OUTPUT                         MCP9600_BOOL_FALSE                                 /**< disable output */
 
 /**
  * @brief     shot example init

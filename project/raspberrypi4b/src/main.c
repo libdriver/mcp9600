@@ -76,7 +76,7 @@ uint8_t mcp9600(uint8_t argc, char **argv)
         {"type", required_argument, NULL, 3},
         {NULL, 0, NULL, 0},
     };
-    char type[33] = "unknow";
+    char type[33] = "unknown";
     uint32_t times = 3;
     mcp9600_address_t addr = MCP9600_ADDRESS_0;
     mcp9600_thermocouple_type_t chip_type = MCP9600_THERMOCOUPLE_TYPE_K;
@@ -551,7 +551,7 @@ int main(uint8_t argc, char **argv)
     }
     else
     {
-        mcp9600_interface_debug_print("mcp9600: unknow status code.\n");
+        mcp9600_interface_debug_print("mcp9600: unknown status code.\n");
     }
 
     return 0;
