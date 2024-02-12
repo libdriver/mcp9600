@@ -1,6 +1,6 @@
 /**
  * @mainpage  LibDriver MCP9600
- * @brief     libdriver mcp9600 is a full function driver of mcp9600 and it can run in both MCU and Linux platform.
+ * @brief     LibDriver MCP9600 is a full function driver of MCP9600 and it can run in both MCU and Linux platform.
  * @version   1.0.0
  * @author    Shifeng Li
  *
