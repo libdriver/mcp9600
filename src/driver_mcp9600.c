@@ -74,10 +74,10 @@
 
 /**
  * @brief      read bytes
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  reg is the iic register address
- * @param[out] *data points to a data buffer
- * @param[in]  len is the data length
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  reg iic register address
+ * @param[out] *data pointer to a data buffer
+ * @param[in]  len data length
  * @return     status code
  *             - 0 success
  *             - 1 read failed
@@ -102,10 +102,10 @@ static uint8_t a_mcp9600_iic_read(mcp9600_handle_t *handle, uint8_t reg, uint8_t
 
 /**
  * @brief     write bytes
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] reg is the iic register address
- * @param[in] *data points to a data buffer
- * @param[in] len is the data length
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] reg iic register address
+ * @param[in] *data pointer to a data buffer
+ * @param[in] len data length
  * @return    status code
  *            - 0 success
  *            - 1 write failed
@@ -135,8 +135,8 @@ static uint8_t a_mcp9600_iic_write(mcp9600_handle_t *handle, uint8_t reg, uint8_
 
 /**
  * @brief     set the iic address pin
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] addr_pin is the address pin
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] addr_pin address pin
  * @return    status code
  *            - 0 success
  *            - 2 handle is NULL
@@ -156,8 +156,8 @@ uint8_t mcp9600_set_addr_pin(mcp9600_handle_t *handle, mcp9600_address_t addr_pi
 
 /**
  * @brief      get the iic address pin
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *addr_pin points to an address pin buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *addr_pin pointer to an address pin buffer
  * @return     status code
  *             - 0 success
  *             - 2 handle is NULL
@@ -177,7 +177,7 @@ uint8_t mcp9600_get_addr_pin(mcp9600_handle_t *handle, mcp9600_address_t *addr_p
 
 /**
  * @brief     initialize the chip
- * @param[in] *handle points to an mcp9600 handle structure
+ * @param[in] *handle pointer to an mcp9600 handle structure
  * @return    status code
  *            - 0 success
  *            - 1 iic initialization failed
@@ -260,7 +260,7 @@ uint8_t mcp9600_init(mcp9600_handle_t *handle)
 
 /**
  * @brief     close the chip
- * @param[in] *handle points to an mcp9600 handle structure
+ * @param[in] *handle pointer to an mcp9600 handle structure
  * @return    status code
  *            - 0 success
  *            - 1 iic deinit failed
@@ -314,7 +314,7 @@ uint8_t mcp9600_deinit(mcp9600_handle_t *handle)
 
 /**
  * @brief     start reading data
- * @param[in] *handle points to an mcp9600 handle structure
+ * @param[in] *handle pointer to an mcp9600 handle structure
  * @return    status code
  *            - 0 success
  *            - 1 start continuous read failed
@@ -359,7 +359,7 @@ uint8_t mcp9600_start_continuous_read(mcp9600_handle_t *handle)
 
 /**
  * @brief     stop reading data
- * @param[in] *handle points to an mcp9600 handle structure
+ * @param[in] *handle pointer to an mcp9600 handle structure
  * @return    status code
  *            - 0 success
  *            - 1 stop continuous read failed
@@ -404,13 +404,13 @@ uint8_t mcp9600_stop_continuous_read(mcp9600_handle_t *handle)
 
 /**
  * @brief      read data continuously
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *hot_raw points to a raw hot temperature buffer
- * @param[out] *hot_s points to a converted hot temperature buffer
- * @param[out] *delta_raw points to a raw delta temperature buffer
- * @param[out] *delta_s points to a converted delta temperature buffer
- * @param[out] *cold_raw points to a raw cold temperature buffer
- * @param[out] *cold_s points to a converted cold temperature buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *hot_raw pointer to a raw hot temperature buffer
+ * @param[out] *hot_s pointer to a converted hot temperature buffer
+ * @param[out] *delta_raw pointer to a raw delta temperature buffer
+ * @param[out] *delta_s pointer to a converted delta temperature buffer
+ * @param[out] *cold_raw pointer to a raw cold temperature buffer
+ * @param[out] *cold_s pointer to a converted cold temperature buffer
  * @return     status code
  *             - 0 success
  *             - 1 continuous read failed
@@ -484,13 +484,13 @@ uint8_t mcp9600_continuous_read(mcp9600_handle_t *handle, int16_t *hot_raw, floa
 
 /**
  * @brief      read data once
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *hot_raw points to a raw hot temperature buffer
- * @param[out] *hot_s points to a converted hot temperature buffer
- * @param[out] *delta_raw points to a raw delta temperature buffer
- * @param[out] *delta_s points to a converted delta temperature buffer
- * @param[out] *cold_raw points to a raw cold temperature buffer
- * @param[out] *cold_s points to a converted cold temperature buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *hot_raw pointer to a raw hot temperature buffer
+ * @param[out] *hot_s pointer to a converted hot temperature buffer
+ * @param[out] *delta_raw pointer to a raw delta temperature buffer
+ * @param[out] *delta_s pointer to a converted delta temperature buffer
+ * @param[out] *cold_raw pointer to a raw cold temperature buffer
+ * @param[out] *cold_s pointer to a converted cold temperature buffer
  * @return     status code
  *             - 0 success
  *             - 1 single read failed
@@ -622,8 +622,8 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
 
 /**
  * @brief      get the burst complete status flag
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *status points to a status buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *status pointer to a status buffer
  * @return     status code
  *             - 0 success
  *             - 1 get status burst complete flag failed
@@ -660,7 +660,7 @@ uint8_t mcp9600_get_status_burst_complete_flag(mcp9600_handle_t *handle, mcp9600
 
 /**
  * @brief     clear the burst complete status flag
- * @param[in] *handle points to an mcp9600 handle structure
+ * @param[in] *handle pointer to an mcp9600 handle structure
  * @return    status code
  *            - 0 success
  *            - 1 clear status burst complete flag failed
@@ -703,8 +703,8 @@ uint8_t mcp9600_clear_status_burst_complete_flag(mcp9600_handle_t *handle)
 
 /**
  * @brief      get the temperature update status flag
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *status points to a status buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *status pointer to a status buffer
  * @return     status code
  *             - 0 success
  *             - 1 get status temperature update flag failed
@@ -741,7 +741,7 @@ uint8_t mcp9600_get_status_temperature_update_flag(mcp9600_handle_t *handle, mcp
 
 /**
  * @brief     clear the temperature update status flag
- * @param[in] *handle points to an mcp9600 handle structure
+ * @param[in] *handle pointer to an mcp9600 handle structure
  * @return    status code
  *            - 0 success
  *            - 1 clear status temperature update flag failed
@@ -784,8 +784,8 @@ uint8_t mcp9600_clear_status_temperature_update_flag(mcp9600_handle_t *handle)
 
 /**
  * @brief      get the input range status
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *range points to an input range buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *range pointer to an input range buffer
  * @return     status code
  *             - 0 success
  *             - 1 get status input range failed
@@ -822,9 +822,9 @@ uint8_t mcp9600_get_status_input_range(mcp9600_handle_t *handle, mcp9600_input_r
 
 /**
  * @brief      get the alert status
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  alert is the alert number
- * @param[out] *status points to an alert status buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  alert alert number
+ * @param[out] *status pointer to an alert status buffer
  * @return     status code
  *             - 0 success
  *             - 1 get alert status failed
@@ -861,9 +861,9 @@ uint8_t mcp9600_get_alert_status(mcp9600_handle_t *handle, mcp9600_alert_t alert
 
 /**
  * @brief      get the hot junction temperature
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *raw points to a raw temperature buffer
- * @param[out] *s points to a converted temperature buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *raw pointer to a raw temperature buffer
+ * @param[out] *s pointer to a converted temperature buffer
  * @return     status code
  *             - 0 success
  *             - 1 get hot junction temperature failed
@@ -901,9 +901,9 @@ uint8_t mcp9600_get_hot_junction_temperature(mcp9600_handle_t *handle, int16_t *
 
 /**
  * @brief      get the junction thermocouple delta
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *raw points to a raw temperature buffer
- * @param[out] *s points to a converted temperature buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *raw pointer to a raw temperature buffer
+ * @param[out] *s pointer to a converted temperature buffer
  * @return     status code
  *             - 0 success
  *             - 1 get junction thermocouple delta failed
@@ -941,9 +941,9 @@ uint8_t mcp9600_get_junction_thermocouple_delta(mcp9600_handle_t *handle, int16_
 
 /**
  * @brief      get the cold junction temperature
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *raw points to a raw temperature buffer
- * @param[out] *s points to a converted temperature buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *raw pointer to a raw temperature buffer
+ * @param[out] *s pointer to a converted temperature buffer
  * @return     status code
  *             - 0 success
  *             - 1 get cold junction temperature failed
@@ -997,9 +997,9 @@ uint8_t mcp9600_get_cold_junction_temperature(mcp9600_handle_t *handle, int16_t 
 
 /**
  * @brief      get the raw adc
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *raw points to a raw adc buffer
- * @param[out] *uv points to a converted voltage buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *raw pointer to a raw adc buffer
+ * @param[out] *uv pointer to a converted voltage buffer
  * @return     status code
  *             - 0 success
  *             - 1 get raw adc failed
@@ -1088,8 +1088,8 @@ uint8_t mcp9600_get_raw_adc(mcp9600_handle_t *handle, int32_t *raw, double *uv)
 
 /**
  * @brief     set the cold junction resolution
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] resolution is the cold junction resolution
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] resolution cold junction resolution
  * @return    status code
  *            - 0 success
  *            - 1 set cold junction resolution failed
@@ -1134,8 +1134,8 @@ uint8_t mcp9600_set_cold_junction_resolution(mcp9600_handle_t *handle, mcp9600_c
 
 /**
  * @brief      get the cold junction resolution
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *resolution points to a cold junction resolution buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *resolution pointer to a cold junction resolution buffer
  * @return     status code
  *             - 0 success
  *             - 1 get cold junction resolution failed
@@ -1172,8 +1172,8 @@ uint8_t mcp9600_get_cold_junction_resolution(mcp9600_handle_t *handle, mcp9600_c
 
 /**
  * @brief     set the adc resolution
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] resolution is the adc resolution
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] resolution adc resolution
  * @return    status code
  *            - 0 success
  *            - 1 set adc resolution failed
@@ -1218,8 +1218,8 @@ uint8_t mcp9600_set_adc_resolution(mcp9600_handle_t *handle, mcp9600_adc_resolut
 
 /**
  * @brief      get the adc resolution
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *resolution points to an adc resolution buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *resolution pointer to an adc resolution buffer
  * @return     status code
  *             - 0 success
  *             - 1 get adc resolution failed
@@ -1256,8 +1256,8 @@ uint8_t mcp9600_get_adc_resolution(mcp9600_handle_t *handle, mcp9600_adc_resolut
 
 /**
  * @brief     set the burst mode sample
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] sample is the burst mode sample
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] sample burst mode sample
  * @return    status code
  *            - 0 success
  *            - 1 set burst mode sample failed
@@ -1302,8 +1302,8 @@ uint8_t mcp9600_set_burst_mode_sample(mcp9600_handle_t *handle, mcp9600_burst_mo
 
 /**
  * @brief      get the burst mode sample
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *sample points to a burst mode sample buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *sample pointer to a burst mode sample buffer
  * @return     status code
  *             - 0 success
  *             - 1 get burst mode sample failed
@@ -1340,8 +1340,8 @@ uint8_t mcp9600_get_burst_mode_sample(mcp9600_handle_t *handle, mcp9600_burst_mo
 
 /**
  * @brief     set the mode
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] mode is the chip mode
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] mode chip mode
  * @return    status code
  *            - 0 success
  *            - 1 set mode failed
@@ -1386,8 +1386,8 @@ uint8_t mcp9600_set_mode(mcp9600_handle_t *handle, mcp9600_mode_t mode)
 
 /**
  * @brief      get the mode
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *mode points to a chip mode buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *mode pointer to a chip mode buffer
  * @return     status code
  *             - 0 success
  *             - 1 get mode failed
@@ -1424,8 +1424,8 @@ uint8_t mcp9600_get_mode(mcp9600_handle_t *handle, mcp9600_mode_t *mode)
 
 /**
  * @brief     set the thermocouple type
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] type is the thermocouple type
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] type thermocouple type
  * @return    status code
  *            - 0 success
  *            - 1 set thermocouple type failed
@@ -1470,8 +1470,8 @@ uint8_t mcp9600_set_thermocouple_type(mcp9600_handle_t *handle, mcp9600_thermoco
 
 /**
  * @brief      get the thermocouple type
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *type points to a thermocouple type buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *type pointer to a thermocouple type buffer
  * @return     status code
  *             - 0 success
  *             - 1 get thermocouple type failed
@@ -1507,8 +1507,8 @@ uint8_t mcp9600_get_thermocouple_type(mcp9600_handle_t *handle, mcp9600_thermoco
 
 /**
  * @brief     set the filter coefficient
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] coefficient is the filter coefficient
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] coefficient filter coefficient
  * @return    status code
  *            - 0 success
  *            - 1 set filter coefficient failed
@@ -1553,8 +1553,8 @@ uint8_t mcp9600_set_filter_coefficient(mcp9600_handle_t *handle, mcp9600_filter_
 
 /**
  * @brief      get the filter coefficient
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *coefficient points to a filter coefficient buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *coefficient pointer to a filter coefficient buffer
  * @return     status code
  *             - 0 success
  *             - 1 get filter coefficient failed
@@ -1590,9 +1590,9 @@ uint8_t mcp9600_get_filter_coefficient(mcp9600_handle_t *handle, mcp9600_filter_
 
 /**
  * @brief      convert the alert limit to the register raw data
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  c is the alert limit
- * @param[out] *reg points to a register raw buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  c alert limit
+ * @param[out] *reg pointer to a register raw buffer
  * @return     status code
  *             - 0 success
  *             - 2 handle is NULL
@@ -1617,9 +1617,9 @@ uint8_t mcp9600_alert_limit_convert_to_register(mcp9600_handle_t *handle, float 
 
 /**
  * @brief      convert the register raw data to the alert limit
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  reg is the register raw data
- * @param[out] *c points to an alert limit buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  reg register raw data
+ * @param[out] *c pointer to an alert limit buffer
  * @return     status code
  *             - 0 success
  *             - 2 handle is NULL
@@ -1644,9 +1644,9 @@ uint8_t mcp9600_alert_limit_convert_to_data(mcp9600_handle_t *handle, int16_t re
 
 /**
  * @brief     set the alert limit
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] alert is the alert number
- * @param[in] reg is the register value
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] alert alert number
+ * @param[in] reg register value
  * @return    status code
  *            - 0 success
  *            - 1 set alert limit failed
@@ -1728,9 +1728,9 @@ uint8_t mcp9600_set_alert_limit(mcp9600_handle_t *handle, mcp9600_alert_t alert,
 
 /**
  * @brief      get the alert limit
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  alert is the alert number
- * @param[out] *reg points to a register value buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  alert alert number
+ * @param[out] *reg pointer to a register value buffer
  * @return     status code
  *             - 0 success
  *             - 1 get alert limit failed
@@ -1811,9 +1811,9 @@ uint8_t mcp9600_get_alert_limit(mcp9600_handle_t *handle, mcp9600_alert_t alert,
 
 /**
  * @brief      convert the alert hysteresis to the register raw data
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  c is the alert hysteresis
- * @param[out] *reg points to a register raw buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  c alert hysteresis
+ * @param[out] *reg pointer to a register raw buffer
  * @return     status code
  *             - 0 success
  *             - 2 handle is NULL
@@ -1838,9 +1838,9 @@ uint8_t mcp9600_alert_hysteresis_convert_to_register(mcp9600_handle_t *handle, f
 
 /**
  * @brief      convert the register raw data to the alert hysteresis
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  reg is the register raw data
- * @param[out] *c points to an alert hysteresis buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  reg register raw data
+ * @param[out] *c pointer to an alert hysteresis buffer
  * @return     status code
  *             - 0 success
  *             - 2 handle is NULL
@@ -1865,9 +1865,9 @@ uint8_t mcp9600_alert_hysteresis_convert_to_data(mcp9600_handle_t *handle, uint8
 
 /**
  * @brief     set the alert hysteresis
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] alert is the alert number
- * @param[in] reg is the register value
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] alert alert number
+ * @param[in] reg register value
  * @return    status code
  *            - 0 success
  *            - 1 set alert hysteresis failed
@@ -1948,9 +1948,9 @@ uint8_t mcp9600_set_alert_hysteresis(mcp9600_handle_t *handle, mcp9600_alert_t a
 
 /**
  * @brief      get the alert hysteresis
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  alert is the alert number
- * @param[out] *reg points to a register value buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  alert alert number
+ * @param[out] *reg pointer to a register value buffer
  * @return     status code
  *             - 0 success
  *             - 1 get alert hysteresis failed
@@ -2031,8 +2031,8 @@ uint8_t mcp9600_get_alert_hysteresis(mcp9600_handle_t *handle, mcp9600_alert_t a
 
 /**
  * @brief     clear the interrupt flag
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] alert is the alert number
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] alert alert number
  * @return    status code
  *            - 0 success
  *            - 1 clear interrupt failed
@@ -2121,9 +2121,9 @@ uint8_t mcp9600_clear_interrupt(mcp9600_handle_t *handle, mcp9600_alert_t alert)
 
 /**
  * @brief      get the interrupt flag
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  alert is the alert number
- * @param[out] *status points to a status buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  alert alert number
+ * @param[out] *status pointer to a status buffer
  * @return     status code
  *             - 0 success
  *             - 1 get interrupt failed
@@ -2204,9 +2204,9 @@ uint8_t mcp9600_get_interrupt(mcp9600_handle_t *handle, mcp9600_alert_t alert, u
 
 /**
  * @brief     set the temperature maintain detect
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] alert is the alert number
- * @param[in] maintain_detect is the temperature maintain detect
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] alert alert number
+ * @param[in] maintain_detect temperature maintain detect
  * @return    status code
  *            - 0 success
  *            - 1 set temperature maintain detect failed
@@ -2296,9 +2296,9 @@ uint8_t mcp9600_set_temperature_maintain_detect(mcp9600_handle_t *handle, mcp960
 
 /**
  * @brief      get the temperature maintain detect
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  alert is the alert number
- * @param[out] *maintain_detect points to a temperature maintain detect buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  alert alert number
+ * @param[out] *maintain_detect pointer to a temperature maintain detect buffer
  * @return     status code
  *             - 0 success
  *             - 1 get temperature maintain detect failed
@@ -2380,9 +2380,9 @@ uint8_t mcp9600_get_temperature_maintain_detect(mcp9600_handle_t *handle, mcp960
 
 /**
  * @brief     set the detect edge
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] alert is the alert number
- * @param[in] edge is the detect edge
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] alert alert number
+ * @param[in] edge detect edge
  * @return    status code
  *            - 0 success
  *            - 1 set detect edge failed
@@ -2471,9 +2471,9 @@ uint8_t mcp9600_set_detect_edge(mcp9600_handle_t *handle, mcp9600_alert_t alert,
 
 /**
  * @brief      get the detect edge
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  alert is the alert number
- * @param[out] *edge points to a detect edge buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  alert alert number
+ * @param[out] *edge pointer to a detect edge buffer
  * @return     status code
  *             - 0 success
  *             - 1 get detect edge failed
@@ -2554,9 +2554,9 @@ uint8_t mcp9600_get_detect_edge(mcp9600_handle_t *handle, mcp9600_alert_t alert,
 
 /**
  * @brief     set the active level
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] alert is the alert number
- * @param[in] level is the active level
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] alert alert number
+ * @param[in] level active level
  * @return    status code
  *            - 0 success
  *            - 1 set active level failed
@@ -2645,9 +2645,9 @@ uint8_t mcp9600_set_active_level(mcp9600_handle_t *handle, mcp9600_alert_t alert
 
 /**
  * @brief      get the active level
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  alert is the alert number
- * @param[out] *level points to an active level buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  alert alert number
+ * @param[out] *level pointer to an active level buffer
  * @return     status code
  *             - 0 success
  *             - 1 get active level failed
@@ -2728,9 +2728,9 @@ uint8_t mcp9600_get_active_level(mcp9600_handle_t *handle, mcp9600_alert_t alert
 
 /**
  * @brief     set the interrupt mode
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] alert is the alert number
- * @param[in] mode is the interrupt mode
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] alert alert number
+ * @param[in] mode interrupt mode
  * @return    status code
  *            - 0 success
  *            - 1 set interrupt mode failed
@@ -2819,9 +2819,9 @@ uint8_t mcp9600_set_interrupt_mode(mcp9600_handle_t *handle, mcp9600_alert_t ale
 
 /**
  * @brief      get the interrupt mode
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  alert is the alert number
- * @param[out] *mode points to an interrupt mode buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  alert alert number
+ * @param[out] *mode pointer to an interrupt mode buffer
  * @return     status code
  *             - 0 success
  *             - 1 get interrupt mode failed
@@ -2902,9 +2902,9 @@ uint8_t mcp9600_get_interrupt_mode(mcp9600_handle_t *handle, mcp9600_alert_t ale
 
 /**
  * @brief     set the alert output
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] alert is the alert number
- * @param[in] enable is a bool value
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] alert alert number
+ * @param[in] enable bool value
  * @return    status code
  *            - 0 success
  *            - 1 set alert output failed
@@ -2993,9 +2993,9 @@ uint8_t mcp9600_set_alert_output(mcp9600_handle_t *handle, mcp9600_alert_t alert
 
 /**
  * @brief      get the alert output
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  alert is the alert number
- * @param[out] *enable points to a bool value buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  alert alert number
+ * @param[out] *enable pointer to a bool value buffer
  * @return     status code
  *             - 0 success
  *             - 1 get alert output failed
@@ -3076,9 +3076,9 @@ uint8_t mcp9600_get_alert_output(mcp9600_handle_t *handle, mcp9600_alert_t alert
 
 /**
  * @brief      get the device id and revision
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[out] *id points to an id buffer
- * @param[out] *revision points to a revision buffer
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[out] *id pointer to an id buffer
+ * @param[out] *revision pointer to a revision buffer
  * @return     status code
  *             - 0 success
  *             - 1 get device id revision failed
@@ -3115,10 +3115,10 @@ uint8_t mcp9600_get_device_id_revision(mcp9600_handle_t *handle, uint8_t *id, ui
 
 /**
  * @brief     set the chip register
- * @param[in] *handle points to an mcp9600 handle structure
- * @param[in] reg is the iic register address
- * @param[in] *buf points to a data buffer
- * @param[in] len is the data buffer length
+ * @param[in] *handle pointer to an mcp9600 handle structure
+ * @param[in] reg iic register address
+ * @param[in] *buf pointer to a data buffer
+ * @param[in] len data buffer length
  * @return    status code
  *            - 0 success
  *            - 1 write failed
@@ -3142,10 +3142,10 @@ uint8_t mcp9600_set_reg(mcp9600_handle_t *handle, uint8_t reg, uint8_t *buf, uin
 
 /**
  * @brief      get the chip register
- * @param[in]  *handle points to an mcp9600 handle structure
- * @param[in]  reg is the iic register address
- * @param[out] *buf points to a data buffer
- * @param[in]  len is the data buffer length
+ * @param[in]  *handle pointer to an mcp9600 handle structure
+ * @param[in]  reg iic register address
+ * @param[out] *buf pointer to a data buffer
+ * @param[in]  len data buffer length
  * @return     status code
  *             - 0 success
  *             - 1 read failed
@@ -3169,7 +3169,7 @@ uint8_t mcp9600_get_reg(mcp9600_handle_t *handle, uint8_t reg, uint8_t *buf, uin
 
 /**
  * @brief      get chip information
- * @param[out] *info points to an mcp9600 info structure
+ * @param[out] *info pointer to an mcp9600 info structure
  * @return     status code
  *             - 0 success
  *             - 2 handle is NULL

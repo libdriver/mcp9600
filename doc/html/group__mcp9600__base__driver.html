@@ -862,9 +862,9 @@ Functions</h2></td></tr>
 <p>convert the register raw data to the alert hysteresis </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">reg</td><td>is the register raw data </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*c</td><td>points to an alert hysteresis buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reg</td><td>register raw data </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*c</td><td>pointer to an alert hysteresis buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -915,9 +915,9 @@ Functions</h2></td></tr>
 <p>convert the alert hysteresis to the register raw data </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>is the alert hysteresis </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*reg</td><td>points to a register raw buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>alert hysteresis </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*reg</td><td>pointer to a register raw buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -968,9 +968,9 @@ Functions</h2></td></tr>
 <p>convert the register raw data to the alert limit </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">reg</td><td>is the register raw data </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*c</td><td>points to an alert limit buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reg</td><td>register raw data </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*c</td><td>pointer to an alert limit buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1021,9 +1021,9 @@ Functions</h2></td></tr>
 <p>convert the alert limit to the register raw data </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>is the alert limit </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*reg</td><td>points to a register raw buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">c</td><td>alert limit </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*reg</td><td>pointer to a register raw buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1068,8 +1068,8 @@ Functions</h2></td></tr>
 <p>clear the interrupt flag </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
   </table>
   </dd>
 </dl>
@@ -1106,7 +1106,7 @@ Functions</h2></td></tr>
 <p>clear the burst complete status flag </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
   </table>
   </dd>
 </dl>
@@ -1142,7 +1142,7 @@ Functions</h2></td></tr>
 <p>clear the temperature update status flag </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
   </table>
   </dd>
 </dl>
@@ -1218,13 +1218,13 @@ Functions</h2></td></tr>
 <p>read data continuously </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*hot_raw</td><td>points to a raw hot temperature buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*hot_s</td><td>points to a converted hot temperature buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*delta_raw</td><td>points to a raw delta temperature buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*delta_s</td><td>points to a converted delta temperature buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*cold_raw</td><td>points to a raw cold temperature buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*cold_s</td><td>points to a converted cold temperature buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*hot_raw</td><td>pointer to a raw hot temperature buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*hot_s</td><td>pointer to a converted hot temperature buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*delta_raw</td><td>pointer to a raw delta temperature buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*delta_s</td><td>pointer to a converted delta temperature buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*cold_raw</td><td>pointer to a raw cold temperature buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*cold_s</td><td>pointer to a converted cold temperature buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1260,7 +1260,7 @@ Functions</h2></td></tr>
 <p>close the chip </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
   </table>
   </dd>
 </dl>
@@ -1313,9 +1313,9 @@ Functions</h2></td></tr>
 <p>get the active level </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*level</td><td>points to an active level buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*level</td><td>pointer to an active level buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1362,8 +1362,8 @@ Functions</h2></td></tr>
 <p>get the adc resolution </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*resolution</td><td>points to an adc resolution buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*resolution</td><td>pointer to an adc resolution buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1409,8 +1409,8 @@ Functions</h2></td></tr>
 <p>get the iic address pin </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*addr_pin</td><td>points to an address pin buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*addr_pin</td><td>pointer to an address pin buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1460,9 +1460,9 @@ Functions</h2></td></tr>
 <p>get the alert hysteresis </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*reg</td><td>points to a register value buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*reg</td><td>pointer to a register value buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1515,9 +1515,9 @@ Functions</h2></td></tr>
 <p>get the alert limit </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*reg</td><td>points to a register value buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*reg</td><td>pointer to a register value buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1570,9 +1570,9 @@ Functions</h2></td></tr>
 <p>get the alert output </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*enable</td><td>points to a bool value buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*enable</td><td>pointer to a bool value buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1625,9 +1625,9 @@ Functions</h2></td></tr>
 <p>get the alert status </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*status</td><td>points to an alert status buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*status</td><td>pointer to an alert status buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1673,8 +1673,8 @@ Functions</h2></td></tr>
 <p>get the burst mode sample </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*sample</td><td>points to a burst mode sample buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*sample</td><td>pointer to a burst mode sample buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1720,8 +1720,8 @@ Functions</h2></td></tr>
 <p>get the cold junction resolution </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*resolution</td><td>points to a cold junction resolution buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*resolution</td><td>pointer to a cold junction resolution buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1773,9 +1773,9 @@ Functions</h2></td></tr>
 <p>get the cold junction temperature </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*raw</td><td>points to a raw temperature buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*s</td><td>points to a converted temperature buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*raw</td><td>pointer to a raw temperature buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*s</td><td>pointer to a converted temperature buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1827,9 +1827,9 @@ Functions</h2></td></tr>
 <p>get the detect edge </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*edge</td><td>points to a detect edge buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*edge</td><td>pointer to a detect edge buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1882,9 +1882,9 @@ Functions</h2></td></tr>
 <p>get the device id and revision </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*id</td><td>points to an id buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*revision</td><td>points to a revision buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*id</td><td>pointer to an id buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*revision</td><td>pointer to a revision buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1930,8 +1930,8 @@ Functions</h2></td></tr>
 <p>get the filter coefficient </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*coefficient</td><td>points to a filter coefficient buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*coefficient</td><td>pointer to a filter coefficient buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -1983,9 +1983,9 @@ Functions</h2></td></tr>
 <p>get the hot junction temperature </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*raw</td><td>points to a raw temperature buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*s</td><td>points to a converted temperature buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*raw</td><td>pointer to a raw temperature buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*s</td><td>pointer to a converted temperature buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -2037,9 +2037,9 @@ Functions</h2></td></tr>
 <p>get the interrupt flag </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*status</td><td>points to a status buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*status</td><td>pointer to a status buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -2092,9 +2092,9 @@ Functions</h2></td></tr>
 <p>get the interrupt mode </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*mode</td><td>points to an interrupt mode buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*mode</td><td>pointer to an interrupt mode buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -2147,9 +2147,9 @@ Functions</h2></td></tr>
 <p>get the junction thermocouple delta </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*raw</td><td>points to a raw temperature buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*s</td><td>points to a converted temperature buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*raw</td><td>pointer to a raw temperature buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*s</td><td>pointer to a converted temperature buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -2195,8 +2195,8 @@ Functions</h2></td></tr>
 <p>get the mode </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*mode</td><td>points to a chip mode buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*mode</td><td>pointer to a chip mode buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -2248,9 +2248,9 @@ Functions</h2></td></tr>
 <p>get the raw adc </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*raw</td><td>points to a raw adc buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*uv</td><td>points to a converted voltage buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*raw</td><td>pointer to a raw adc buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*uv</td><td>pointer to a converted voltage buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -2296,8 +2296,8 @@ Functions</h2></td></tr>
 <p>get the burst complete status flag </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*status</td><td>points to a status buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*status</td><td>pointer to a status buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -2343,8 +2343,8 @@ Functions</h2></td></tr>
 <p>get the input range status </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*range</td><td>points to an input range buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*range</td><td>pointer to an input range buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -2390,8 +2390,8 @@ Functions</h2></td></tr>
 <p>get the temperature update status flag </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*status</td><td>points to a status buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*status</td><td>pointer to a status buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -2443,9 +2443,9 @@ Functions</h2></td></tr>
 <p>get the temperature maintain detect </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*maintain_detect</td><td>points to a temperature maintain detect buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*maintain_detect</td><td>pointer to a temperature maintain detect buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -2492,8 +2492,8 @@ Functions</h2></td></tr>
 <p>get the thermocouple type </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*type</td><td>points to a thermocouple type buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*type</td><td>pointer to a thermocouple type buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -2529,7 +2529,7 @@ Functions</h2></td></tr>
 <p>get chip information </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">*info</td><td>points to an mcp9600 info structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*info</td><td>pointer to an mcp9600 info structure </td></tr>
   </table>
   </dd>
 </dl>
@@ -2563,7 +2563,7 @@ Functions</h2></td></tr>
 <p>initialize the chip </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
   </table>
   </dd>
 </dl>
@@ -2616,9 +2616,9 @@ Functions</h2></td></tr>
 <p>set the active level </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">level</td><td>is the active level </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">level</td><td>active level </td></tr>
   </table>
   </dd>
 </dl>
@@ -2665,8 +2665,8 @@ Functions</h2></td></tr>
 <p>set the adc resolution </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">resolution</td><td>is the adc resolution </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">resolution</td><td>adc resolution </td></tr>
   </table>
   </dd>
 </dl>
@@ -2712,8 +2712,8 @@ Functions</h2></td></tr>
 <p>set the iic address pin </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">addr_pin</td><td>is the address pin </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">addr_pin</td><td>address pin </td></tr>
   </table>
   </dd>
 </dl>
@@ -2763,9 +2763,9 @@ Functions</h2></td></tr>
 <p>set the alert hysteresis </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">reg</td><td>is the register value </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reg</td><td>register value </td></tr>
   </table>
   </dd>
 </dl>
@@ -2818,9 +2818,9 @@ Functions</h2></td></tr>
 <p>set the alert limit </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">reg</td><td>is the register value </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">reg</td><td>register value </td></tr>
   </table>
   </dd>
 </dl>
@@ -2873,9 +2873,9 @@ Functions</h2></td></tr>
 <p>set the alert output </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">enable</td><td>is a bool value </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">enable</td><td>bool value </td></tr>
   </table>
   </dd>
 </dl>
@@ -2922,8 +2922,8 @@ Functions</h2></td></tr>
 <p>set the burst mode sample </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">sample</td><td>is the burst mode sample </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">sample</td><td>burst mode sample </td></tr>
   </table>
   </dd>
 </dl>
@@ -2969,8 +2969,8 @@ Functions</h2></td></tr>
 <p>set the cold junction resolution </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">resolution</td><td>is the cold junction resolution </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">resolution</td><td>cold junction resolution </td></tr>
   </table>
   </dd>
 </dl>
@@ -3022,9 +3022,9 @@ Functions</h2></td></tr>
 <p>set the detect edge </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">edge</td><td>is the detect edge </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">edge</td><td>detect edge </td></tr>
   </table>
   </dd>
 </dl>
@@ -3071,8 +3071,8 @@ Functions</h2></td></tr>
 <p>set the filter coefficient </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">coefficient</td><td>is the filter coefficient </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">coefficient</td><td>filter coefficient </td></tr>
   </table>
   </dd>
 </dl>
@@ -3124,9 +3124,9 @@ Functions</h2></td></tr>
 <p>set the interrupt mode </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>is the interrupt mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>interrupt mode </td></tr>
   </table>
   </dd>
 </dl>
@@ -3173,8 +3173,8 @@ Functions</h2></td></tr>
 <p>set the mode </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>is the chip mode </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>chip mode </td></tr>
   </table>
   </dd>
 </dl>
@@ -3226,9 +3226,9 @@ Functions</h2></td></tr>
 <p>set the temperature maintain detect </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>is the alert number </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">maintain_detect</td><td>is the temperature maintain detect </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">alert</td><td>alert number </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">maintain_detect</td><td>temperature maintain detect </td></tr>
   </table>
   </dd>
 </dl>
@@ -3275,8 +3275,8 @@ Functions</h2></td></tr>
 <p>set the thermocouple type </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>is the thermocouple type </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>thermocouple type </td></tr>
   </table>
   </dd>
 </dl>
@@ -3352,13 +3352,13 @@ Functions</h2></td></tr>
 <p>read data once </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*hot_raw</td><td>points to a raw hot temperature buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*hot_s</td><td>points to a converted hot temperature buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*delta_raw</td><td>points to a raw delta temperature buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*delta_s</td><td>points to a converted delta temperature buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*cold_raw</td><td>points to a raw cold temperature buffer </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">*cold_s</td><td>points to a converted cold temperature buffer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*hot_raw</td><td>pointer to a raw hot temperature buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*hot_s</td><td>pointer to a converted hot temperature buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*delta_raw</td><td>pointer to a raw delta temperature buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*delta_s</td><td>pointer to a converted delta temperature buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*cold_raw</td><td>pointer to a raw cold temperature buffer </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">*cold_s</td><td>pointer to a converted cold temperature buffer </td></tr>
   </table>
   </dd>
 </dl>
@@ -3395,7 +3395,7 @@ Functions</h2></td></tr>
 <p>start reading data </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
   </table>
   </dd>
 </dl>
@@ -3431,7 +3431,7 @@ Functions</h2></td></tr>
 <p>stop reading data </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>points to an mcp9600 handle structure </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">*handle</td><td>pointer to an mcp9600 handle structure </td></tr>
   </table>
   </dd>
 </dl>
