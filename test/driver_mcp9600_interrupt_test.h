@@ -50,8 +50,8 @@ extern "C"{
 
 /**
  * @brief     interrupt test
- * @param[in] addr_pin is the iic device address
- * @param[in] type is the thermocouple type
+ * @param[in] addr_pin iic device address
+ * @param[in] type thermocouple type
  * @return    status code
  *            - 0 success
  *            - 1 test failed

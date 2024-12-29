@@ -86,8 +86,8 @@ extern "C"{
 
 /**
  * @brief     interrupt example init
- * @param[in] addr_pin is the iic device address
- * @param[in] type is the thermocouple type
+ * @param[in] addr_pin iic device address
+ * @param[in] type thermocouple type
  * @return    status code
  *            - 0 success
  *            - 1 init failed
@@ -106,12 +106,12 @@ uint8_t mcp9600_interrupt_deinit(void);
 
 /**
  * @brief      interrupt example read
- * @param[out] *hot_raw points to a raw hot temperature buffer
- * @param[out] *hot_s points to a converted hot temperature buffer
- * @param[out] *delta_raw points to a raw delta temperature buffer
- * @param[out] *delta_s points to a converted delta temperature buffer
- * @param[out] *cold_raw points to a raw cold temperature buffer
- * @param[out] *cold_s points to a converted cold temperature buffer
+ * @param[out] *hot_raw pointer to a raw hot temperature buffer
+ * @param[out] *hot_s pointer to a converted hot temperature buffer
+ * @param[out] *delta_raw pointer to a raw delta temperature buffer
+ * @param[out] *delta_s pointer to a converted delta temperature buffer
+ * @param[out] *cold_raw pointer to a raw cold temperature buffer
+ * @param[out] *cold_s pointer to a converted cold temperature buffer
  * @return     status code
  *             - 0 success
  *             - 1 read failed
@@ -122,7 +122,7 @@ uint8_t mcp9600_interrupt_read(int16_t *hot_raw, float *hot_s,
 
 /**
  * @brief     interrupt example clear
- * @param[in] alert is the alert type
+ * @param[in] alert alert type
  * @return    status code
  *            - 0 success
  *            - 1 clear failed

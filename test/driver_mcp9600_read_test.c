@@ -40,9 +40,9 @@ static mcp9600_handle_t gs_handle;        /**< mcp9600 handle */
 
 /**
  * @brief     read test
- * @param[in] addr_pin is the iic device address
- * @param[in] type is the thermocouple type
- * @param[in] times is the test times
+ * @param[in] addr_pin iic device address
+ * @param[in] type thermocouple type
+ * @param[in] times test times
  * @return    status code
  *            - 0 success
  *            - 1 test failed
