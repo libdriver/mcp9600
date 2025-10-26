@@ -10,7 +10,7 @@
 
 The  MCP9600 is a fully integrated thermocouple  Electromotive Force (EMF) to degree Celsius converter with integrated Cold-Junction compensation. The MCP9600 supports 8 thermocouple types (K, J, T, N, S, E, B and R). The MCP9600 provides user-programmable registers, adding design flexibility for various temperature sensing applications. The registers allow user-selectable settings, such as low-power modes for battery-powered applications, an adjustable digital filter for fast transient temperatures and four individually programmable temperature alert outputs, which can be used to detect multiple temperature zones.It can be used in petrochemical thermal management, hand-held measurement equipment, industrial equipment thermal management, commercial and industrial ovens, industrial engine thermal monitor, temperature detection racks and so on.
 
-LibDriver MCP9600 is a full-featured driver of MCP9600 launched by LibDriver.It provides shot reading, continuous reading, interrupt reading mode and other functions. LibDriver is MISRA compliant.
+LibDriver MCP9600 is a full-featured driver for MCP9600, launched by LibDriver.It provides shot reading, continuous reading, interrupt reading and additional features. LibDriver is MISRA compliant.
 
 ### Table of Contents
 

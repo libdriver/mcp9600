@@ -25,7 +25,7 @@
 var NAVTREE =
 [
   [ "LibDriver MCP9600", "index.html", [
-    [ "Modules", "modules.html", "modules" ],
+    [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -51,9 +51,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"group__mcp9600__base__driver.html#gaedec88608079bc7c71c12c479028de60",
-"group__mcp9600__example__driver.html#gaa28abf99bb47e3c92d964c849c935130"
+"group__mcp9600__example__driver.html#ga75334cae632248e5030883f39e670404"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'click to disable panel synchronization';
+var SYNCOFFMSG = 'click to enable panel synchronization';
+var LISTOFALLMEMBERS = 'List of all members';
