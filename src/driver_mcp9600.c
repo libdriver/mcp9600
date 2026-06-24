@@ -390,7 +390,7 @@ uint8_t mcp9600_stop_continuous_read(mcp9600_handle_t *handle)
     }
     
     reg &= ~(3 << 0);                                                                             /* clear configure */
-    reg |= 0x02 << 0;                                                                             /* set configure */
+    reg |= 0x01 << 0;                                                                             /* set configure */
     res = a_mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);      /* write config */
     if (res != 0)                                                                                 /* check result */
     {
@@ -470,7 +470,7 @@ uint8_t mcp9600_continuous_read(mcp9600_handle_t *handle, int16_t *hot_raw, floa
         return 1;                                                                                       /* return error */
     }
     *cold_raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                            /* get raw data */
-    if (((reg >> 7) & 0x01) != 0)                                                                       /* check the config */
+    if (((reg >> 7) & 0x01) == 0)                                                                       /* check the config */
     {
         *cold_s = (float)(*cold_raw) / 16.0f;                                                           /* convert the data */
     }
