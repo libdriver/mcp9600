@@ -375,7 +375,7 @@ $(function(){initNavTree('driver__mcp9600_8c_source.html','',''); });
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    }</div>
 <div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    </div>
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>    reg &amp;= ~(3 &lt;&lt; 0);                                                                             <span class="comment">/* clear configure */</span></div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    reg |= 0x02 &lt;&lt; 0;                                                                             <span class="comment">/* set configure */</span></div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    reg |= 0x01 &lt;&lt; 0;                                                                             <span class="comment">/* set configure */</span></div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>    res = a_mcp9600_iic_write(handle, <a class="code hl_define" href="driver__mcp9600_8c.html#a5d476cb5ab1bdf4ed5b4eaae6f1fb360">MCP9600_REG_DEVICE_CONFIGURATION</a>, (uint8_t *)&amp;reg, 1);      <span class="comment">/* write config */</span></div>
 <div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>    <span class="keywordflow">if</span> (res != 0)                                                                                 <span class="comment">/* check result */</span></div>
 <div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    {</div>
@@ -440,7 +440,7 @@ $(function(){initNavTree('driver__mcp9600_8c_source.html','',''); });
 <div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>        <span class="keywordflow">return</span> 1;                                                                                       <span class="comment">/* return error */</span></div>
 <div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span>    }</div>
 <div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>    *cold_raw = (int16_t)(((uint16_t)buf[0] &lt;&lt; 8) | buf[1]);                                            <span class="comment">/* get raw data */</span></div>
-<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>    <span class="keywordflow">if</span> (((reg &gt;&gt; 7) &amp; 0x01) != 0)                                                                       <span class="comment">/* check the config */</span></div>
+<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>    <span class="keywordflow">if</span> (((reg &gt;&gt; 7) &amp; 0x01) == 0)                                                                       <span class="comment">/* check the config */</span></div>
 <div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span>    {</div>
 <div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span>        *cold_s = (float)(*cold_raw) / 16.0f;                                                           <span class="comment">/* convert the data */</span></div>
 <div class="line"><a id="l00476" name="l00476"></a><span class="lineno">  476</span>    }</div>
