@@ -563,7 +563,7 @@ $(function(){initNavTree('driver__mcp9600_8c_source.html','',''); });
 <div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>        <span class="keywordflow">return</span> 1;                                                                                       <span class="comment">/* return error */</span></div>
 <div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>    }</div>
 <div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>    *cold_raw = (int16_t)(((uint16_t)buf[0] &lt;&lt; 8) | buf[1]);                                            <span class="comment">/* get raw data */</span></div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>    <span class="keywordflow">if</span> (((reg &gt;&gt; 7) &amp; 0x01) != 0)                                                                       <span class="comment">/* check the config */</span></div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>    <span class="keywordflow">if</span> (((reg &gt;&gt; 7) &amp; 0x01) == 0)                                                                       <span class="comment">/* check the config */</span></div>
 <div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>    {</div>
 <div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>        *cold_s = (float)(*cold_raw) / 16.0f;                                                           <span class="comment">/* convert the data */</span></div>
 <div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>    }</div>
@@ -855,7 +855,7 @@ $(function(){initNavTree('driver__mcp9600_8c_source.html','',''); });
 <div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span>    }</div>
 <div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span>    </div>
 <div class="line"><a id="l00985" name="l00985"></a><span class="lineno">  985</span>    *raw = (int16_t)(((uint16_t)buf[0] &lt;&lt; 8) | buf[1]);                                               <span class="comment">/* get raw data */</span></div>
-<div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span>    <span class="keywordflow">if</span> (((reg &gt;&gt; 7) &amp; 0x01) != 0)                                                                     <span class="comment">/* check the config */</span></div>
+<div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span>    <span class="keywordflow">if</span> (((reg &gt;&gt; 7) &amp; 0x01) == 0)                                                                     <span class="comment">/* check the config */</span></div>
 <div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span>    {</div>
 <div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span>        *s = (float)(*raw) / 16.0f;                                                                   <span class="comment">/* convert the data */</span></div>
 <div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span>    }</div>
