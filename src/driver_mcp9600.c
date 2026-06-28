@@ -608,7 +608,7 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
         return 1;                                                                                       /* return error */
     }
     *cold_raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                            /* get raw data */
-    if (((reg >> 7) & 0x01) != 0)                                                                       /* check the config */
+    if (((reg >> 7) & 0x01) == 0)                                                                       /* check the config */
     {
         *cold_s = (float)(*cold_raw) / 16.0f;                                                           /* convert the data */
     }
@@ -983,7 +983,7 @@ uint8_t mcp9600_get_cold_junction_temperature(mcp9600_handle_t *handle, int16_t 
     }
     
     *raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                               /* get raw data */
-    if (((reg >> 7) & 0x01) != 0)                                                                     /* check the config */
+    if (((reg >> 7) & 0x01) == 0)                                                                     /* check the config */
     {
         *s = (float)(*raw) / 16.0f;                                                                   /* convert the data */
     }
