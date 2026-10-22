@@ -423,7 +423,6 @@ uint8_t mcp9600_continuous_read(mcp9600_handle_t *handle, int16_t *hot_raw, floa
                                 int16_t *delta_raw, float *delta_s, int16_t *cold_raw, float *cold_s)
 {
     uint8_t res;
-    uint8_t reg;
     uint8_t buf[2];
     
     if (handle == NULL)                                                                                 /* check handle */
@@ -455,14 +454,7 @@ uint8_t mcp9600_continuous_read(mcp9600_handle_t *handle, int16_t *hot_raw, floa
     *delta_raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                           /* get raw data */
     *delta_s = (float)(*delta_raw) / 16.0f;                                                             /* convert the data */
     
-    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);             /* read config */
-    if (res != 0)                                                                                       /* check result */
-    {
-        handle->debug_print("mcp9600: read device configuration failed.\n");                            /* read device configuration failed */
-       
-        return 1;                                                                                       /* return error */
-    }
-    res = a_mcp9600_iic_read(handle, MCP9600_REG_COLD_JUNCTION_TEMPERATURE, (uint8_t *)buf, 2);         /* read config */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_COLD_JUNCTION_TEMPERATURE, (uint8_t *)buf, 2);         /* read cold junction */
     if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: read cold junction temperature failed.\n");                       /* read cold junction temperature failed */
@@ -470,14 +462,7 @@ uint8_t mcp9600_continuous_read(mcp9600_handle_t *handle, int16_t *hot_raw, floa
         return 1;                                                                                       /* return error */
     }
     *cold_raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                            /* get raw data */
-    if (((reg >> 7) & 0x01) == 0)                                                                       /* check the config */
-    {
-        *cold_s = (float)(*cold_raw) / 16.0f;                                                           /* convert the data */
-    }
-    else
-    {
-        *cold_s = (float)(*cold_raw) / 4.0f;                                                            /* convert the data */
-    }
+    *cold_s = (float)(*cold_raw) / 16.0f;                                                               /* convert */
     
     return 0;                                                                                           /* success return 0 */
 }
@@ -504,6 +489,7 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
 {
     uint8_t res;
     uint8_t reg;
+    uint8_t cfg_orig;
     uint16_t timeout;
     uint8_t buf[2];
     
@@ -516,15 +502,7 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
         return 3;                                                                                       /* return error */
     }
     
-    res = a_mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);                           /* read config */
-    if (res != 0)                                                                                       /* check result */
-    {
-        handle->debug_print("mcp9600: read status failed.\n");                                          /* read status failed */
-       
-        return 1;                                                                                       /* return error */
-    }
-    reg &= ~(1 << 7);                                                                                   /* clear flag */
-    reg &= ~(1 << 6);                                                                                   /* clear flag */
+    reg = 0xC0;                                                                                         /* write 1 to clear burst complete (bit7) and temperature update (bit6) flags (W1C) */
     res = a_mcp9600_iic_write(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);                          /* write config */
     if (res != 0)                                                                                       /* check result */
     {
@@ -540,8 +518,10 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
        
         return 1;                                                                                       /* return error */
     }
-    reg &= ~(3 << 0);                                                                                   /* clear configure */
-    reg |= 0x02 << 0;                                                                                   /* set configure */
+    cfg_orig = reg;                                                                                     /* save original device config */
+    reg &= ~(7 << 2);                                                                                   /* force 1 burst sample */
+    reg &= ~(3 << 0);                                                                                   /* clear mode */
+    reg |= 0x02 << 0;                                                                                   /* enter burst mode */
     res = a_mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);            /* write config */
     if (res != 0)                                                                                       /* check result */
     {
@@ -569,6 +549,7 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
     if (timeout == 0)                                                                                   /* check timeout */
     {
         handle->debug_print("mcp9600: read timeout.\n");                                                /* read timeout failed */
+        (void)a_mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&cfg_orig, 1);   /* best-effort restore */
        
         return 4;                                                                                       /* return error */
     }
@@ -593,14 +574,7 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
     *delta_raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                           /* get raw data */
     *delta_s = (float)(*delta_raw) / 16.0f;                                                             /* convert the data */
     
-    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);             /* read config */
-    if (res != 0)                                                                                       /* check result */
-    {
-        handle->debug_print("mcp9600: read device configuration failed.\n");                            /* read device configuration failed */
-       
-        return 1;                                                                                       /* return error */
-    }
-    res = a_mcp9600_iic_read(handle, MCP9600_REG_COLD_JUNCTION_TEMPERATURE, (uint8_t *)buf, 2);         /* read config */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_COLD_JUNCTION_TEMPERATURE, (uint8_t *)buf, 2);         /* read cold junction */
     if (res != 0)                                                                                       /* check result */
     {
         handle->debug_print("mcp9600: read cold junction temperature failed.\n");                       /* read cold junction temperature failed */
@@ -608,13 +582,14 @@ uint8_t mcp9600_single_read(mcp9600_handle_t *handle, int16_t *hot_raw, float *h
         return 1;                                                                                       /* return error */
     }
     *cold_raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                            /* get raw data */
-    if (((reg >> 7) & 0x01) == 0)                                                                       /* check the config */
+    *cold_s = (float)(*cold_raw) / 16.0f;                                                               /* convert */
+    
+    res = a_mcp9600_iic_write(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&cfg_orig, 1);       /* restore original device config */
+    if (res != 0)                                                                                       /* check result */
     {
-        *cold_s = (float)(*cold_raw) / 16.0f;                                                           /* convert the data */
-    }
-    else
-    {
-        *cold_s = (float)(*cold_raw) / 4.0f;                                                            /* convert the data */
+        handle->debug_print("mcp9600: restore device configuration failed.\n");                         /* restore failed */
+        
+        return 1;                                                                                       /* return error */
     }
     
     return 0;                                                                                           /* success return 0 */
@@ -682,14 +657,7 @@ uint8_t mcp9600_clear_status_burst_complete_flag(mcp9600_handle_t *handle)
         return 3;                                                                   /* return error */
     }
     
-    res = a_mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);       /* read config */
-    if (res != 0)                                                                   /* check result */
-    {
-        handle->debug_print("mcp9600: read status failed.\n");                      /* read status failed */
-       
-        return 1;                                                                   /* return error */
-    }
-    reg &= ~(1 << 7);                                                               /* clear flag */
+    reg = 0x80;                                                                     /* write 1 to clear burst complete flag */
     res = a_mcp9600_iic_write(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);      /* write config */
     if (res != 0)                                                                   /* check result */
     {
@@ -763,14 +731,7 @@ uint8_t mcp9600_clear_status_temperature_update_flag(mcp9600_handle_t *handle)
         return 3;                                                                   /* return error */
     }
     
-    res = a_mcp9600_iic_read(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);       /* read config */
-    if (res != 0)                                                                   /* check result */
-    {
-        handle->debug_print("mcp9600: read status failed.\n");                      /* read status failed */
-       
-        return 1;                                                                   /* return error */
-    }
-    reg &= ~(1 << 6);                                                               /* clear flag */
+    reg = 0x40;                                                                     /* write 1 to clear temperature update flag */
     res = a_mcp9600_iic_write(handle, MCP9600_REG_STATUS, (uint8_t *)&reg, 1);      /* write config */
     if (res != 0)                                                                   /* check result */
     {
@@ -954,7 +915,6 @@ uint8_t mcp9600_get_junction_thermocouple_delta(mcp9600_handle_t *handle, int16_
 uint8_t mcp9600_get_cold_junction_temperature(mcp9600_handle_t *handle, int16_t *raw, float *s)
 {
     uint8_t res;
-    uint8_t reg;
     uint8_t buf[2];
     
     if (handle == NULL)                                                                               /* check handle */
@@ -966,15 +926,7 @@ uint8_t mcp9600_get_cold_junction_temperature(mcp9600_handle_t *handle, int16_t 
         return 3;                                                                                     /* return error */
     }
     
-    res = a_mcp9600_iic_read(handle, MCP9600_REG_DEVICE_CONFIGURATION, (uint8_t *)&reg, 1);           /* read config */
-    if (res != 0)                                                                                     /* check result */
-    {
-        handle->debug_print("mcp9600: read device configuration failed.\n");                          /* read device configuration failed */
-       
-        return 1;                                                                                     /* return error */
-    }
-    
-    res = a_mcp9600_iic_read(handle, MCP9600_REG_COLD_JUNCTION_TEMPERATURE, (uint8_t *)buf, 2);       /* read config */
+    res = a_mcp9600_iic_read(handle, MCP9600_REG_COLD_JUNCTION_TEMPERATURE, (uint8_t *)buf, 2);       /* read cold junction */
     if (res != 0)                                                                                     /* check result */
     {
         handle->debug_print("mcp9600: read cold junction temperature failed.\n");                     /* read cold junction temperature failed */
@@ -983,14 +935,7 @@ uint8_t mcp9600_get_cold_junction_temperature(mcp9600_handle_t *handle, int16_t 
     }
     
     *raw = (int16_t)(((uint16_t)buf[0] << 8) | buf[1]);                                               /* get raw data */
-    if (((reg >> 7) & 0x01) == 0)                                                                     /* check the config */
-    {
-        *s = (float)(*raw) / 16.0f;                                                                   /* convert the data */
-    }
-    else
-    {
-        *s = (float)(*raw) / 4.0f;                                                                    /* convert the data */
-    }
+    *s = (float)(*raw) / 16.0f;                                                                       /* convert */
     
     return 0;                                                                                         /* success return 0 */
 }
@@ -1012,7 +957,7 @@ uint8_t mcp9600_get_raw_adc(mcp9600_handle_t *handle, int32_t *raw, double *uv)
     uint8_t res;
     uint8_t reg;
     uint8_t shift;
-    uint16_t mask;
+    uint32_t v;
     uint8_t buf[3];
     double resolution;
     
@@ -1036,27 +981,23 @@ uint8_t mcp9600_get_raw_adc(mcp9600_handle_t *handle, int32_t *raw, double *uv)
     reg = (reg >> 5) & 0x3;                                                                           /* get type */
     if (reg == 0x0)                                                                                   /* get 18 bit */
     {
-        resolution = 2.0;                                                                             /* set 2.0 */
+        resolution = 2.0;                                                                             /* set 2.0 uv/lsb */
         shift = 0;                                                                                    /* set shift 0 */
-        mask = 0x0;                                                                                   /* set mask 0x0 */
     }
     else if (reg == 0x1)                                                                              /* get 16 bit */
     {
-        resolution = 8.0;                                                                             /* set 8.0 */
+        resolution = 8.0;                                                                             /* set 8.0 uv/lsb */
         shift = 2;                                                                                    /* set shift 2 */
-        mask = 0x03;                                                                                  /* set mask 0x03 */
     }
     else if (reg == 0x2)                                                                              /* get 14 bit */
     {
-        resolution = 32.0;                                                                            /* set 32.0 */
+        resolution = 32.0;                                                                            /* set 32.0 uv/lsb */
         shift = 4;                                                                                    /* set shift 4 */
-        mask = 0x0F;                                                                                  /* set mask 0x0F */
     }
     else                                                                                              /* get 12 bit */
     {
-        resolution = 128.0;                                                                           /* set 128.0 */
+        resolution = 128.0;                                                                           /* set 128.0 uv/lsb */
         shift = 6;                                                                                    /* set shift 6 */
-        mask = 0x3F;                                                                                  /* set mask 0x3F */
     }
     
     res = a_mcp9600_iic_read(handle, MCP9600_REG_RAW_ADC_DATA, (uint8_t *)buf, 3);                    /* read config */
@@ -1067,19 +1008,20 @@ uint8_t mcp9600_get_raw_adc(mcp9600_handle_t *handle, int32_t *raw, double *uv)
         return 1;                                                                                     /* return error */
     }
     
-    *raw = (int32_t)(((uint32_t)buf[0] << 16) | ((uint32_t)buf[1]) << 8) | buf[2];                    /* get raw data */
-    if ((buf[0] & 0x80) != 0)                                                                         /* check sign */
+    v = ((uint32_t)buf[0] << 16) | ((uint32_t)buf[1] << 8) | (uint32_t)buf[2];                        /* assemble 24-bit data */
+    if ((v & 0x800000U) != 0)                                                                         /* check 24-bit sign */
     {
-        *raw = (int32_t)((uint32_t)(*raw) | ((uint32_t)(0xFF) << 24));                                /* set sign bits */
+        v |= 0xFF000000U;                                                                             /* sign extend 24 to 32 bits */
     }
-    if (((*raw) & 0x80000000U) != 0)                                                                  /* sign*/
+    if ((v & 0x80000000U) != 0)                                                                       /* negative */
     {
-        *raw = ((*raw) >> shift) | (uint32_t)(mask) << (32 - shift);                                  /* set raw */
+        v = (v >> shift) | (shift ? (~0U << (32 - shift)) : 0U);                                      /* shift and sign extend */
     }
     else
     {
-        *raw = ((*raw) >> shift);                                                                     /* set raw */
+        v >>= shift;                                                                                  /* positive */
     }
+    *raw = (int32_t)v;                                                                                /* store raw data */
     
     *uv = (double)(*raw) * resolution;                                                                /* convert the data */
     
