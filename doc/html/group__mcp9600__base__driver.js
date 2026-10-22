@@ -35,7 +35,13 @@ var group__mcp9600__base__driver =
     ] ],
     [ "mcp9600_address_t", "group__mcp9600__base__driver.html#ga22354ccbaccb2b523c8ecd831e787411", [
       [ "MCP9600_ADDRESS_0", "group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411a4d634e636689b9e8f706fb82b4ea2359", null ],
-      [ "MCP9600_ADDRESS_1", "group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411a72a18d3ab7605d43bb4a363ab75d8aac", null ]
+      [ "MCP9600_ADDRESS_1", "group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411a72a18d3ab7605d43bb4a363ab75d8aac", null ],
+      [ "MCP9600_ADDRESS_2", "group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411abb003edafbf266dc9d7ffe71b44f25e4", null ],
+      [ "MCP9600_ADDRESS_3", "group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411a8e06ce42c8d49ba5966e0ef73f770f0f", null ],
+      [ "MCP9600_ADDRESS_4", "group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411aea85f9cd309fb3e4aa9650b7e19f7773", null ],
+      [ "MCP9600_ADDRESS_5", "group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411adfedeec721d4a4c333f9658b24fb9d87", null ],
+      [ "MCP9600_ADDRESS_6", "group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411a28e7db7097808d51d384453da65552e8", null ],
+      [ "MCP9600_ADDRESS_7", "group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411a39698fb46ba05957dc1291b50bfde8f3", null ]
     ] ],
     [ "mcp9600_alert_status_t", "group__mcp9600__base__driver.html#ga88b827d9bb6deb1e0582bd73a20345f8", [
       [ "MCP9600_ALERT_STATUS_LESS", "group__mcp9600__base__driver.html#gga88b827d9bb6deb1e0582bd73a20345f8a0f40d7270378d1d58e2a6253a766772a", null ],

@@ -161,8 +161,14 @@ var NAVTREEINDEX0 =
 "group__mcp9600__base__driver.html#gga1e6b824352afd2a5937c8971c88f7968ad18d62d62dc00ea6c6e63a1942746a37":[0,0,1,14,0],
 "group__mcp9600__base__driver.html#gga21ac94cd7936e8aa700900e8967e1a59ac393f27608124505f3e8745ca858b92a":[0,0,1,11,1],
 "group__mcp9600__base__driver.html#gga21ac94cd7936e8aa700900e8967e1a59adc840b839f8a20cc469d5f5b62e5ac14":[0,0,1,11,0],
+"group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411a28e7db7097808d51d384453da65552e8":[0,0,1,6,6],
+"group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411a39698fb46ba05957dc1291b50bfde8f3":[0,0,1,6,7],
 "group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411a4d634e636689b9e8f706fb82b4ea2359":[0,0,1,6,0],
 "group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411a72a18d3ab7605d43bb4a363ab75d8aac":[0,0,1,6,1],
+"group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411a8e06ce42c8d49ba5966e0ef73f770f0f":[0,0,1,6,3],
+"group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411abb003edafbf266dc9d7ffe71b44f25e4":[0,0,1,6,2],
+"group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411adfedeec721d4a4c333f9658b24fb9d87":[0,0,1,6,5],
+"group__mcp9600__base__driver.html#gga22354ccbaccb2b523c8ecd831e787411aea85f9cd309fb3e4aa9650b7e19f7773":[0,0,1,6,4],
 "group__mcp9600__base__driver.html#gga225ae0c67f7f581d7fa0f510bc2d4b72a4e307c458d3bedc48e46407af5129430":[0,0,1,18,7],
 "group__mcp9600__base__driver.html#gga225ae0c67f7f581d7fa0f510bc2d4b72a4fbac50465ce8f64e6cb47d57738456b":[0,0,1,18,2],
 "group__mcp9600__base__driver.html#gga225ae0c67f7f581d7fa0f510bc2d4b72a6d28b3af184aed2e4435bbfa86e27c3a":[0,0,1,18,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX0 =
 "group__mcp9600__example__driver.html#ga5a2d2076c0741dddb34d0c53da629966":[0,0,4,32],
 "group__mcp9600__example__driver.html#ga5a3eb30f448160506187b00f7253b1a5":[0,0,4,19],
 "group__mcp9600__example__driver.html#ga5b1cc0324e61954f0358a53c0caeb9fd":[0,0,4,50],
-"group__mcp9600__example__driver.html#ga5b345938889b55534d0988d1e128fdcf":[0,0,4,70],
-"group__mcp9600__example__driver.html#ga5d1d34cab93dd225058da11ac30dc3ea":[0,0,4,46],
-"group__mcp9600__example__driver.html#ga5e3336e017251a3aed58023b31461f94":[0,0,4,35],
-"group__mcp9600__example__driver.html#ga62cf365927846506956dd0b2b2d64e53":[0,0,4,26],
-"group__mcp9600__example__driver.html#ga64e509b6f99292ca5bd3b476c34d2c5c":[0,0,4,41],
-"group__mcp9600__example__driver.html#ga673220cecacbe3adbaa3265bffff2aac":[0,0,4,11],
-"group__mcp9600__example__driver.html#ga67830a8be8609b06ddad7a5aaf9a3bf7":[0,0,4,72]
+"group__mcp9600__example__driver.html#ga5b345938889b55534d0988d1e128fdcf":[0,0,4,70]
 };

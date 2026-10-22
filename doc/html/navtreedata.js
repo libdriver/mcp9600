@@ -51,7 +51,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"group__mcp9600__example__driver.html#ga75334cae632248e5030883f39e670404"
+"group__mcp9600__example__driver.html#ga5d1d34cab93dd225058da11ac30dc3ea"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

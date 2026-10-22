@@ -119,8 +119,17 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ga22354ccbaccb2b523c8ecd831e787411" id="r_ga22354ccbaccb2b523c8ecd831e787411"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga22354ccbaccb2b523c8ecd831e787411">mcp9600_address_t</a> { <a class="el" href="#gga22354ccbaccb2b523c8ecd831e787411a4d634e636689b9e8f706fb82b4ea2359">MCP9600_ADDRESS_0</a> = 0xC0
+<tr class="memitem:ga22354ccbaccb2b523c8ecd831e787411" id="r_ga22354ccbaccb2b523c8ecd831e787411"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga22354ccbaccb2b523c8ecd831e787411">mcp9600_address_t</a> { <br />
+&#160;&#160;<a class="el" href="#gga22354ccbaccb2b523c8ecd831e787411a4d634e636689b9e8f706fb82b4ea2359">MCP9600_ADDRESS_0</a> = 0xC0
 , <a class="el" href="#gga22354ccbaccb2b523c8ecd831e787411a72a18d3ab7605d43bb4a363ab75d8aac">MCP9600_ADDRESS_1</a> = 0xC2
+, <a class="el" href="#gga22354ccbaccb2b523c8ecd831e787411abb003edafbf266dc9d7ffe71b44f25e4">MCP9600_ADDRESS_2</a> = 0xC4
+, <a class="el" href="#gga22354ccbaccb2b523c8ecd831e787411a8e06ce42c8d49ba5966e0ef73f770f0f">MCP9600_ADDRESS_3</a> = 0xC6
+, <br />
+&#160;&#160;<a class="el" href="#gga22354ccbaccb2b523c8ecd831e787411aea85f9cd309fb3e4aa9650b7e19f7773">MCP9600_ADDRESS_4</a> = 0xC8
+, <a class="el" href="#gga22354ccbaccb2b523c8ecd831e787411adfedeec721d4a4c333f9658b24fb9d87">MCP9600_ADDRESS_5</a> = 0xCA
+, <a class="el" href="#gga22354ccbaccb2b523c8ecd831e787411a28e7db7097808d51d384453da65552e8">MCP9600_ADDRESS_6</a> = 0xCC
+, <a class="el" href="#gga22354ccbaccb2b523c8ecd831e787411a39698fb46ba05957dc1291b50bfde8f3">MCP9600_ADDRESS_7</a> = 0xCE
+<br />
  }</td></tr>
 <tr class="memdesc:ga22354ccbaccb2b523c8ecd831e787411"><td class="mdescLeft">&#160;</td><td class="mdescRight">mcp9600 address enumeration definition  <a href="#ga22354ccbaccb2b523c8ecd831e787411">More...</a><br /></td></tr>
 <tr class="memitem:ga21ac94cd7936e8aa700900e8967e1a59" id="r_ga21ac94cd7936e8aa700900e8967e1a59"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga21ac94cd7936e8aa700900e8967e1a59">mcp9600_cold_junction_resolution_t</a> { <a class="el" href="#gga21ac94cd7936e8aa700900e8967e1a59adc840b839f8a20cc469d5f5b62e5ac14">MCP9600_COLD_JUNCTION_RESOLUTION_0P0625</a> = 0x00
@@ -375,7 +384,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00202">202</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00208">208</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
 
 </div>
 </div>
@@ -403,7 +412,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00080">80</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00086">86</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
 
 </div>
 </div>
@@ -421,9 +430,21 @@ Functions</h2></td></tr>
 
 <p>mcp9600 address enumeration definition </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga22354ccbaccb2b523c8ecd831e787411a4d634e636689b9e8f706fb82b4ea2359" name="gga22354ccbaccb2b523c8ecd831e787411a4d634e636689b9e8f706fb82b4ea2359"></a>MCP9600_ADDRESS_0&#160;</td><td class="fielddoc"><p>addr pin connected to the GND </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga22354ccbaccb2b523c8ecd831e787411a4d634e636689b9e8f706fb82b4ea2359" name="gga22354ccbaccb2b523c8ecd831e787411a4d634e636689b9e8f706fb82b4ea2359"></a>MCP9600_ADDRESS_0&#160;</td><td class="fielddoc"><p>ADDR pin connected to GND </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga22354ccbaccb2b523c8ecd831e787411a72a18d3ab7605d43bb4a363ab75d8aac" name="gga22354ccbaccb2b523c8ecd831e787411a72a18d3ab7605d43bb4a363ab75d8aac"></a>MCP9600_ADDRESS_1&#160;</td><td class="fielddoc"><p>addr pin connected to the VCC </p>
+<tr><td class="fieldname"><a id="gga22354ccbaccb2b523c8ecd831e787411a72a18d3ab7605d43bb4a363ab75d8aac" name="gga22354ccbaccb2b523c8ecd831e787411a72a18d3ab7605d43bb4a363ab75d8aac"></a>MCP9600_ADDRESS_1&#160;</td><td class="fielddoc"><p>ADDR pin at address 1 voltage band </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga22354ccbaccb2b523c8ecd831e787411abb003edafbf266dc9d7ffe71b44f25e4" name="gga22354ccbaccb2b523c8ecd831e787411abb003edafbf266dc9d7ffe71b44f25e4"></a>MCP9600_ADDRESS_2&#160;</td><td class="fielddoc"><p>ADDR pin at address 2 voltage band </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga22354ccbaccb2b523c8ecd831e787411a8e06ce42c8d49ba5966e0ef73f770f0f" name="gga22354ccbaccb2b523c8ecd831e787411a8e06ce42c8d49ba5966e0ef73f770f0f"></a>MCP9600_ADDRESS_3&#160;</td><td class="fielddoc"><p>ADDR pin at address 3 voltage band </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga22354ccbaccb2b523c8ecd831e787411aea85f9cd309fb3e4aa9650b7e19f7773" name="gga22354ccbaccb2b523c8ecd831e787411aea85f9cd309fb3e4aa9650b7e19f7773"></a>MCP9600_ADDRESS_4&#160;</td><td class="fielddoc"><p>ADDR pin at address 4 voltage band </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga22354ccbaccb2b523c8ecd831e787411adfedeec721d4a4c333f9658b24fb9d87" name="gga22354ccbaccb2b523c8ecd831e787411adfedeec721d4a4c333f9658b24fb9d87"></a>MCP9600_ADDRESS_5&#160;</td><td class="fielddoc"><p>ADDR pin at address 5 voltage band </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga22354ccbaccb2b523c8ecd831e787411a28e7db7097808d51d384453da65552e8" name="gga22354ccbaccb2b523c8ecd831e787411a28e7db7097808d51d384453da65552e8"></a>MCP9600_ADDRESS_6&#160;</td><td class="fielddoc"><p>ADDR pin at address 6 voltage band </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga22354ccbaccb2b523c8ecd831e787411a39698fb46ba05957dc1291b50bfde8f3" name="gga22354ccbaccb2b523c8ecd831e787411a39698fb46ba05957dc1291b50bfde8f3"></a>MCP9600_ADDRESS_7&#160;</td><td class="fielddoc"><p>ADDR pin connected to VCC </p>
 </td></tr>
 </table>
 
@@ -451,7 +472,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00157">157</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00163">163</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
 
 </div>
 </div>
@@ -479,7 +500,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00146">146</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00152">152</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
 
 </div>
 </div>
@@ -503,7 +524,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00175">175</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00181">181</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
 
 </div>
 </div>
@@ -539,7 +560,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00091">91</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00097">97</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
 
 </div>
 </div>
@@ -563,7 +584,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00071">71</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00077">77</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
 
 </div>
 </div>
@@ -587,7 +608,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00193">193</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00199">199</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
 
 </div>
 </div>
@@ -623,7 +644,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00131">131</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00137">137</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
 
 </div>
 </div>
@@ -647,7 +668,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00166">166</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00172">172</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
 
 </div>
 </div>
@@ -671,7 +692,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00211">211</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00217">217</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
 
 </div>
 </div>
@@ -697,7 +718,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00106">106</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00112">112</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
 
 </div>
 </div>
@@ -721,7 +742,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00184">184</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00190">190</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
 
 </div>
 </div>
@@ -757,7 +778,7 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00116">116</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8h_source.html#l00122">122</a> of file <a class="el" href="driver__mcp9600_8h_source.html">driver_mcp9600.h</a>.</p>
 
 </div>
 </div>
@@ -803,7 +824,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01850">1850</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01792">1792</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -848,7 +869,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01823">1823</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01765">1765</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -893,7 +914,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01629">1629</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01571">1571</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -938,7 +959,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01602">1602</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01544">1544</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -979,7 +1000,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02044">2044</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01986">1986</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1014,7 +1035,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00671">671</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00646">646</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1049,7 +1070,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00752">752</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00720">720</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1202,7 +1223,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02659">2659</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02601">2601</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1242,7 +1263,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01230">1230</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01172">1172</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1327,7 +1348,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01962">1962</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01904">1904</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1374,7 +1395,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01742">1742</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01684">1684</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1421,7 +1442,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l03007">3007</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02949">2949</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1467,7 +1488,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00835">835</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00796">796</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1507,7 +1528,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01314">1314</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01256">1256</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1547,7 +1568,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01146">1146</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01088">1088</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1593,7 +1614,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00954">954</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00915">915</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1640,7 +1661,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02485">2485</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02427">2427</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1686,7 +1707,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l03089">3089</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l03031">3031</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1726,7 +1747,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01565">1565</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01507">1507</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1772,7 +1793,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00874">874</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00835">835</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1819,7 +1840,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02135">2135</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02077">2077</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1866,7 +1887,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02833">2833</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02775">2775</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1912,7 +1933,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00914">914</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00875">875</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1952,7 +1973,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01398">1398</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01340">1340</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -1998,7 +2019,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01010">1010</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00955">955</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2038,7 +2059,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00634">634</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00609">609</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2078,7 +2099,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00796">796</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00757">757</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2118,7 +2139,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00715">715</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00683">683</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2165,7 +2186,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02310">2310</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02252">2252</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2205,7 +2226,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01482">1482</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01424">1424</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2238,7 +2259,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l03178">3178</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l03120">3120</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2321,7 +2342,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02568">2568</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02510">2510</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2361,7 +2382,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01184">1184</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01126">1126</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2446,7 +2467,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01879">1879</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01821">1821</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2493,7 +2514,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01658">1658</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01600">1600</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2540,7 +2561,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02916">2916</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02858">2858</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2580,7 +2601,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01268">1268</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01210">1210</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2620,7 +2641,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01100">1100</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01042">1042</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2667,7 +2688,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02394">2394</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02336">2336</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2707,7 +2728,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01519">1519</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01461">1461</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2754,7 +2775,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02742">2742</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02684">2684</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2794,7 +2815,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01352">1352</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01294">1294</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2841,7 +2862,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02218">2218</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l02160">2160</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2881,7 +2902,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01436">1436</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l01378">1378</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>
@@ -2952,7 +2973,7 @@ Functions</h2></td></tr>
 </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00502">502</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver__mcp9600_8c_source.html#l00487">487</a> of file <a class="el" href="driver__mcp9600_8c_source.html">driver_mcp9600.c</a>.</p>
 
 </div>
 </div>

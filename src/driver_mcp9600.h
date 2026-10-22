@@ -61,8 +61,14 @@ extern "C"{
  */
 typedef enum
 {
-    MCP9600_ADDRESS_0 = 0xC0,        /**< addr pin connected to the GND */
-    MCP9600_ADDRESS_1 = 0xC2,        /**< addr pin connected to the VCC */
+    MCP9600_ADDRESS_0 = 0xC0,   /**< ADDR pin connected to GND */
+    MCP9600_ADDRESS_1 = 0xC2,   /**< ADDR pin at address 1 voltage band */
+    MCP9600_ADDRESS_2 = 0xC4,   /**< ADDR pin at address 2 voltage band */
+    MCP9600_ADDRESS_3 = 0xC6,   /**< ADDR pin at address 3 voltage band */
+    MCP9600_ADDRESS_4 = 0xC8,   /**< ADDR pin at address 4 voltage band */
+    MCP9600_ADDRESS_5 = 0xCA,   /**< ADDR pin at address 5 voltage band */
+    MCP9600_ADDRESS_6 = 0xCC,   /**< ADDR pin at address 6 voltage band */
+    MCP9600_ADDRESS_7 = 0xCE,   /**< ADDR pin connected to VCC */
 } mcp9600_address_t;
 
 /**
